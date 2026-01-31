@@ -59,12 +59,19 @@ class EventAdminForm(forms.ModelForm):
 from .models import (
     HomeBanner, ChurchInfo, HeadPastor, ServiceTime,
     Leader, PhotoGallery, Sermon, Event, Branch,
-    GivingInfo, GivingImage, ImageLog, ContactMessage, Testimony, Book, ExchangeRate, Merchandise, AuditLog
+    GivingInfo, GivingImage, ImageLog, ContactMessage, Testimony, Book, ExchangeRate, Merchandise, AuditLog, UserProfile
 )
 
 # ====================================================================
 # AUTH MODELS FIX (Restores the Delete/Run Button)
 # ====================================================================
+
+class UserProfileInline(TabularInline):
+    """Inline profile editor for users"""
+    model = UserProfile
+    extra = 0
+    fields = ('profile_picture', 'bio', 'phone')
+
 
 admin.site.unregister(User)
 admin.site.unregister(Group)
@@ -73,6 +80,24 @@ admin.site.unregister(Group)
 class UserAdmin(BaseUserAdmin, ModelAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
+    inlines = [UserProfileInline]
+    
+    def profile_picture_preview(self, obj):
+        """Show profile picture in list view"""
+        try:
+            profile = obj.profile
+            if profile.profile_picture and hasattr(profile.profile_picture, 'url'):
+                return format_html(
+                    '<img src="{}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid #ddd;" />', 
+                    profile.profile_picture.url
+                )
+        except:
+            pass
+        return "—"
+    profile_picture_preview.short_description = "Picture"
+    
+    # Add picture preview to list display
+    list_display = ('profile_picture_preview', 'username', 'email', 'first_name', 'last_name', 'is_staff', 'is_active')
     change_password_form = AdminPasswordChangeForm
 
 @admin.register(Group)
@@ -312,6 +337,32 @@ class AuditLogAdmin(ModelAdmin):
     
     def has_delete_permission(self, request, obj=None):
         return False  # Prevent deletion of audit logs
+
+
+# ====================================================================
+# USER PROFILE ADMIN
+# ====================================================================
+
+@admin.register(UserProfile)
+class UserProfileAdmin(ModelAdmin):
+    list_display = ('user', 'profile_picture_preview', 'phone')
+    search_fields = ('user__username', 'user__email')
+    fieldsets = (
+        ('User', {'fields': ('user',)}),
+        ('Profile Picture', {'fields': ('profile_picture',)}),
+        ('Info', {'fields': ('bio', 'phone')}),
+        ('Timestamps', {'fields': ('created_at', 'updated_at'), 'classes': ('collapse',)}),
+    )
+    readonly_fields = ('created_at', 'updated_at')
+    
+    def profile_picture_preview(self, obj):
+        if obj.profile_picture and hasattr(obj.profile_picture, 'url'):
+            return format_html(
+                '<img src="{}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd;" />', 
+                obj.profile_picture.url
+            )
+        return "No Picture"
+    profile_picture_preview.short_description = "Picture"
 
 
 # ====================================================================

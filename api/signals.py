@@ -1,9 +1,10 @@
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import User
 from .models import (
     HomeBanner, HeadPastor, Leader, PhotoGallery, 
-    Sermon, Event, GivingImage, ImageLog, Branch, Merchandise
+    Sermon, Event, GivingImage, ImageLog, Branch, Merchandise, Book, UserProfile
 )
 
 
@@ -25,6 +26,7 @@ def log_image_upload(sender, instance, created, **kwargs):
         GivingImage: 'Giving Page',
         Branch: 'Branch',
         Merchandise: 'Merchandise',
+        Book: 'Book',
     }
     
     section_name = section_mapping.get(sender, sender.__name__)
@@ -65,6 +67,7 @@ post_save.connect(log_image_upload, sender=Event)
 post_save.connect(log_image_upload, sender=GivingImage)
 post_save.connect(log_image_upload, sender=Branch)
 post_save.connect(log_image_upload, sender=Merchandise)
+post_save.connect(log_image_upload, sender=Book)
 
 
 # ====================================================================
@@ -93,4 +96,15 @@ pre_delete.connect(cleanup_image_logs_on_delete, sender=Event)
 pre_delete.connect(cleanup_image_logs_on_delete, sender=GivingImage)
 pre_delete.connect(cleanup_image_logs_on_delete, sender=Branch)
 pre_delete.connect(cleanup_image_logs_on_delete, sender=Merchandise)
-post_save.connect(log_image_upload, sender=Merchandise)
+pre_delete.connect(cleanup_image_logs_on_delete, sender=Book)
+
+
+# ====================================================================
+# USER PROFILE AUTO-CREATE
+# ====================================================================
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    """Auto-create UserProfile when a new User is created"""
+    if created:
+        UserProfile.objects.get_or_create(user=instance)

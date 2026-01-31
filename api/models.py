@@ -1058,3 +1058,45 @@ class AuditLog(models.Model):
     
     def __str__(self):
         return f"{self.user} - {self.action} - {self.model_name} - {self.timestamp}"
+
+
+# ====================================================================
+# USER PROFILE MODEL
+# ====================================================================
+
+class UserProfile(models.Model):
+    """
+    Extended user profile with picture and additional info.
+    Shows profile picture in admin sidebar.
+    """
+    user = models.OneToOneField(
+        'auth.User',
+        on_delete=models.CASCADE,
+        related_name='profile'
+    )
+    profile_picture = models.ImageField(
+        upload_to='profiles/',
+        blank=True,
+        null=True,
+        help_text="Profile picture shown in admin sidebar"
+    )
+    bio = models.TextField(
+        blank=True,
+        null=True,
+        help_text="User bio or short description"
+    )
+    phone = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True,
+        help_text="Contact phone number"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name = "User Profile"
+        verbose_name_plural = "User Profiles"
+    
+    def __str__(self):
+        return f"{self.user.username}'s Profile"
