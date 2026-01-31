@@ -3,7 +3,7 @@ from django.dispatch import receiver
 from django.contrib.contenttypes.models import ContentType
 from .models import (
     HomeBanner, HeadPastor, Leader, PhotoGallery, 
-    Sermon, Event, GivingImage, ImageLog
+    Sermon, Event, GivingImage, ImageLog, Branch, Merchandise
 )
 
 
@@ -23,6 +23,8 @@ def log_image_upload(sender, instance, created, **kwargs):
         Sermon: 'Sermon',
         Event: 'Event',
         GivingImage: 'Giving Page',
+        Branch: 'Branch',
+        Merchandise: 'Merchandise',
     }
     
     section_name = section_mapping.get(sender, sender.__name__)
@@ -61,3 +63,5 @@ post_save.connect(log_image_upload, sender=PhotoGallery)
 post_save.connect(log_image_upload, sender=Sermon)
 post_save.connect(log_image_upload, sender=Event)
 post_save.connect(log_image_upload, sender=GivingImage)
+post_save.connect(log_image_upload, sender=Branch)
+post_save.connect(log_image_upload, sender=Merchandise)
