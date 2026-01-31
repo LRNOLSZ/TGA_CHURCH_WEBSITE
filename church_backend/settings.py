@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'api.audit_middleware.AuditLoggingMiddleware',  # Audit logging
 ]
 
 ROOT_URLCONF = 'church_backend.urls'

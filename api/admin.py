@@ -3,12 +3,57 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.admin import GroupAdmin as BaseGroupAdmin
 from django.utils import timezone
-from django.db.models import Count
+from django.db.models import Count, DateTimeField
+from django.forms.widgets import DateTimeInput
+from django import forms
+from datetime import datetime
 
 # Unfold specific imports
 from unfold.admin import ModelAdmin, TabularInline
 from unfold.forms import AdminPasswordChangeForm, UserChangeForm, UserCreationForm
 from django.utils.html import format_html
+
+# ====================================================================
+# CUSTOM FORMS
+# ====================================================================
+
+class EventAdminForm(forms.ModelForm):
+    """Custom form for Event that separates date and time"""
+    event_date = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        label='Event Date',
+        help_text='Select the date (calendar picker)'
+    )
+    event_time = forms.TimeField(
+        widget=forms.TextInput(attrs={'type': 'time', 'placeholder': 'HH:MM'}),
+        label='Event Time',
+        help_text='Enter time manually (HH:MM format, e.g., 14:30)'
+    )
+    
+    class Meta:
+        from .models import Event
+        model = Event
+        fields = ('title', 'description', 'category', 'image', 'event_date', 'event_time', 'location', 'branch', 'contact_person', 'registration_link', 'is_active', 'is_featured')
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # If editing existing event, populate date and time fields
+        if self.instance and self.instance.pk:
+            self.fields['event_date'].initial = self.instance.date.date()
+            self.fields['event_time'].initial = self.instance.date.time()
+    
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        # Combine date and time back into datetime
+        if self.cleaned_data.get('event_date') and self.cleaned_data.get('event_time'):
+            instance.date = datetime.combine(
+                self.cleaned_data['event_date'],
+                self.cleaned_data['event_time']
+            )
+        if commit:
+            instance.save()
+        return instance
+
 
 # Your church models
 from .models import (
@@ -121,8 +166,27 @@ class SermonAdmin(ModelAdmin):
 
 @admin.register(Event)
 class EventAdmin(ModelAdmin, AdminImagePreviewMixin):
+    form = EventAdminForm
     list_display = ('image_preview', 'title', 'date', 'category', 'is_active')
     list_filter = ('category', 'is_active')
+    fieldsets = (
+        ('Basic Info', {
+            'fields': ('title', 'description', 'category', 'image')
+        }),
+        ('Event Details', {
+            'fields': ('event_date', 'event_time', 'location', 'branch', 'contact_person')
+        }),
+        ('Links & Registration', {
+            'fields': ('registration_link',)
+        }),
+        ('Status', {
+            'fields': ('is_active', 'is_featured')
+        }),
+    )
+    # Use simple datetime-local input for manual time entry
+    formfield_overrides = {
+        DateTimeField: {'widget': forms.HiddenInput()}
+    }
 
 @admin.register(Branch)
 class BranchAdmin(ModelAdmin, AdminImagePreviewMixin):

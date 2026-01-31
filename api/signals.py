@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from django.contrib.contenttypes.models import ContentType
 from .models import (
@@ -64,4 +64,33 @@ post_save.connect(log_image_upload, sender=Sermon)
 post_save.connect(log_image_upload, sender=Event)
 post_save.connect(log_image_upload, sender=GivingImage)
 post_save.connect(log_image_upload, sender=Branch)
+post_save.connect(log_image_upload, sender=Merchandise)
+
+
+# ====================================================================
+# DELETE SIGNALS - Clean up orphaned ImageLog entries
+# ====================================================================
+
+def cleanup_image_logs_on_delete(sender, instance, **kwargs):
+    """
+    Delete associated ImageLog entries when a model with images is deleted.
+    This prevents orphaned image logs from non-existent objects.
+    """
+    content_type = ContentType.objects.get_for_model(sender)
+    ImageLog.objects.filter(
+        content_type=content_type,
+        object_id=instance.id
+    ).delete()
+
+
+# Register delete signals for all models with images
+pre_delete.connect(cleanup_image_logs_on_delete, sender=HomeBanner)
+pre_delete.connect(cleanup_image_logs_on_delete, sender=HeadPastor)
+pre_delete.connect(cleanup_image_logs_on_delete, sender=Leader)
+pre_delete.connect(cleanup_image_logs_on_delete, sender=PhotoGallery)
+pre_delete.connect(cleanup_image_logs_on_delete, sender=Sermon)
+pre_delete.connect(cleanup_image_logs_on_delete, sender=Event)
+pre_delete.connect(cleanup_image_logs_on_delete, sender=GivingImage)
+pre_delete.connect(cleanup_image_logs_on_delete, sender=Branch)
+pre_delete.connect(cleanup_image_logs_on_delete, sender=Merchandise)
 post_save.connect(log_image_upload, sender=Merchandise)
