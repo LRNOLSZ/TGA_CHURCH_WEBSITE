@@ -14,7 +14,7 @@ from django.utils.html import format_html
 from .models import (
     HomeBanner, ChurchInfo, HeadPastor, ServiceTime,
     Leader, PhotoGallery, Sermon, Event, Branch,
-    GivingInfo, GivingImage, ImageLog, ContactMessage, Testimony, Book, ExchangeRate, Merchandise
+    GivingInfo, GivingImage, ImageLog, ContactMessage, Testimony, Book, ExchangeRate, Merchandise, AuditLog
 )
 
 # ====================================================================
@@ -229,6 +229,25 @@ class ExchangeRateAdmin(ModelAdmin):
     
     def has_delete_permission(self, request, obj=None):
         return False  # Prevent accidental deletion
+
+
+# ====================================================================
+# AUDIT LOG ADMIN (READ-ONLY)
+# ====================================================================
+
+@admin.register(AuditLog)
+class AuditLogAdmin(ModelAdmin):
+    list_display = ('user', 'action', 'model_name', 'timestamp', 'ip_address')
+    list_filter = ('action', 'model_name', 'timestamp')
+    search_fields = ('user__username', 'model_name', 'ip_address')
+    readonly_fields = ('user', 'action', 'model_name', 'object_id', 'object_repr', 'changes', 'ip_address', 'user_agent', 'timestamp')
+    date_hierarchy = 'timestamp'
+    
+    def has_add_permission(self, request):
+        return False  # Prevent manual creation
+    
+    def has_delete_permission(self, request, obj=None):
+        return False  # Prevent deletion of audit logs
 
 
 # ====================================================================

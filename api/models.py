@@ -1005,3 +1005,56 @@ class Merchandise(models.Model):
     
     def __str__(self):
         return f"👕 {self.name} - ${self.price}"
+
+
+# ====================================================================
+# AUDIT & SECURITY MODELS
+# ====================================================================
+
+class AuditLog(models.Model):
+    """
+    Tracks all admin changes for security and compliance.
+    Records who made what changes, when, and from where.
+    """
+    ACTION_CHOICES = [
+        ('CREATE', 'Created'),
+        ('UPDATE', 'Updated'),
+        ('DELETE', 'Deleted'),
+        ('LOGIN', 'Login'),
+        ('LOGOUT', 'Logout'),
+        ('PERMISSION_DENIED', 'Permission Denied'),
+        ('FILE_UPLOAD', 'File Upload'),
+    ]
+    
+    user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='audit_logs'
+    )
+    action = models.CharField(max_length=20, choices=ACTION_CHOICES)
+    model_name = models.CharField(max_length=100)
+    object_id = models.PositiveIntegerField(null=True, blank=True)
+    object_repr = models.TextField(blank=True)
+    changes = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text="JSON of what was changed (old_value, new_value)"
+    )
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    user_agent = models.TextField(blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
+    
+    class Meta:
+        ordering = ['-timestamp']
+        verbose_name = "Audit Log"
+        verbose_name_plural = "Audit Logs"
+        indexes = [
+            models.Index(fields=['user', '-timestamp']),
+            models.Index(fields=['action', '-timestamp']),
+            models.Index(fields=['model_name', '-timestamp']),
+        ]
+    
+    def __str__(self):
+        return f"{self.user} - {self.action} - {self.model_name} - {self.timestamp}"
