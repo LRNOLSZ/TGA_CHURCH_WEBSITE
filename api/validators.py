@@ -7,7 +7,7 @@ import os
 
 # Allowed file extensions for images
 ALLOWED_IMAGE_EXTENSIONS = {'jpg', 'jpeg', 'png', 'gif', 'webp'}
-MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5MB
+MAX_IMAGE_SIZE = 10 * 1024 * 1024  # 10MB
 
 # Allowed file extensions for documents
 ALLOWED_DOCUMENT_EXTENSIONS = {'pdf', 'doc', 'docx', 'txt'}
