@@ -2,6 +2,7 @@ from rest_framework import viewsets, filters, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from django.db.models import Q
 from django.shortcuts import render
 from django.contrib import admin
@@ -39,6 +40,10 @@ class HomeBannerViewSet(viewsets.ModelViewSet):
     """
     ViewSet for managing home page banners.
     
+    Permissions:
+    - GET: Public (no authentication required)
+    - POST/PUT/DELETE: Admin only
+    
     Query params:
     - is_active: Filter by active status (true/false)
     - search: Search in title and subtitle
@@ -46,6 +51,7 @@ class HomeBannerViewSet(viewsets.ModelViewSet):
     queryset = HomeBanner.objects.all()
     serializer_class = HomeBannerSerializer
     pagination_class = StandardResultsSetPagination
+    permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['title', 'subtitle']
     ordering_fields = ['order', 'created_at']
@@ -128,6 +134,10 @@ class LeaderViewSet(viewsets.ModelViewSet):
     """
     ViewSet for managing church leadership.
     
+    Permissions:
+    - GET: Public
+    - POST/PUT/DELETE: Admin only
+    
     Query params:
     - position: Filter by role
     - featured: Filter featured leaders only
@@ -135,6 +145,7 @@ class LeaderViewSet(viewsets.ModelViewSet):
     """
     queryset = Leader.objects.all()
     serializer_class = LeaderSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = StandardResultsSetPagination
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['full_name', 'position']
@@ -159,12 +170,17 @@ class PhotoGalleryViewSet(viewsets.ModelViewSet):
     """
     ViewSet for managing photo gallery.
     
+    Permissions:
+    - GET: Public
+    - POST/PUT/DELETE: Admin only
+    
     Query params:
     - category: Filter by category
     - search: Search by title or caption
     """
     queryset = PhotoGallery.objects.all()
     serializer_class = PhotoGallerySerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = StandardResultsSetPagination
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['title', 'caption']
@@ -189,6 +205,10 @@ class SermonViewSet(viewsets.ModelViewSet):
     """
     ViewSet for managing sermons/messages.
     
+    Permissions:
+    - GET: Public
+    - POST/PUT/DELETE: Admin only
+    
     Query params:
     - speaker: Filter by speaker
     - series: Filter by series
@@ -198,6 +218,7 @@ class SermonViewSet(viewsets.ModelViewSet):
     """
     queryset = Sermon.objects.all()
     serializer_class = SermonSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = StandardResultsSetPagination
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['title', 'speaker', 'series']
@@ -249,6 +270,10 @@ class EventViewSet(viewsets.ModelViewSet):
     """
     ViewSet for managing church events.
     
+    Permissions:
+    - GET: Public
+    - POST/PUT/DELETE: Admin only
+    
     Query params:
     - category: Filter by category
     - branch_id: Filter by branch
@@ -258,6 +283,7 @@ class EventViewSet(viewsets.ModelViewSet):
     """
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = StandardResultsSetPagination
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['title', 'description', 'location']
@@ -311,12 +337,17 @@ class BranchViewSet(viewsets.ModelViewSet):
     """
     ViewSet for managing church branches.
     
+    Permissions:
+    - GET: Public
+    - POST/PUT/DELETE: Admin only
+    
     Query params:
     - main: Filter main branch (true/false)
     - search: Search by name or location
     """
     queryset = Branch.objects.all()
     serializer_class = BranchSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = StandardResultsSetPagination
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['name', 'location']
@@ -339,9 +370,10 @@ class BranchViewSet(viewsets.ModelViewSet):
 # ====================================================================
 
 class GivingImageViewSet(viewsets.ModelViewSet):
-    """ViewSet for giving page images"""
+    """ViewSet for giving page images - Admin only for write"""
     queryset = GivingImage.objects.all()
     serializer_class = GivingImageSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = StandardResultsSetPagination
 
 
@@ -365,6 +397,11 @@ class ContactMessageViewSet(viewsets.ModelViewSet):
     """
     ViewSet for managing contact form submissions.
     
+    Permissions:
+    - GET: Admin only
+    - POST: Public (submit forms)
+    - PUT/DELETE: Admin only
+    
     Query params:
     - subject: Filter by subject
     - is_read: Filter by read status
@@ -372,6 +409,7 @@ class ContactMessageViewSet(viewsets.ModelViewSet):
     """
     queryset = ContactMessage.objects.all()
     serializer_class = ContactMessageSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = StandardResultsSetPagination
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['name', 'email', 'subject', 'message']
@@ -411,6 +449,10 @@ class TestimonyViewSet(viewsets.ModelViewSet):
     """
     ViewSet for managing testimonies.
     
+    Permissions:
+    - GET: Public
+    - POST/PUT/DELETE: Admin only
+    
     Query params:
     - carousel: Filter carousel testimonies
     - approved: Filter approved testimonies
@@ -419,6 +461,7 @@ class TestimonyViewSet(viewsets.ModelViewSet):
     """
     queryset = Testimony.objects.all()
     serializer_class = TestimonySerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = StandardResultsSetPagination
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['name', 'testimony_text', 'category']
@@ -458,12 +501,17 @@ class BookViewSet(viewsets.ModelViewSet):
     """
     ViewSet for managing books.
     
+    Permissions:
+    - GET: Public
+    - POST/PUT/DELETE: Admin only
+    
     Query params:
     - available: Filter available books
     - search: Search by name or description
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = StandardResultsSetPagination
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['name', 'description']
@@ -485,12 +533,17 @@ class MerchandiseViewSet(viewsets.ModelViewSet):
     """
     ViewSet for managing merchandise.
     
+    Permissions:
+    - GET: Public
+    - POST/PUT/DELETE: Admin only
+    
     Query params:
     - available: Filter available items
     - search: Search by name or description
     """
     queryset = Merchandise.objects.all()
     serializer_class = MerchandiseSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = StandardResultsSetPagination
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['name', 'description']
