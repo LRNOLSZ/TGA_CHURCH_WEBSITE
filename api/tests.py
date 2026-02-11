@@ -1,9 +1,11 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.contrib.auth.models import User
 from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
+from rest_framework.authtoken.models import Token
 from django.utils import timezone
 from datetime import timedelta
+import threading
 
 from .models import (
     HomeBanner, ChurchInfo, HeadPastor, ServiceTime,
@@ -16,6 +18,7 @@ from .models import (
 # MODEL TESTS
 # ====================================================================
 
+@override_settings(MIDDLEWARE=[])
 class HomeBannerModelTest(TestCase):
     """Test HomeBanner model"""
     
@@ -221,6 +224,10 @@ class EventAPITest(APITestCase):
     """Test Event API endpoints"""
     
     def setUp(self):
+        # Clear thread-local to prevent audit log issues
+        if hasattr(threading.current_thread(), 'request'):
+            delattr(threading.current_thread(), 'request')
+        
         self.client = APIClient()
         self.event = Event.objects.create(
             title="Upcoming Event",
@@ -342,7 +349,14 @@ class ContactMessageAPITest(APITestCase):
         self.assertGreater(len(response.data), 0)
     
     def test_mark_message_as_read(self):
-        """Test POST /api/contact-messages/{id}/mark_as_read/"""
+        """Test POST /api/contact-messages/{id}/mark_as_read/ (requires auth)"""
+        # Create admin user and get token
+        admin = User.objects.create_user(username='admin2', password='pass123')
+        token = Token.objects.create(user=admin)
+        
+        # Authenticate the request
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {token.key}')
+        
         response = self.client.post(f'/api/contact-messages/{self.message.id}/mark_as_read/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         

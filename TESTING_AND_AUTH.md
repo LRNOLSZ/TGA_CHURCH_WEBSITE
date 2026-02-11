@@ -56,7 +56,7 @@ user = User.objects.get(username='admin')
 # Generate/Get token
 token, created = Token.objects.get_or_create(user=user)
 print(token.key)
-# Output: 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b
+# Output: <YOUR_TOKEN_HERE>
 ```
 
 #### **Option B: Via Django Admin**
@@ -87,7 +87,7 @@ curl http://127.0.0.1:8000/api/sermons/
 #### **Create Event (Admin Only)**
 ```bash
 curl -X POST http://127.0.0.1:8000/api/events/ \
-  -H "Authorization: Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b" \
+  -H "Authorization: Token <YOUR_TOKEN_HERE>" \
   -H "Content-Type: application/json" \
   -d '{
     "title": "New Event",
@@ -101,7 +101,7 @@ curl -X POST http://127.0.0.1:8000/api/events/ \
 #### **Update Sermon**
 ```bash
 curl -X PUT http://127.0.0.1:8000/api/sermons/1/ \
-  -H "Authorization: Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b" \
+  -H "Authorization: Token <YOUR_TOKEN_HERE>" \
   -H "Content-Type: application/json" \
   -d '{
     "title": "Updated Title",
@@ -112,7 +112,7 @@ curl -X PUT http://127.0.0.1:8000/api/sermons/1/ \
 #### **Delete Banner**
 ```bash
 curl -X DELETE http://127.0.0.1:8000/api/banners/1/ \
-  -H "Authorization: Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b"
+  -H "Authorization: Token <YOUR_TOKEN_HERE>"
 ```
 
 ### **Submit Contact Form (Public)**
