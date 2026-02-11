@@ -489,6 +489,90 @@ bulk_deletes = AuditLog.objects.filter(
 ).values('user').annotate(count=Count('id')).filter(count__gt=10)
 ```
 
+## API Token Management
+
+### Storing Tokens Securely
+
+**❌ DO NOT:**
+- Hardcode tokens in documentation
+- Commit tokens to git (even in comments)
+- Store tokens in plain text in code
+- Share tokens via email or chat
+
+**✅ DO:**
+- Store tokens in `.env.tokens` file (add to `.gitignore`)
+- Use a password manager (1Password, Bitwarden, LastPass)
+- Rotate tokens quarterly or immediately after exposure
+- Use environment variables in production
+
+### Token Storage Example
+
+Create `.env.tokens` (private, not committed):
+```
+SirDaneil_TOKEN=abc123xyz...
+MEDIAMINISTRY_TOKEN=def456uvw...
+Lemuel09_TOKEN=ghi789tst...
+```
+
+Add to `.gitignore`:
+```
+.env.tokens
+.env.local
+.env.*.local
+```
+
+### Token Rotation (Emergency Response)
+
+If a token is exposed on GitHub or intercepted:
+
+```bash
+python manage.py shell
+```
+
+Then run:
+```python
+from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import User
+
+# Find the user
+user = User.objects.get(username='username')
+
+# Delete old exposed token
+Token.objects.filter(user=user).delete()
+
+# Create new token
+token = Token.objects.create(user=user)
+print(f"New token for {user.username}: {token.key}")
+```
+
+**After rotation:**
+1. Update `.env.tokens` with new token
+2. Notify users/services using the old token
+3. Update any frontend/mobile apps using the old token
+4. Update documentation if applicable
+
+### Token Expiration Policy
+
+Consider implementing token expiration:
+
+```python
+# settings.py
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/hour',
+        'user': '1000/hour',
+    }
+}
+
+# Refresh tokens every 90 days
+TOKEN_ROTATION_INTERVAL = 90  # days
+```
+
+---
+
 ## Production Deployment Checklist
 
 ### Pre-Deployment
