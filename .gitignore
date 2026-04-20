@@ -36,3 +36,6 @@ staticfiles/
 
 #checklist
 checklist.txt
+
+#claude
+CLAUDE.md

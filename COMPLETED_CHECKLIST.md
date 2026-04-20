@@ -57,7 +57,7 @@ print(token.key)
 ```bash
 curl http://127.0.0.1:8000/api/events/
 ```
-✅ Works without authentication
+✅ Works without authentication   
 
 ### **4. Test Protected Endpoint**
 ```bash
