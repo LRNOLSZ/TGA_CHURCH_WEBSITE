@@ -27,26 +27,35 @@ export default function EventsPage() {
   };
 
   return (
-    <div className="bg-light min-h-screen">
+    <div className="bg-bg min-h-screen">
       {/* Header */}
-      <div className="bg-primary py-16 text-white text-center">
+      <div className="bg-navy py-16 text-white text-center">
         <SectionHeader title="Upcoming Events" subtitle="Join us for worship, fellowship, and community" light />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Filters */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm mb-8 flex flex-col md:flex-row gap-4">
+        <div className="p-5 mb-8 flex flex-col md:flex-row gap-4" style={{ background: "#f6efe0", borderRadius: "3px" }}>
           <form onSubmit={handleSearch} className="flex-1 flex gap-2">
             <div className="relative flex-1">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search events..."
-                className="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full pl-9 pr-4 py-2.5 text-sm focus:outline-none"
+                style={{
+                  background: "#f1ebde",
+                  border: "1.5px solid rgba(11,30,63,0.18)",
+                  borderRadius: "3px",
+                  color: "#1a1a1a",
+                }}
               />
             </div>
-            <button type="submit" className="px-4 py-2 bg-primary text-white rounded-lg text-sm hover:bg-blue-800 transition">
+            <button
+              type="submit"
+              className="px-4 py-2 bg-navy text-white rounded-full text-sm transition-all duration-200 hover:bg-gold hover:text-navy font-medium"
+            >
               Search
             </button>
           </form>
@@ -54,7 +63,14 @@ export default function EventsPage() {
           <select
             value={category}
             onChange={(e) => { setCategory(e.target.value); setPage(1); }}
-            className="border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white"
+            className="text-sm focus:outline-none"
+            style={{
+              background: "#f1ebde",
+              border: "1.5px solid rgba(11,30,63,0.18)",
+              borderRadius: "3px",
+              padding: "10px 16px",
+              color: "#1a1a1a",
+            }}
           >
             {CATEGORIES.map((c) => (
               <option key={c} value={c === "All" ? "" : c}>{c}</option>
@@ -66,7 +82,7 @@ export default function EventsPage() {
         {isLoading ? (
           <LoadingSpinner />
         ) : !data?.results.length ? (
-          <div className="text-center py-20 text-gray-500">No events found.</div>
+          <div className="text-center py-20 font-mono text-muted text-sm">No events found.</div>
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

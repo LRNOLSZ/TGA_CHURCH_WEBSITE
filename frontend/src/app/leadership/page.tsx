@@ -11,8 +11,8 @@ export default function LeadershipPage() {
   const { data: leaders, isLoading } = useLeaders();
 
   return (
-    <div className="bg-light min-h-screen">
-      <div className="bg-primary py-16 text-center">
+    <div className="bg-bg min-h-screen">
+      <div className="bg-navy py-16 text-center">
         <SectionHeader title="Our Leadership Team" subtitle="Dedicated servants leading with faith and purpose" light />
       </div>
 
@@ -24,7 +24,7 @@ export default function LeadershipPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {leaders.map((leader) => (
-              <div key={leader.id} className="bg-white rounded-2xl shadow-md overflow-hidden group">
+              <div key={leader.id} className="overflow-hidden group">
                 {/* Photo */}
                 <div className="relative h-64 bg-gray-100">
                   <Image

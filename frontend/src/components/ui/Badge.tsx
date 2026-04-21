@@ -5,12 +5,15 @@ interface BadgeProps {
 
 export default function Badge({ children, variant = "primary" }: BadgeProps) {
   const variants = {
-    primary: "bg-primary text-white",
-    accent: "bg-accent text-dark",
-    white: "bg-white text-primary",
+    primary: "bg-navy text-white",
+    accent: "bg-gold text-navy-ink",
+    white: "bg-paper text-navy",
   };
   return (
-    <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide ${variants[variant]}`}>
+    <span
+      className={`inline-block px-3 py-1 text-[10px] font-mono uppercase tracking-[0.12em] ${variants[variant]}`}
+      style={{ borderRadius: "3px" }}
+    >
       {children}
     </span>
   );

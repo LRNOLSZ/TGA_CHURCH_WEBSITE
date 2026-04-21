@@ -449,7 +449,7 @@ class Command(BaseCommand):
                 series="Life in the Spirit",
                 duration="45 min",
                 is_published=True,
-                is_featured=False,
+                is_featured=True,
             ),
             dict(
                 title="Faith That Moves Mountains",
@@ -465,7 +465,55 @@ class Command(BaseCommand):
                 series="Mountain-Moving Faith",
                 duration="58 min",
                 is_published=True,
-                is_featured=False,
+                is_featured=True,
+            ),
+            dict(
+                title="The Power of Prayer",
+                description=(
+                    "Elder Samuel leads a practical teaching on the discipline and power of "
+                    "prayer. Drawing from the life of Daniel and the model prayer in Matthew 6, "
+                    "this message will revolutionise your prayer life."
+                ),
+                speaker="Elder Samuel Asante",
+                date=date.today() - timedelta(days=28),
+                video_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                scripture_reference="Matthew 6:9-13",
+                series="Foundations of Faith",
+                duration="48 min",
+                is_published=True,
+                is_featured=True,
+            ),
+            dict(
+                title="Living by Faith",
+                description=(
+                    "Bishop Daniel explores what it truly means to live by faith and not by "
+                    "sight. Rooted in Hebrews 11, this message challenges believers to trust God "
+                    "even when circumstances seem impossible."
+                ),
+                speaker="Bishop Daniel Owusu-Afriyie",
+                date=date.today() - timedelta(days=35),
+                video_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                scripture_reference="Hebrews 11:1-6",
+                series="Foundations of Faith",
+                duration="61 min",
+                is_published=True,
+                is_featured=True,
+            ),
+            dict(
+                title="The Promise of the Holy Spirit",
+                description=(
+                    "Pastor Grace opens up the promise of Acts 1:8 and unpacks how the "
+                    "baptism of the Holy Spirit empowers believers to be effective witnesses "
+                    "and to live a supernatural life every single day."
+                ),
+                speaker="Pastor Grace Owusu-Afriyie",
+                date=date.today() - timedelta(days=42),
+                video_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                scripture_reference="Acts 1:8",
+                series="Life in the Spirit",
+                duration="44 min",
+                is_published=True,
+                is_featured=True,
             ),
         ]
 
@@ -530,7 +578,52 @@ class Command(BaseCommand):
                 category="Healing to the city",
                 contact_person="Pastor Abena Mensah",
                 is_active=True,
-                is_featured=False,
+                is_featured=True,
+            ),
+            dict(
+                title="Youth Leadership Summit",
+                description=(
+                    "A transformative one-day summit designed for young leaders aged 16–30. "
+                    "Featuring workshops on purpose, identity, entrepreneurship and spiritual growth. "
+                    "Come equipped to lead your generation."
+                ),
+                date=timezone.now() + timedelta(days=21),
+                location="TGA Accra Conference Hall",
+                branch=main,
+                category="General",
+                contact_person="Minister Joanna Boateng",
+                is_active=True,
+                is_featured=True,
+            ),
+            dict(
+                title="Women of Purpose Conference",
+                description=(
+                    "Pastor Grace hosts an empowering two-day conference for women of all ages. "
+                    "Speakers from across Ghana will address topics of identity, family, "
+                    "entrepreneurship and spiritual authority."
+                ),
+                date=timezone.now() + timedelta(days=45),
+                location="TGA Accra Main Auditorium",
+                branch=main,
+                category="Conference",
+                contact_person="Pastor Grace Owusu-Afriyie",
+                is_active=True,
+                is_featured=True,
+            ),
+            dict(
+                title="Easter Sunday Celebration",
+                description=(
+                    "Celebrate the resurrection of our Lord Jesus Christ with the entire TGA "
+                    "family. A morning of joyful worship, special ministration and the Word. "
+                    "Bring a friend — all are welcome."
+                ),
+                date=timezone.now() + timedelta(days=90),
+                location="TGA Accra Main Auditorium",
+                branch=main,
+                category="General",
+                contact_person="Elder Samuel Asante",
+                is_active=True,
+                is_featured=True,
             ),
         ]
 

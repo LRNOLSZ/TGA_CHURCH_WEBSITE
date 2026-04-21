@@ -34,8 +34,8 @@ export default function StorePage() {
   const showMerch = tab === "all" || tab === "merchandise";
 
   return (
-    <div className="bg-light min-h-screen">
-      <div className="bg-primary py-16 text-center">
+    <div className="bg-bg min-h-screen">
+      <div className="bg-navy py-16 text-center">
         <SectionHeader title="Church Store" subtitle="Books, merchandise, and more" light />
       </div>
 
@@ -49,7 +49,7 @@ export default function StorePage() {
                 key={t}
                 onClick={() => setTab(t)}
                 className={`px-5 py-2 rounded-lg text-sm font-medium transition-colors capitalize ${
-                  tab === t ? "bg-primary text-white" : "text-gray-600 hover:text-primary"
+                  tab === t ? "bg-navy text-white" : "text-gray-600 hover:text-primary"
                 }`}
               >
                 {t}
@@ -117,7 +117,7 @@ export default function StorePage() {
 
 function BookCard({ book, price }: { book: Book; price: string }) {
   return (
-    <div className="bg-white rounded-2xl shadow-md overflow-hidden group">
+    <div className="overflow-hidden group">
       <div className="relative h-52 bg-gray-100">
         <Image src={getImageUrl(book.image)} alt={book.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
       </div>
@@ -146,7 +146,7 @@ function BookCard({ book, price }: { book: Book; price: string }) {
 
 function MerchCard({ item, price }: { item: Merchandise; price: string }) {
   return (
-    <div className="bg-white rounded-2xl shadow-md overflow-hidden group">
+    <div className="overflow-hidden group">
       <div className="relative h-52 bg-gray-100">
         <Image src={getImageUrl(item.image)} alt={item.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
       </div>

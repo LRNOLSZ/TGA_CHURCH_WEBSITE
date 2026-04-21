@@ -1,41 +1,81 @@
 import Link from "next/link";
-import { CalendarDays, Heart, MessageCircle } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+
+const cards = [
+  {
+    num: "01",
+    title: "Plan a Visit",
+    body: "Experience our warm, welcoming community in person. We'd love to meet you.",
+    href: "/about",
+    cta: "Find us",
+  },
+  {
+    num: "02",
+    title: "Give & Support",
+    body: "Partner with us to spread the Gospel and transform communities across Ghana.",
+    href: "/giving",
+    cta: "Give now",
+    featured: true,
+  },
+  {
+    num: "03",
+    title: "Get in Touch",
+    body: "Have questions, prayer requests, or feedback? We're here for you.",
+    href: "/contact",
+    cta: "Contact us",
+  },
+];
 
 export default function CTASection() {
   return (
-    <section className="bg-dark py-16">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Get Involved</h2>
-        <div className="w-16 h-1 bg-accent mx-auto mb-4" />
-        <p className="text-gray-400 text-lg mb-10">There are many ways to connect with our community.</p>
+    <section className="bg-bg-2" style={{ paddingTop: "96px", paddingBottom: "96px" }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Link
-            href="/events"
-            className="group p-8 bg-white/5 border border-white/10 rounded-2xl hover:bg-primary/80 transition-all"
+        {/* Heading */}
+        <div className="text-center mb-12">
+          <p className="font-mono text-gold-2 text-[11px] uppercase tracking-[0.22em] mb-3">
+            Next Steps
+          </p>
+          <h2
+            className="font-display text-navy mb-4"
+            style={{ fontSize: "clamp(36px, 4.6vw, 56px)", fontWeight: 400 }}
           >
-            <CalendarDays size={40} className="text-accent mx-auto mb-4" />
-            <h3 className="text-white font-bold text-xl mb-2">View Events</h3>
-            <p className="text-gray-400 text-sm group-hover:text-gray-200">Join us at upcoming church events and programs</p>
-          </Link>
+            Get Involved
+          </h2>
+          <p className="text-muted" style={{ fontSize: "16px", maxWidth: "480px", margin: "0 auto" }}>
+            There are many ways to connect with our community and grow in faith.
+          </p>
+        </div>
 
-          <Link
-            href="/giving"
-            className="group p-8 bg-accent/90 border border-accent rounded-2xl hover:bg-accent transition-all"
-          >
-            <Heart size={40} className="text-white mx-auto mb-4" />
-            <h3 className="text-white font-bold text-xl mb-2">Give Now</h3>
-            <p className="text-white/80 text-sm group-hover:text-white">Support the ministry and spread the gospel</p>
-          </Link>
-
-          <Link
-            href="/contact"
-            className="group p-8 bg-white/5 border border-white/10 rounded-2xl hover:bg-primary/80 transition-all"
-          >
-            <MessageCircle size={40} className="text-accent mx-auto mb-4" />
-            <h3 className="text-white font-bold text-xl mb-2">Contact Us</h3>
-            <p className="text-gray-400 text-sm group-hover:text-gray-200">Reach out with questions, prayer requests, or feedback</p>
-          </Link>
+        {/* 3-card grid */}
+        <div
+          className="tga-cta-grid grid"
+          style={{
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "24px",
+          }}
+        >
+          {cards.map(({ num, title, body, href, cta, featured }) => (
+            <Link
+              key={href}
+              href={href}
+              className="tga-cta-card"
+              data-featured={featured ? "true" : undefined}
+            >
+              <span className="font-mono tga-cta-num" style={{ fontSize: "11px", letterSpacing: "0.15em" }}>
+                {num}
+              </span>
+              <h3 className="font-display tga-cta-title" style={{ fontSize: "36px", fontWeight: 400, lineHeight: 1.1, marginTop: "20px", marginBottom: "12px" }}>
+                {title}
+              </h3>
+              <p className="tga-cta-body" style={{ fontSize: "15px", lineHeight: 1.7, flexGrow: 1 }}>
+                {body}
+              </p>
+              <div className="flex items-center gap-2 mt-6 tga-cta-link" style={{ fontSize: "13px", fontWeight: 500 }}>
+                {cta} <ArrowRight size={14} className="tga-cta-arrow" />
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </section>

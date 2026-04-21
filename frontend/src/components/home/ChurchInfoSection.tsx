@@ -1,38 +1,121 @@
 "use client";
 
-import { Clock } from "lucide-react";
-import { useChurchInfo } from "@/hooks/useChurchData";
-import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import { useChurchInfo, useServiceTimes } from "@/hooks/useChurchData";
 
 export default function ChurchInfoSection() {
-  const { data: info, isLoading } = useChurchInfo();
-
-  if (isLoading) return <LoadingSpinner />;
-  if (!info) return null;
+  const { data: info } = useChurchInfo();
+  const { data: serviceTimes } = useServiceTimes();
 
   return (
-    <section className="bg-light py-16">
+    <section className="bg-bg" style={{ paddingTop: "96px", paddingBottom: "96px" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          {/* Welcome */}
-          <div>
-            <div className="w-12 h-1 bg-accent mb-4" />
-            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
-              Welcome to {info.church_name}
+        <div className="tga-two-col">
+
+          {/* ── LEFT: Welcome copy ── */}
+          <div className="flex flex-col justify-center">
+            {/* Eyebrow with gold bar */}
+            <div className="flex items-center gap-3 mb-5">
+              <span
+                className="block shrink-0"
+                style={{ width: "28px", height: "2px", background: "#c9a24a" }}
+              />
+              <p className="font-mono text-gold-2 text-[11px] uppercase tracking-[0.22em]">
+                01 — Welcome
+              </p>
+            </div>
+
+            <h2
+              className="font-display text-navy mb-5"
+              style={{ fontSize: "clamp(36px, 4.6vw, 56px)", fontWeight: 400, lineHeight: 1.1 }}
+            >
+              A place to{" "}
+              <em className="italic text-gold">belong,</em>
+              <br />grow, and serve.
             </h2>
-            <p className="text-gray-600 text-lg leading-relaxed">{info.welcome_message}</p>
+
+            <p className="text-muted leading-[1.75] mb-8" style={{ fontSize: "16px", maxWidth: "480px" }}>
+              {info?.welcome_message ||
+                "We are a family of believers committed to faith, community, and the transforming power of the Gospel."}
+            </p>
+
+            {/* Signature block */}
+            <div>
+              <p className="font-display italic text-navy" style={{ fontSize: "18px", fontWeight: 300 }}>
+                {info?.church_name || "TGA Church"}
+              </p>
+              <p className="font-mono text-muted text-[11px] uppercase tracking-[0.15em] mt-1">
+                Senior Leadership
+              </p>
+            </div>
           </div>
 
-          {/* Service Times */}
-          <div className="bg-white rounded-2xl p-8 shadow-md">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-primary/10 rounded-lg">
-                <Clock className="text-primary" size={24} />
-              </div>
-              <h3 className="text-xl font-bold text-primary">Service Times</h3>
-            </div>
-            <div className="whitespace-pre-line text-gray-600 leading-relaxed">
-              {info.service_times_text}
+          {/* ── RIGHT: Navy service times card ── */}
+          <div
+            className="relative overflow-hidden"
+            style={{
+              background: "#0b1e3f",
+              borderRadius: "3px",
+              padding: "38px 36px",
+            }}
+          >
+            {/* Decorative gold radial glow */}
+            <div
+              className="absolute top-0 right-0 pointer-events-none"
+              style={{
+                width: "240px",
+                height: "240px",
+                background: "radial-gradient(circle at top right, rgba(201,162,74,0.18) 0%, transparent 70%)",
+              }}
+            />
+
+            <p className="font-mono text-gold-2 text-[11px] uppercase tracking-[0.22em] mb-3 relative z-10">
+              Service Times
+            </p>
+            <h3
+              className="font-display text-white mb-6 relative z-10"
+              style={{ fontSize: "32px", fontWeight: 400, lineHeight: 1.1 }}
+            >
+              Join us this week.
+            </h3>
+
+            {/* Service list */}
+            <div className="relative z-10">
+              {serviceTimes && serviceTimes.length > 0 ? (
+                serviceTimes.map((st, i) => (
+                  <div key={st.id}>
+                    {i > 0 && (
+                      <div style={{ height: "1px", background: "rgba(255,255,255,0.10)", margin: "0" }} />
+                    )}
+                    <div
+                      className="flex items-center gap-4 py-4"
+                    >
+                      <span
+                        className="font-mono text-gold shrink-0"
+                        style={{ fontSize: "12px", minWidth: "54px", textTransform: "uppercase", letterSpacing: "0.08em" }}
+                      >
+                        {st.day.slice(0, 3)}
+                      </span>
+                      <span
+                        className="font-display text-white"
+                        style={{ fontSize: "18px", fontWeight: 400 }}
+                      >
+                        {st.time}
+                      </span>
+                      <span
+                        className="font-mono text-[#9a9080] ml-auto"
+                        style={{ fontSize: "11px", textAlign: "right" }}
+                      >
+                        {st.service_type}
+                      </span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                /* Fallback: render service_times_text */
+                <p className="text-[#c8bfaa] leading-relaxed whitespace-pre-line" style={{ fontSize: "15px" }}>
+                  {info?.service_times_text || "Sunday Service: 9:00 AM & 11:00 AM\nWednesday Bible Study: 7:00 PM"}
+                </p>
+              )}
             </div>
           </div>
         </div>

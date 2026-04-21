@@ -2,61 +2,130 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTestimonies } from "@/hooks/useChurchData";
 import { getImageUrl } from "@/lib/utils";
-import SectionHeader from "@/components/ui/SectionHeader";
 
 export default function TestimonialsCarousel() {
-  const { data: testimonies, isLoading } = useTestimonies();
+  const { data: testimonies } = useTestimonies();
   const [current, setCurrent] = useState(0);
 
-  if (isLoading || !testimonies?.length) return null;
+  if (!testimonies?.length) return null;
 
   const prev = () => setCurrent((c) => (c === 0 ? testimonies.length - 1 : c - 1));
   const next = () => setCurrent((c) => (c + 1) % testimonies.length);
   const t = testimonies[current];
 
   return (
-    <section className="bg-primary py-16">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader title="Testimonies" subtitle="What God is doing in our community" light />
+    <section className="bg-bg" style={{ paddingTop: "96px", paddingBottom: "96px" }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Eyebrow */}
+        <div className="text-center mb-12">
+          <p className="font-mono text-gold-2 text-[11px] uppercase tracking-[0.22em] mb-3">
+            Testimonies
+          </p>
+          <h2
+            className="font-display text-navy"
+            style={{ fontSize: "clamp(36px, 4.6vw, 56px)", fontWeight: 400 }}
+          >
+            What God is doing
+          </h2>
+        </div>
 
-        <div className="relative bg-white/10 rounded-2xl p-8 md:p-12 text-center">
-          <Quote size={48} className="text-accent mx-auto mb-6 opacity-70" />
+        {/* Quote block */}
+        <div className="mx-auto text-center" style={{ maxWidth: "840px" }}>
+          {/* Oversized opening quote */}
+          <div
+            className="font-display text-gold select-none"
+            style={{
+              fontSize: "120px",
+              lineHeight: 0.6,
+              marginBottom: "24px",
+              fontWeight: 300,
+            }}
+            aria-hidden="true"
+          >
+            &ldquo;
+          </div>
 
-          <p className="text-white text-lg md:text-xl leading-relaxed mb-8 italic">
-            &ldquo;{t.testimony_text}&rdquo;
+          {/* Quote text */}
+          <p
+            className="font-display italic text-navy"
+            style={{
+              fontSize: "clamp(26px, 3.4vw, 42px)",
+              fontWeight: 300,
+              lineHeight: 1.4,
+              marginBottom: "40px",
+            }}
+          >
+            {t.testimony_text}
           </p>
 
-          <div className="flex items-center justify-center gap-4">
-            {t.image && (
-              <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-accent">
-                <Image src={getImageUrl(t.image)} alt={t.name} fill className="object-cover" />
+          {/* Avatar + name */}
+          <div className="flex flex-col items-center gap-3">
+            {t.image ? (
+              <div
+                className="relative rounded-full overflow-hidden"
+                style={{
+                  width: "52px",
+                  height: "52px",
+                  border: "2px solid #c9a24a",
+                }}
+              >
+                <Image
+                  src={getImageUrl(t.image)}
+                  alt={t.name}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            ) : (
+              <div
+                className="rounded-full bg-navy-2 flex items-center justify-center"
+                style={{ width: "52px", height: "52px", border: "2px solid #c9a24a" }}
+              >
+                <span className="font-display text-gold text-lg">
+                  {t.name.charAt(0)}
+                </span>
               </div>
             )}
-            <div className="text-left">
-              <p className="text-white font-bold">{t.name}</p>
-              {t.location && <p className="text-gray-300 text-sm">{t.location}</p>}
+            <div>
+              <p className="font-display text-navy" style={{ fontSize: "18px", fontWeight: 400 }}>
+                {t.name}
+              </p>
+              {t.location && (
+                <p className="font-mono text-muted text-center" style={{ fontSize: "12px" }}>
+                  {t.location}
+                </p>
+              )}
             </div>
           </div>
 
           {/* Navigation */}
-          <div className="flex items-center justify-center gap-4 mt-8">
-            <button onClick={prev} className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition">
-              <ChevronLeft size={20} />
+          <div className="flex items-center justify-center gap-5 mt-10">
+            <button onClick={prev} className="tga-carousel-btn" aria-label="Previous testimony">
+              <ChevronLeft size={18} />
             </button>
-            <div className="flex gap-2">
+
+            {/* Dots */}
+            <div className="flex items-center gap-2">
               {testimonies.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => setCurrent(i)}
-                  className={`w-2 h-2 rounded-full transition-all ${i === current ? "bg-accent w-5" : "bg-white/40"}`}
+                  aria-label={`Testimony ${i + 1}`}
+                  className="rounded-full transition-all duration-300"
+                  style={{
+                    height: "6px",
+                    width: i === current ? "24px" : "6px",
+                    background: i === current ? "#c9a24a" : "rgba(11,30,63,0.2)",
+                  }}
                 />
               ))}
             </div>
-            <button onClick={next} className="p-2 rounded-full bg-white/20 hover:bg-white/30 text-white transition">
-              <ChevronRight size={20} />
+
+            <button onClick={next} className="tga-carousel-btn" aria-label="Next testimony">
+              <ChevronRight size={18} />
             </button>
           </div>
         </div>

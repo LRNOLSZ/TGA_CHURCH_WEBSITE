@@ -248,10 +248,10 @@ class SermonViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def featured(self, request):
         """Get featured sermons"""
-        sermons = self.get_queryset().filter(is_featured=True)[:5]
+        sermons = self.get_queryset().filter(is_featured=True)[:6]
         serializer = self.get_serializer(sermons, many=True)
         return Response(serializer.data)
-    
+
     @action(detail=False, methods=['get'])
     def latest(self, request):
         """Get latest sermon"""
@@ -324,7 +324,7 @@ class EventViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def featured(self, request):
         """Get featured events"""
-        events = self.get_queryset().filter(is_featured=True)[:5]
+        events = self.get_queryset().filter(is_featured=True)[:6]
         serializer = self.get_serializer(events, many=True)
         return Response(serializer.data)
 

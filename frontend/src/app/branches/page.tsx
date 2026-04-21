@@ -14,8 +14,8 @@ export default function BranchesPage() {
   const others = branches?.filter((b) => !b.is_main_branch) ?? [];
 
   return (
-    <div className="bg-light min-h-screen">
-      <div className="bg-primary py-16 text-center">
+    <div className="bg-bg min-h-screen">
+      <div className="bg-navy py-16 text-center">
         <SectionHeader title="Our Branches" subtitle="Find a TGA Church near you" light />
       </div>
 
@@ -55,7 +55,7 @@ export default function BranchesPage() {
 
 function BranchCard({ branch, featured = false }: { branch: import("@/types").Branch; featured?: boolean }) {
   return (
-    <div className={`bg-white rounded-2xl shadow-md overflow-hidden ${featured ? "border-2 border-accent" : ""}`}>
+    <div className={`overflow-hidden ${featured ? "border-2 border-accent" : ""}`}>
       {branch.image && (
         <div className="relative h-56">
           <Image src={getImageUrl(branch.image)} alt={branch.name} fill className="object-cover" />

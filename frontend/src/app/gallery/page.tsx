@@ -14,8 +14,8 @@ export default function GalleryPage() {
   const { data: photos, isLoading } = useGallery(category);
 
   return (
-    <div className="bg-light min-h-screen">
-      <div className="bg-primary py-16 text-center">
+    <div className="bg-bg min-h-screen">
+      <div className="bg-navy py-16 text-center">
         <SectionHeader title="Photo Gallery" subtitle="Moments of faith, fellowship, and community" light />
       </div>
 
@@ -28,7 +28,7 @@ export default function GalleryPage() {
               onClick={() => setCategory(cat)}
               className={`px-5 py-2 rounded-full text-sm font-medium transition-colors ${
                 category === cat
-                  ? "bg-primary text-white"
+                  ? "bg-navy text-white"
                   : "bg-white text-gray-600 border border-gray-300 hover:border-primary hover:text-primary"
               }`}
             >

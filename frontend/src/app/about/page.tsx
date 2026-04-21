@@ -11,15 +11,15 @@ export default function AboutPage() {
   if (isLoading) return <LoadingSpinner className="py-40" />;
 
   return (
-    <div className="bg-light min-h-screen">
+    <div className="bg-bg min-h-screen">
       {/* Header */}
-      <div className="bg-primary py-16 text-center">
+      <div className="bg-navy py-16 text-center">
         <SectionHeader title="About Us" subtitle={info?.tagline} light />
       </div>
 
       {/* Church Story */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="bg-white rounded-2xl shadow-md p-10">
+        <div className="p-10">
           <div className="w-12 h-1 bg-accent mb-4" />
           <h2 className="text-2xl font-bold text-primary mb-6">Our Story</h2>
           <div className="text-gray-700 leading-relaxed whitespace-pre-line">
@@ -31,28 +31,28 @@ export default function AboutPage() {
       {/* Mission, Vision, Values */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-2xl shadow-md p-8 text-center">
-            <div className="p-3 bg-primary/10 rounded-full w-fit mx-auto mb-4">
-              <Target className="text-primary" size={28} />
+          <div className="p-8 text-center" style={{ background: "#f6efe0", borderRadius: "3px" }}>
+            <div className="p-3 bg-navy/10 rounded-full w-fit mx-auto mb-4">
+              <Target className="text-navy" size={28} />
             </div>
-            <h3 className="text-xl font-bold text-primary mb-3">Our Mission</h3>
-            <p className="text-gray-600 leading-relaxed">{info?.mission_statement}</p>
+            <h3 className="font-display text-navy text-xl mb-3" style={{ fontWeight: 400 }}>Our Mission</h3>
+            <p className="text-muted leading-relaxed">{info?.mission_statement}</p>
           </div>
 
-          <div className="bg-primary rounded-2xl shadow-md p-8 text-center">
-            <div className="p-3 bg-white/20 rounded-full w-fit mx-auto mb-4">
+          <div className="p-8 text-center" style={{ background: "#0b1e3f", borderRadius: "3px" }}>
+            <div className="p-3 rounded-full w-fit mx-auto mb-4" style={{ background: "rgba(255,255,255,0.1)" }}>
               <Eye className="text-white" size={28} />
             </div>
-            <h3 className="text-xl font-bold text-white mb-3">Our Vision</h3>
-            <p className="text-gray-200 leading-relaxed">{info?.vision_statement}</p>
+            <h3 className="font-display text-white text-xl mb-3" style={{ fontWeight: 400 }}>Our Vision</h3>
+            <p className="leading-relaxed" style={{ color: "rgba(255,255,255,0.75)" }}>{info?.vision_statement}</p>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-md p-8 text-center">
-            <div className="p-3 bg-accent/10 rounded-full w-fit mx-auto mb-4">
-              <Star className="text-accent" size={28} />
+          <div className="p-8 text-center" style={{ background: "#f6efe0", borderRadius: "3px" }}>
+            <div className="p-3 rounded-full w-fit mx-auto mb-4" style={{ background: "rgba(201,162,74,0.12)" }}>
+              <Star className="text-gold" size={28} />
             </div>
-            <h3 className="text-xl font-bold text-primary mb-3">Core Values</h3>
-            <p className="text-gray-600 leading-relaxed whitespace-pre-line">{info?.core_values}</p>
+            <h3 className="font-display text-navy text-xl mb-3" style={{ fontWeight: 400 }}>Core Values</h3>
+            <p className="text-muted leading-relaxed whitespace-pre-line">{info?.core_values}</p>
           </div>
         </div>
       </section>

@@ -1,0 +1,855 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>TGA Church — Home</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    /* tone down the white — warm ivory base, deep navy, gold */
+    --bg:          #f1ebde;    /* warm champagne ivory */
+    --bg-2:        #e9e1cf;    /* deeper cream */
+    --paper:       #f6efe0;    /* card cream */
+    --navy:        #0b1e3f;    /* TGA blue — deep */
+    --navy-2:      #152a52;
+    --navy-ink:    #0a1530;
+    --gold:        #c9a24a;    /* brand gold */
+    --gold-2:      #b28a30;
+    --gold-soft:   #e6cf91;
+    --ink:         #1a1a1a;
+    --muted:       #6b6458;
+    --line:        rgba(11,30,63,.12);
+    --hairline:    rgba(11,30,63,.18);
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; background:var(--bg); color:var(--ink);
+    font-family:'Inter',sans-serif; font-weight:400; -webkit-font-smoothing:antialiased;}
+  body{
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(201,162,74,.10), transparent 60%),
+      radial-gradient(1000px 700px at -10% 30%, rgba(11,30,63,.06), transparent 60%),
+      linear-gradient(var(--bg), var(--bg));
+    min-height:100vh;
+  }
+  img{ display:block; max-width:100%; }
+
+  /* --------- Typography --------- */
+  .display{ font-family:'Fraunces',serif; font-weight:400; letter-spacing:-0.02em; line-height:1.02;
+    font-variation-settings:"opsz" 144; }
+  .eyebrow{ font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--gold-2);}
+  .eyebrow.light{ color:var(--gold);}
+  .kicker{ display:inline-flex; align-items:center; gap:10px; }
+  .kicker:before{ content:""; width:28px; height:1px; background:var(--gold); }
+
+  /* --------- Layout --------- */
+  .shell{ max-width:1320px; margin:0 auto; padding:0 36px; }
+  section{ position:relative;}
+
+  /* --------- Nav --------- */
+  .nav{
+    position:sticky; top:0; z-index:40;
+    background:rgba(241,235,222,.78);
+    backdrop-filter:saturate(140%) blur(10px);
+    -webkit-backdrop-filter:saturate(140%) blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{ display:flex; align-items:center; height:72px; gap:28px; }
+  .logo{ display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--navy-ink);}
+  .logo .mark{ width:34px; height:34px; border-radius:50%; background:var(--navy); color:var(--gold);
+    display:grid; place-items:center; font-family:'Fraunces',serif; font-weight:500; font-size:18px;
+    border:1px solid var(--navy-2);}
+  .logo .name{ font-family:'Fraunces',serif; font-size:21px; letter-spacing:.02em;}
+  .logo .dot{ color:var(--gold); margin:0 2px;}
+  .logo small{ color:var(--muted); font-size:11px; letter-spacing:.22em; text-transform:uppercase; font-weight:500;}
+
+  .links{ display:flex; gap:6px; margin-left:auto;}
+  .links a{ text-decoration:none; color:var(--navy-ink); font-size:13.5px; font-weight:500;
+    padding:8px 12px; border-radius:999px; position:relative; letter-spacing:.01em;}
+  .links a.active{ color:var(--navy);}
+  .links a.active:after{ content:""; position:absolute; left:12px; right:12px; bottom:2px; height:1px; background:var(--gold);}
+  .links a:hover{ color:var(--navy);}
+  .give{
+    display:inline-flex; align-items:center; gap:8px; margin-left:6px;
+    background:var(--navy); color:#fff; border:1px solid var(--navy);
+    padding:9px 18px; border-radius:999px; text-decoration:none; font-weight:500; font-size:13.5px;
+    transition:all .2s;
+  }
+  .give:hover{ background:var(--gold); border-color:var(--gold); color:var(--navy);}
+  .give .arrow{ transition:transform .2s;}
+  .give:hover .arrow{ transform:translateX(3px);}
+
+  /* --------- Hero --------- */
+  .hero{ padding:28px 0 60px; overflow:hidden;}
+  .hero-grid{ display:grid; grid-template-columns: 1.05fr 0.95fr; gap:60px; align-items:stretch; min-height:640px;}
+  .hero-copy{ display:flex; flex-direction:column; justify-content:center; padding:30px 0;}
+  .hero-copy .eyebrow{ margin-bottom:22px;}
+  .hero-copy h1{ margin:0 0 22px; font-size:clamp(48px, 6.6vw, 92px); color:var(--navy-ink);}
+  .hero-copy h1 em{ font-style:italic; color:var(--gold-2); font-family:'Fraunces',serif;
+    font-variation-settings:"opsz" 144, "SOFT" 100;}
+  .hero-copy p.lede{ font-size:17px; line-height:1.65; color:#3d3a32; max-width:520px; margin:0 0 36px;}
+  .hero-cta{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:46px;}
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:13px 22px; border-radius:999px; font-weight:500; font-size:14px;
+    text-decoration:none; transition:all .2s; border:1px solid transparent;
+  }
+  .btn-primary{ background:var(--navy); color:#fff;}
+  .btn-primary:hover{ background:var(--navy-2);}
+  .btn-ghost{ border-color:var(--hairline); color:var(--navy-ink);}
+  .btn-ghost:hover{ border-color:var(--navy); background:rgba(11,30,63,.04);}
+  .btn .arrow{ transition:transform .2s;}
+  .btn:hover .arrow{ transform:translateX(3px);}
+
+  .hero-meta{ display:grid; grid-template-columns:repeat(3, 1fr); gap:28px; padding-top:28px; border-top:1px solid var(--line); max-width:520px;}
+  .hero-meta .k{ font-family:'Fraunces',serif; font-size:32px; color:var(--navy); line-height:1;}
+  .hero-meta .l{ font-size:12px; color:var(--muted); margin-top:6px; letter-spacing:.04em;}
+
+  .hero-visual{ position:relative; min-height:640px;}
+  .hero-img{
+    position:absolute; inset:0;
+    border-radius:4px 4px 160px 4px;
+    overflow:hidden;
+    background:
+      linear-gradient(160deg, rgba(11,30,63,.45), rgba(11,30,63,.15) 50%, rgba(11,30,63,.55)),
+      repeating-linear-gradient(45deg, rgba(201,162,74,.20) 0 20px, rgba(201,162,74,.06) 20px 40px),
+      linear-gradient(140deg, #1c3266, #0a1530);
+    box-shadow:0 40px 80px -30px rgba(11,30,63,.5);
+  }
+  .hero-img:after{
+    content:"[ hero image placeholder ]";
+    position:absolute; inset:0; display:grid; place-items:center;
+    color:rgba(255,255,255,.35); font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em;
+  }
+  .hero-ornament{
+    position:absolute; left:-90px; bottom:-40px; z-index:2;
+    background:var(--bg); padding:26px 30px; border:1px solid var(--line);
+    border-radius:2px; max-width:320px;
+    box-shadow:0 24px 48px -24px rgba(11,30,63,.25);
+  }
+  .hero-ornament .eyebrow{ margin-bottom:10px; display:block;}
+  .hero-ornament .q{ font-family:'Fraunces',serif; font-style:italic; font-size:18px; color:var(--navy-ink); line-height:1.45;}
+  .hero-ornament .ref{ font-size:12px; color:var(--muted); margin-top:8px; font-family:'JetBrains Mono',monospace;}
+
+  .hero-dots{ position:absolute; right:20px; top:24px; display:flex; flex-direction:column; gap:8px; z-index:3;}
+  .hero-dots span{ width:6px; height:22px; border-radius:3px; background:rgba(255,255,255,.35); cursor:pointer;}
+  .hero-dots span.on{ background:var(--gold); height:36px;}
+
+  /* --------- Welcome + Times --------- */
+  .welcome{ padding:80px 0 90px; position:relative;}
+  .welcome:before{ content:""; position:absolute; left:0; right:0; top:0; height:1px; background:var(--line);}
+  .welcome-grid{ display:grid; grid-template-columns:1.1fr 1fr; gap:80px; align-items:start;}
+  .welcome h2{ margin:18px 0 24px; font-size:clamp(36px,4.6vw,60px); color:var(--navy-ink);}
+  .welcome h2 em{ font-style:italic; color:var(--gold-2);}
+  .welcome p{ font-size:16px; line-height:1.75; color:#3d3a32; max-width:560px;}
+  .welcome .sig{ margin-top:30px; font-family:'Fraunces',serif; font-style:italic; color:var(--navy); font-size:20px;}
+  .welcome .sig small{ display:block; font-family:'Inter',sans-serif; font-style:normal; font-size:12px; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; margin-top:4px;}
+
+  .times{
+    background:var(--navy); color:#e9dfc6;
+    border-radius:3px; padding:38px 36px; position:relative; overflow:hidden;
+  }
+  .times:before{ content:""; position:absolute; right:-80px; top:-80px; width:220px; height:220px; border-radius:50%;
+    background:radial-gradient(closest-side, rgba(201,162,74,.25), transparent);}
+  .times .eyebrow{ color:var(--gold); margin-bottom:18px; display:block;}
+  .times h3{ font-family:'Fraunces',serif; font-weight:400; font-size:32px; color:#fff; margin:0 0 24px; letter-spacing:-.01em;}
+  .times ul{ list-style:none; padding:0; margin:0;}
+  .times li{ display:flex; align-items:baseline; gap:18px; padding:16px 0; border-top:1px solid rgba(255,255,255,.1);}
+  .times li:first-child{ border-top:none;}
+  .times .day{ font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em; color:var(--gold); min-width:54px;}
+  .times .time{ font-family:'Fraunces',serif; font-size:22px; color:#fff;}
+  .times .svc{ margin-left:auto; font-size:13px; color:#c9bfa5; letter-spacing:.02em;}
+
+  /* --------- Pastor --------- */
+  .pastor{ padding:100px 0; position:relative;}
+  .pastor:before{ content:""; position:absolute; left:0; right:0; top:0; height:1px; background:var(--line);}
+  .pastor-grid{ display:grid; grid-template-columns:1fr 1.1fr; gap:70px; align-items:center;}
+  .pastor-photo{
+    position:relative; aspect-ratio:4/5; border-radius:3px; overflow:hidden;
+    background:
+      linear-gradient(170deg, rgba(11,30,63,.1), rgba(11,30,63,.55)),
+      repeating-linear-gradient(45deg, rgba(201,162,74,.18) 0 20px, rgba(201,162,74,.06) 20px 40px),
+      linear-gradient(135deg, #2c4577, #0a1530);
+    box-shadow:0 30px 60px -30px rgba(11,30,63,.4);
+  }
+  .pastor-photo:after{ content:"[ pastor portrait ]"; position:absolute; inset:0; display:grid; place-items:center;
+    color:rgba(255,255,255,.35); font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.2em;}
+  .pastor-photo .tag{
+    position:absolute; bottom:24px; left:24px; right:24px; color:#fff;
+    display:flex; align-items:flex-end; justify-content:space-between; gap:12px;
+  }
+  .pastor-photo .tag .name{ font-family:'Fraunces',serif; font-size:28px;}
+  .pastor-photo .tag .role{ font-size:12px; color:var(--gold-soft); letter-spacing:.12em; text-transform:uppercase; margin-top:4px;}
+  .pastor-photo .tag .no{ font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--gold); letter-spacing:.2em;}
+
+  .pastor h2{ font-size:clamp(38px,4.8vw,64px); margin:14px 0 8px; color:var(--navy-ink);}
+  .pastor .role{ color:var(--gold-2); font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.22em; text-transform:uppercase; margin-bottom:24px;}
+  .pastor p{ font-size:16px; line-height:1.75; color:#3d3a32; max-width:560px;}
+  .pastor .socials{ display:flex; gap:10px; margin-top:28px;}
+  .pastor .socials a{
+    width:42px; height:42px; border-radius:50%; border:1px solid var(--hairline);
+    display:grid; place-items:center; text-decoration:none; color:var(--navy-ink);
+    font-size:12px; font-family:'JetBrains Mono',monospace; transition:all .2s;
+  }
+  .pastor .socials a:hover{ background:var(--navy); color:var(--gold); border-color:var(--navy);}
+
+  /* --------- Carousel (events/sermons) --------- */
+  .series{ padding:90px 0;}
+  .series:before{ content:""; display:block; width:100%; height:1px; background:var(--line); margin-bottom:80px;}
+  .series:first-of-type{}
+  .series-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:40px; margin-bottom:42px;}
+  .series-head h2{ font-size:clamp(38px,4.8vw,64px); margin:10px 0 0; color:var(--navy-ink); max-width:720px;}
+  .series-head p{ font-size:15px; color:var(--muted); max-width:440px; margin:0; line-height:1.6;}
+  .series-ctrls{ display:flex; gap:10px; align-items:center;}
+  .series-counter{ font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); letter-spacing:.2em; margin-right:12px;}
+  .ctrl{
+    width:48px; height:48px; border-radius:50%; border:1px solid var(--hairline);
+    background:transparent; cursor:pointer; color:var(--navy-ink);
+    display:grid; place-items:center; transition:all .2s;
+  }
+  .ctrl:hover{ background:var(--navy); color:var(--gold); border-color:var(--navy);}
+  .ctrl:disabled{ opacity:.35; cursor:not-allowed;}
+
+  .car-viewport{
+    position:relative;
+    overflow:hidden;
+    padding:30px 0;
+    margin:0 -20px;
+  }
+  .car-track{
+    display:flex; gap:28px; padding:0 20px;
+    transition:transform .6s cubic-bezier(.22,.8,.3,1);
+    will-change:transform;
+  }
+  .card{
+    /* sides — smaller */
+    flex:0 0 30%;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:3px; overflow:hidden;
+    display:flex; flex-direction:column;
+    transition:all .55s cubic-bezier(.22,.8,.3,1);
+    position:relative;
+    transform-origin:center;
+  }
+  /* middle card — explicitly bigger than sides */
+  .card.center{
+    flex:0 0 36%;
+    transform:translateY(-18px);
+    box-shadow:0 40px 60px -30px rgba(11,30,63,.35);
+    background:#fff8e8;
+    z-index:2;
+  }
+  .card.side{
+    transform:scale(0.94);
+    opacity:.78;
+  }
+  .card-img{
+    aspect-ratio:4/3; position:relative;
+    background:
+      linear-gradient(160deg, rgba(11,30,63,.3), rgba(11,30,63,.55)),
+      repeating-linear-gradient(45deg, rgba(201,162,74,.18) 0 16px, rgba(201,162,74,.06) 16px 32px),
+      linear-gradient(135deg,#22386a,#0a1530);
+  }
+  .card-img:after{ content:"[ image ]"; position:absolute; inset:0; display:grid; place-items:center;
+    color:rgba(255,255,255,.3); font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.18em;}
+  .card-date{
+    position:absolute; top:18px; left:18px;
+    background:var(--bg); color:var(--navy-ink);
+    padding:10px 14px; border-radius:2px; text-align:center; min-width:54px;
+    box-shadow:0 8px 18px -10px rgba(11,30,63,.3);
+  }
+  .card-date .d{ font-family:'Fraunces',serif; font-size:26px; line-height:1; color:var(--navy);}
+  .card-date .m{ font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--gold-2); letter-spacing:.2em; margin-top:2px;}
+  .card-play{
+    position:absolute; top:18px; right:18px; width:44px; height:44px; border-radius:50%;
+    background:rgba(255,255,255,.12); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.3);
+    display:grid; place-items:center; color:#fff;
+  }
+  .card-dur{
+    position:absolute; bottom:14px; right:14px;
+    background:rgba(10,21,48,.7); color:#fff; font-family:'JetBrains Mono',monospace;
+    font-size:10px; padding:4px 8px; border-radius:2px; letter-spacing:.1em;
+  }
+  .card-body{ padding:24px 24px 26px; display:flex; flex-direction:column; flex:1;}
+  .card-body .eyebrow{ margin-bottom:12px;}
+  .card-body h3{
+    font-family:'Fraunces',serif; font-weight:400; font-size:22px;
+    color:var(--navy-ink); margin:0 0 12px; line-height:1.25;
+    letter-spacing:-.005em;
+  }
+  .card.center .card-body h3{ font-size:26px;}
+  .card-body .meta{ font-size:13px; color:var(--muted); display:flex; gap:14px; flex-wrap:wrap; margin-top:auto;
+    padding-top:16px; border-top:1px solid var(--line);}
+  .card-body .meta span{ display:inline-flex; align-items:center; gap:6px;}
+
+  .series-footer{ margin-top:40px; display:flex; align-items:center; justify-content:space-between; gap:20px;}
+  .series-progress{ flex:1; height:1px; background:var(--line); position:relative; margin:0 30px;}
+  .series-progress i{ position:absolute; top:-1px; left:0; height:3px; background:var(--gold); transition:all .5s;}
+
+  /* alt dark section for sermons */
+  .series.dark{ background:var(--navy); color:#e9dfc6;}
+  .series.dark:before{ background:rgba(255,255,255,.1);}
+  .series.dark h2{ color:#fff;}
+  .series.dark p{ color:#a9a08a;}
+  .series.dark .ctrl{ border-color:rgba(255,255,255,.2); color:#fff;}
+  .series.dark .ctrl:hover{ background:var(--gold); color:var(--navy); border-color:var(--gold);}
+  .series.dark .card{ background:#0f2349; border-color:rgba(255,255,255,.08); color:#e9dfc6;}
+  .series.dark .card.center{ background:#152c57;}
+  .series.dark .card-body h3{ color:#fff;}
+  .series.dark .card-body .meta{ color:#a9a08a; border-color:rgba(255,255,255,.08);}
+  .series.dark .card-date{ background:#0a1530; color:#fff;}
+  .series.dark .card-date .d{ color:#fff;}
+  .series.dark .series-progress{ background:rgba(255,255,255,.1);}
+
+  /* --------- Testimonies --------- */
+  .testi{ padding:100px 0; text-align:center;}
+  .testi .quote{
+    max-width:840px; margin:30px auto 0;
+    font-family:'Fraunces',serif; font-style:italic; font-weight:300;
+    font-size:clamp(26px,3.4vw,42px); line-height:1.4; color:var(--navy-ink);
+    letter-spacing:-.01em;
+  }
+  .testi .quote:before{ content:"“"; display:block; font-size:120px; line-height:.6; color:var(--gold); margin-bottom:6px;}
+  .testi .who{ margin-top:40px; display:flex; align-items:center; justify-content:center; gap:14px;}
+  .testi .avatar{ width:52px; height:52px; border-radius:50%;
+    background:linear-gradient(135deg,#2c4577,#0a1530); border:1px solid var(--gold);}
+  .testi .who-name{ font-family:'Fraunces',serif; font-size:18px; color:var(--navy-ink);}
+  .testi .who-loc{ font-size:12px; color:var(--muted); letter-spacing:.14em; text-transform:uppercase; margin-top:3px;}
+  .testi-nav{ display:flex; gap:14px; align-items:center; justify-content:center; margin-top:40px;}
+  .testi-dots{ display:flex; gap:8px;}
+  .testi-dots span{ width:6px; height:6px; border-radius:50%; background:var(--hairline);}
+  .testi-dots span.on{ background:var(--gold); width:24px; border-radius:3px;}
+
+  /* --------- Involved --------- */
+  .involved{ padding:100px 0 120px;}
+  .involved:before{ content:""; display:block; height:1px; background:var(--line); margin-bottom:80px;}
+  .involved-head{ text-align:center; margin-bottom:60px;}
+  .involved-head h2{ font-size:clamp(38px,4.8vw,64px); margin:12px 0 10px; color:var(--navy-ink);}
+  .involved-head p{ color:var(--muted); max-width:480px; margin:0 auto;}
+  .inv-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  .inv-card{
+    display:flex; flex-direction:column; justify-content:space-between;
+    padding:38px 34px; min-height:300px;
+    background:var(--paper);
+    border:1px solid var(--line); border-radius:3px;
+    text-decoration:none; color:var(--navy-ink);
+    transition:all .25s; position:relative; overflow:hidden;
+  }
+  .inv-card .num{ font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--gold-2); letter-spacing:.2em;}
+  .inv-card h3{ font-family:'Fraunces',serif; font-weight:400; font-size:36px; margin:22px 0 12px; color:var(--navy-ink);}
+  .inv-card p{ color:var(--muted); font-size:14px; line-height:1.6; margin:0 0 30px;}
+  .inv-card .go{ display:inline-flex; align-items:center; gap:10px; font-size:13px; color:var(--navy); font-weight:500; letter-spacing:.02em;}
+  .inv-card .go .arrow{ transition:transform .2s;}
+  .inv-card:hover{ background:var(--navy); color:#fff; border-color:var(--navy);}
+  .inv-card:hover h3, .inv-card:hover p, .inv-card:hover .go, .inv-card:hover .num{ color:#fff;}
+  .inv-card:hover .num, .inv-card:hover .go{ color:var(--gold);}
+  .inv-card:hover .go .arrow{ transform:translateX(4px);}
+  .inv-card.feature{ background:var(--navy); color:#fff; border-color:var(--navy);}
+  .inv-card.feature h3, .inv-card.feature p, .inv-card.feature .go{ color:#fff;}
+  .inv-card.feature .num, .inv-card.feature .go{ color:var(--gold);}
+  .inv-card.feature:hover{ background:var(--gold); border-color:var(--gold);}
+  .inv-card.feature:hover h3, .inv-card.feature:hover p, .inv-card.feature:hover .go, .inv-card.feature:hover .num{ color:var(--navy);}
+
+  /* --------- Footer --------- */
+  footer{
+    background:var(--navy-ink); color:#b9b09a;
+    padding:80px 0 30px; margin-top:60px;
+  }
+  .foot-grid{ display:grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap:40px; padding-bottom:50px; border-bottom:1px solid rgba(255,255,255,.08);}
+  .foot-grid h5{ font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--gold); margin:0 0 20px; font-weight:500;}
+  .foot-grid a{ display:block; color:#b9b09a; text-decoration:none; padding:4px 0; font-size:14px; transition:color .2s;}
+  .foot-grid a:hover{ color:var(--gold);}
+  .foot-brand .mark{ font-family:'Fraunces',serif; color:#fff; font-size:30px; letter-spacing:.02em;}
+  .foot-brand p{ margin:16px 0 20px; color:#8b836e; font-size:14px; line-height:1.6; max-width:320px;}
+  .foot-socials{ display:flex; gap:10px;}
+  .foot-socials a{ width:38px; height:38px; border-radius:50%; border:1px solid rgba(255,255,255,.14);
+    display:grid; place-items:center; font-family:'JetBrains Mono',monospace; font-size:11px; padding:0;}
+  .foot-socials a:hover{ border-color:var(--gold); color:var(--gold);}
+  .foot-bottom{ padding-top:26px; display:flex; justify-content:space-between; gap:20px; font-family:'JetBrains Mono',monospace; font-size:11px; color:#6b6455; letter-spacing:.08em;}
+
+  /* responsive */
+  @media (max-width:1100px){
+    .hero-grid,.welcome-grid,.pastor-grid{ grid-template-columns:1fr; gap:50px;}
+    .hero-visual{ min-height:380px;}
+    .hero-img{ border-radius:3px 3px 120px 3px;}
+    .hero-ornament{ left:20px; bottom:20px;}
+    .foot-grid{ grid-template-columns:1fr 1fr; gap:30px;}
+    .inv-grid{ grid-template-columns:1fr;}
+  }
+  @media (max-width:780px){
+    .shell{ padding:0 20px;}
+    .links{ display:none;}
+    .series-head{ flex-direction:column; align-items:flex-start;}
+    .card{ flex:0 0 80%;}
+    .card.center{ flex:0 0 90%; transform:none;}
+    .card.side{ transform:none; opacity:1;}
+    .foot-grid{ grid-template-columns:1fr;}
+    .hero-visual{ min-height:320px;}
+  }
+
+  /* Tweaks panel */
+  .tweaks{
+    position:fixed; right:20px; bottom:20px; z-index:100;
+    background:#fff; color:var(--navy-ink); border:1px solid var(--line);
+    border-radius:4px; padding:16px 18px; min-width:220px;
+    box-shadow:0 20px 40px -20px rgba(11,30,63,.25); font-size:13px;
+    display:none;
+  }
+  .tweaks h4{ margin:0 0 10px; font-family:'Fraunces',serif; font-size:18px; font-weight:400;}
+  .tweaks label{ display:flex; align-items:center; gap:8px; padding:4px 0; cursor:pointer;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="shell nav-inner">
+    <a href="#" class="logo">
+      <span class="mark">T</span>
+      <div>
+        <div class="name">TGA<span class="dot">·</span>Church</div>
+      </div>
+    </a>
+    <div class="links">
+      <a href="#" class="active">Home</a>
+      <a href="#">About</a>
+      <a href="#">Events</a>
+      <a href="#">Sermons</a>
+      <a href="#">Leadership</a>
+      <a href="#">Gallery</a>
+      <a href="#">Branches</a>
+      <a href="#">Store</a>
+      <a href="#">Contact</a>
+    </div>
+    <a href="#" class="give">Give <span class="arrow">→</span></a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="shell hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow kicker">Welcome to TGA</span>
+      <h1 class="display">Come as you are.<br/>Leave <em>transformed.</em></h1>
+      <p class="lede">A community rooted in grace, gathered in worship, and sent to serve. Whether you're visiting for the first time or searching for a home — there's a place for you here.</p>
+      <div class="hero-cta">
+        <a href="#" class="btn btn-primary">Plan a visit <span class="arrow">→</span></a>
+        <a href="#" class="btn btn-ghost">Watch latest sermon</a>
+      </div>
+      <div class="hero-meta">
+        <div><div class="k">12</div><div class="l">Branches nationwide</div></div>
+        <div><div class="k">2.4k</div><div class="l">Weekly worshippers</div></div>
+        <div><div class="k">1987</div><div class="l">Est. since</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-img"></div>
+      <div class="hero-dots">
+        <span class="on"></span><span></span><span></span>
+      </div>
+      <div class="hero-ornament">
+        <span class="eyebrow">Today's Word</span>
+        <div class="q">"For by grace you have been saved through faith, and this is not your own doing; it is the gift of God."</div>
+        <div class="ref">Ephesians 2 : 8</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WELCOME + SERVICE TIMES -->
+<section class="welcome">
+  <div class="shell welcome-grid">
+    <div>
+      <span class="eyebrow kicker">01 — Welcome</span>
+      <h2 class="display">A church for the <em>seeker,</em> the saint, and everyone in between.</h2>
+      <p>TGA Church is more than a building — it's a family walking together in faith. Through worship, teaching, and service, we exist to know Jesus and make Him known in our city and beyond.</p>
+      <div class="sig">
+        Pastor John Doe
+        <small>Senior Pastor</small>
+      </div>
+    </div>
+    <div class="times">
+      <span class="eyebrow light">Service Times</span>
+      <h3>Join us this week.</h3>
+      <ul>
+        <li><span class="day">SUN</span><span class="time">9:00 am</span><span class="svc">Worship Experience</span></li>
+        <li><span class="day">SUN</span><span class="time">11:00 am</span><span class="svc">Second Service</span></li>
+        <li><span class="day">WED</span><span class="time">6:00 pm</span><span class="svc">Bible Study</span></li>
+        <li><span class="day">FRI</span><span class="time">6:00 pm</span><span class="svc">Prayer Night</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PASTOR -->
+<section class="pastor">
+  <div class="shell pastor-grid">
+    <div class="pastor-photo">
+      <div class="tag">
+        <div>
+          <div class="name">Pastor John Doe</div>
+          <div class="role">Senior Pastor</div>
+        </div>
+        <div class="no">02</div>
+      </div>
+    </div>
+    <div>
+      <span class="eyebrow kicker">Meet our Pastor</span>
+      <h2 class="display">A shepherd's <em>heart,</em><br/>a teacher's mind.</h2>
+      <div class="role">Senior Pastor · TGA Church</div>
+      <p>Pastor John has served TGA for over two decades, leading the congregation with wisdom, humility, and a deep love for scripture. His teaching has reached thousands, and his heart for discipleship continues to shape the next generation of believers.</p>
+      <div class="socials">
+        <a href="#">wa</a><a href="#">ig</a><a href="#">tt</a><a href="#">yt</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS CAROUSEL -->
+<section class="series" id="events-series">
+  <div class="shell">
+    <div class="series-head">
+      <div>
+        <span class="eyebrow kicker">What's on</span>
+        <h2 class="display">Upcoming events &<br/>gatherings.</h2>
+      </div>
+      <div>
+        <p>From Sunday worship to city-wide outreach — join us in the next season of what God is doing through TGA.</p>
+        <div class="series-ctrls" style="margin-top:20px;">
+          <span class="series-counter" id="ev-counter">01 / 02</span>
+          <button class="ctrl" data-ev="prev" aria-label="previous">←</button>
+          <button class="ctrl" data-ev="next" aria-label="next">→</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="car-viewport">
+      <div class="car-track" id="ev-track"></div>
+    </div>
+
+    <div class="series-footer">
+      <a href="#" class="btn btn-ghost">View all events <span class="arrow">→</span></a>
+      <div class="series-progress"><i id="ev-prog" style="width:50%"></i></div>
+      <div class="series-counter">06 events</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERMONS CAROUSEL (dark) -->
+<section class="series dark" id="sermons-series">
+  <div class="shell">
+    <div class="series-head">
+      <div>
+        <span class="eyebrow kicker" style="color:var(--gold);">In the Word</span>
+        <h2 class="display">Messages to<br/><em>strengthen your walk.</em></h2>
+      </div>
+      <div>
+        <p>Be encouraged, challenged, and inspired through sermons preached faithfully week after week.</p>
+        <div class="series-ctrls" style="margin-top:20px;">
+          <span class="series-counter" id="sm-counter">01 / 02</span>
+          <button class="ctrl" data-sm="prev" aria-label="previous">←</button>
+          <button class="ctrl" data-sm="next" aria-label="next">→</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="car-viewport">
+      <div class="car-track" id="sm-track"></div>
+    </div>
+
+    <div class="series-footer">
+      <a href="#" class="btn btn-ghost" style="border-color:rgba(255,255,255,.2);color:#fff;">All sermons <span class="arrow">→</span></a>
+      <div class="series-progress"><i id="sm-prog" style="width:50%"></i></div>
+      <div class="series-counter">06 messages</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIES -->
+<section class="testi">
+  <div class="shell">
+    <span class="eyebrow kicker" style="justify-content:center;">Testimonies</span>
+    <div class="quote">God met me at TGA when I was at my lowest. The community, the word, the worship — it all lifted me back up. This isn't just a church. It's home.</div>
+    <div class="who">
+      <div class="avatar"></div>
+      <div style="text-align:left;">
+        <div class="who-name">Amaka O.</div>
+        <div class="who-loc">Lagos · Member since 2019</div>
+      </div>
+    </div>
+    <div class="testi-nav">
+      <button class="ctrl" aria-label="previous">←</button>
+      <div class="testi-dots"><span class="on"></span><span></span><span></span><span></span></div>
+      <button class="ctrl" aria-label="next">→</button>
+    </div>
+  </div>
+</section>
+
+<!-- GET INVOLVED -->
+<section class="involved">
+  <div class="shell">
+    <div class="involved-head">
+      <span class="eyebrow kicker" style="justify-content:center;">Get Involved</span>
+      <h2 class="display">Find your <em>place</em> at TGA.</h2>
+      <p>Whatever you're looking for — community, purpose, or just a place to start — we'd love to walk with you.</p>
+    </div>
+    <div class="inv-grid">
+      <a href="#" class="inv-card">
+        <div class="num">01</div>
+        <div>
+          <h3>View Events</h3>
+          <p>Conferences, worship nights, outreach. Join us at upcoming gatherings.</p>
+        </div>
+        <span class="go">Explore events <span class="arrow">→</span></span>
+      </a>
+      <a href="#" class="inv-card feature">
+        <div class="num">02</div>
+        <div>
+          <h3>Give Now</h3>
+          <p>Your generosity fuels the mission. Every gift is kingdom work.</p>
+        </div>
+        <span class="go">Give online <span class="arrow">→</span></span>
+      </a>
+      <a href="#" class="inv-card">
+        <div class="num">03</div>
+        <div>
+          <h3>Contact Us</h3>
+          <p>Questions, prayer requests, feedback — we'd love to hear from you.</p>
+        </div>
+        <span class="go">Get in touch <span class="arrow">→</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="shell">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="mark">TGA·Church</div>
+        <p>Building Faith. Changing Lives. A community rooted in grace and sent to serve.</p>
+        <div class="foot-socials">
+          <a>yt</a><a>fb</a><a>ig</a><a>tw</a><a>wa</a><a>tt</a>
+        </div>
+      </div>
+      <div>
+        <h5>Discover</h5>
+        <a>About</a><a>Leadership</a><a>Branches</a><a>Gallery</a>
+      </div>
+      <div>
+        <h5>Grow</h5>
+        <a>Sermons</a><a>Events</a><a>Store</a><a>Give</a>
+      </div>
+      <div>
+        <h5>Contact</h5>
+        <a>hello@tgachurch.org</a><a>+000 000 0000</a><a>Address line, City</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 TGA CHURCH — ALL RIGHTS RESERVED</span>
+      <span>BUILT ON GRACE</span>
+    </div>
+  </div>
+</footer>
+
+<div class="tweaks" id="tweaks">
+  <h4>Tweaks</h4>
+  <label><input type="checkbox" id="tw-grain" checked /> Subtle grain</label>
+  <label><input type="checkbox" id="tw-peek" checked /> Carousel peek (middle bigger)</label>
+  <label>Accent
+    <select id="tw-accent">
+      <option value="gold" selected>Gold</option>
+      <option value="copper">Copper</option>
+      <option value="champagne">Champagne</option>
+    </select>
+  </label>
+</div>
+
+<script>
+/* ----------- Carousel data ----------- */
+const eventData = [
+  { date:[15,'MAY'], cat:'CONFERENCE', title:'Grace Summit 2026', meta:['10:00am','Main Auditorium'] },
+  { date:[22,'MAY'], cat:'WORSHIP NIGHT', title:'A Night of Worship', meta:['6:00pm','Sanctuary'] },
+  { date:[29,'MAY'], cat:'OUTREACH', title:'Healing the City · Day', meta:['9:00am','Downtown'] },
+  { date:[ 5,'JUN'], cat:'GENERAL', title:'Youth Gathering', meta:['5:00pm','Youth Hall'] },
+  { date:[12,'JUN'], cat:'CONFERENCE', title:'Women of Faith Conf.', meta:['10:00am','Main Auditorium'] },
+  { date:[19,'JUN'], cat:'OUTREACH', title:'Community Food Drive', meta:['8:00am','City Park'] },
+];
+const sermonData = [
+  { cat:'SERIES · GRACE', title:'The Gift That Keeps Giving', dur:'32 min', meta:['Pastor John','12 Apr 2026'] },
+  { cat:'SERIES · FAITH',  title:'When You Cannot See the Way', dur:'28 min', meta:['Pastor Ada','05 Apr 2026'] },
+  { cat:'SERIES · HOPE',   title:'Anchored in Every Storm', dur:'35 min', meta:['Pastor John','29 Mar 2026'] },
+  { cat:'SERIES · LOVE',   title:'The Measure of His Love', dur:'30 min', meta:['Pastor Mike','22 Mar 2026'] },
+  { cat:'SERIES · PEACE',  title:'A Still Heart in a Loud World', dur:'26 min', meta:['Pastor Ada','15 Mar 2026'] },
+  { cat:'SERIES · JOY',    title:'Unshakeable Joy', dur:'34 min', meta:['Pastor John','08 Mar 2026'] },
+];
+
+/* ----------- Carousel factory ----------- */
+function makeCarousel({ track, counter, prog, prevBtn, nextBtn, data, renderCard, pageSize=3 }){
+  const total = data.length;
+  const pages = Math.ceil(total / pageSize);
+  let page = 0;
+
+  function render(){
+    track.innerHTML = '';
+    data.forEach((d,i)=>{
+      const el = document.createElement('div');
+      el.className = 'card';
+      el.innerHTML = renderCard(d,i);
+      track.appendChild(el);
+    });
+    apply();
+  }
+
+  function apply(){
+    const cards = track.querySelectorAll('.card');
+    const start = page * pageSize;
+    // reset
+    cards.forEach(c=> c.classList.remove('center','side'));
+    // mark center + sides for current page
+    cards.forEach((c,i)=>{
+      if (i>=start && i<start+pageSize){
+        const local = i - start;
+        if (local === 1) c.classList.add('center');
+        else c.classList.add('side');
+      } else {
+        c.classList.add('side');
+      }
+    });
+    // translate: offset by sum of widths of cards before the current page's first card
+    const gap = 28;
+    let offset = 0;
+    cards.forEach((c,i)=>{
+      if (i < start) offset += c.getBoundingClientRect().width + gap;
+    });
+    track.style.transform = `translateX(${-offset}px)`;
+
+    counter.textContent = `${String(page+1).padStart(2,'0')} / ${String(pages).padStart(2,'0')}`;
+    prog.style.width = `${((page+1)/pages)*100}%`;
+  }
+
+  prevBtn.addEventListener('click', ()=>{ page = (page - 1 + pages) % pages; apply(); });
+  nextBtn.addEventListener('click', ()=>{ page = (page + 1) % pages; apply(); });
+  window.addEventListener('resize', apply);
+
+  render();
+  return { apply };
+}
+
+/* ----------- Render templates ----------- */
+function eventCard(d){
+  return `
+    <div class="card-img">
+      <div class="card-date"><div class="d">${d.date[0]}</div><div class="m">${d.date[1]}</div></div>
+    </div>
+    <div class="card-body">
+      <span class="eyebrow">${d.cat}</span>
+      <h3>${d.title}</h3>
+      <div class="meta">
+        ${d.meta.map(m=>`<span>• ${m}</span>`).join('')}
+      </div>
+    </div>`;
+}
+function sermonCard(d){
+  return `
+    <div class="card-img">
+      <div class="card-play">▶</div>
+      <div class="card-dur">${d.dur}</div>
+    </div>
+    <div class="card-body">
+      <span class="eyebrow">${d.cat}</span>
+      <h3>${d.title}</h3>
+      <div class="meta">
+        ${d.meta.map(m=>`<span>• ${m}</span>`).join('')}
+      </div>
+    </div>`;
+}
+
+const evCar = makeCarousel({
+  track:      document.getElementById('ev-track'),
+  counter:    document.getElementById('ev-counter'),
+  prog:       document.getElementById('ev-prog'),
+  prevBtn:    document.querySelector('[data-ev="prev"]'),
+  nextBtn:    document.querySelector('[data-ev="next"]'),
+  data:       eventData,
+  renderCard: eventCard,
+});
+const smCar = makeCarousel({
+  track:      document.getElementById('sm-track'),
+  counter:    document.getElementById('sm-counter'),
+  prog:       document.getElementById('sm-prog'),
+  prevBtn:    document.querySelector('[data-sm="prev"]'),
+  nextBtn:    document.querySelector('[data-sm="next"]'),
+  data:       sermonData,
+  renderCard: sermonCard,
+});
+
+/* ----------- Tweaks ----------- */
+const TWEAKS = /*EDITMODE-BEGIN*/{
+  "grain": true,
+  "peek": true,
+  "accent": "gold"
+}/*EDITMODE-END*/;
+
+const twGrain = document.getElementById('tw-grain');
+const twPeek  = document.getElementById('tw-peek');
+const twAcc   = document.getElementById('tw-accent');
+
+function apply(s){
+  twGrain.checked = !!s.grain;
+  twPeek.checked  = !!s.peek;
+  twAcc.value     = s.accent || 'gold';
+
+  // peek effect
+  document.body.classList.toggle('no-peek', !s.peek);
+
+  // accent
+  const root = document.documentElement.style;
+  if (s.accent === 'copper'){
+    root.setProperty('--gold',    '#b36a3c');
+    root.setProperty('--gold-2',  '#8d4f28');
+    root.setProperty('--gold-soft','#e5c0a2');
+  } else if (s.accent === 'champagne'){
+    root.setProperty('--gold',    '#d8c389');
+    root.setProperty('--gold-2',  '#b29a55');
+    root.setProperty('--gold-soft','#efe2bd');
+  } else {
+    root.setProperty('--gold',    '#c9a24a');
+    root.setProperty('--gold-2',  '#b28a30');
+    root.setProperty('--gold-soft','#e6cf91');
+  }
+}
+apply(TWEAKS);
+
+function setKey(k,v){
+  TWEAKS[k] = v; apply(TWEAKS);
+  try{ window.parent.postMessage({type:'__edit_mode_set_keys', edits:{[k]:v}},'*'); }catch(_){}
+}
+twGrain.addEventListener('change', e=> setKey('grain', e.target.checked));
+twPeek .addEventListener('change', e=> { setKey('peek', e.target.checked); evCar.apply(); smCar.apply(); });
+twAcc  .addEventListener('change', e=> setKey('accent', e.target.value));
+
+// no-peek css
+const extra = document.createElement('style');
+extra.textContent = `.no-peek .card.center{ transform:none !important; flex:0 0 32% !important; background:var(--paper) !important; box-shadow:none !important;}
+.no-peek .card.side{ transform:none !important; opacity:1 !important; flex:0 0 32% !important;}
+.no-peek .series.dark .card.center{ background:#0f2349 !important;}`;
+document.head.appendChild(extra);
+
+// edit mode plumbing
+window.addEventListener('message', ev=>{
+  if (!ev.data || typeof ev.data!=='object') return;
+  if (ev.data.type === '__activate_edit_mode') document.getElementById('tweaks').style.display = 'block';
+  if (ev.data.type === '__deactivate_edit_mode') document.getElementById('tweaks').style.display = 'none';
+});
+try{ window.parent.postMessage({type:'__edit_mode_available'},'*'); }catch(_){}
+</script>
+</body>
+</html>

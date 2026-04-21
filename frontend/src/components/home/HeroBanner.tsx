@@ -20,71 +20,116 @@ export default function HeroBanner() {
 
   if (isLoading || !banners?.length) {
     return (
-      <div className="relative w-full h-[80vh] bg-dark flex items-center justify-center">
-        <div className="text-center text-white px-4">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">Welcome</h1>
-          <p className="text-xl text-gray-300">Loading...</p>
+      <section className="tga-hero bg-bg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center" style={{ minHeight: 560 }}>
+          <div className="text-center">
+            <p className="font-mono text-gold-2 text-[11px] uppercase tracking-[0.22em] mb-4">Welcome to TGA</p>
+            <h1 className="font-display text-navy tga-hero-h1">Loading…</h1>
+          </div>
         </div>
-      </div>
+      </section>
     );
   }
 
   const banner = banners[current];
+  // Split title at first comma for italic gold emphasis
+  const commaIdx = banner.title?.indexOf(",") ?? -1;
+  const titleFirst = commaIdx > -1 ? banner.title!.slice(0, commaIdx).trim() : (banner.title ?? "Welcome");
+  const titleSecond = commaIdx > -1 ? banner.title!.slice(commaIdx + 1).trim() : null;
 
   return (
-    <div className="relative w-full h-[80vh] overflow-hidden bg-dark">
-      {banners.map((b, i) => (
-        <div
-          key={b.id}
-          className={`absolute inset-0 transition-opacity duration-1000 ${i === current ? "opacity-100" : "opacity-0"}`}
-        >
-          <Image
-            src={getImageUrl(b.image)}
-            alt={b.title || "Banner"}
-            fill
-            className="object-cover"
-            priority={i === 0}
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-dark/60 via-dark/40 to-dark/70" />
-        </div>
-      ))}
+    <section className="tga-hero bg-bg">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="tga-hero-grid">
 
-      {/* Content */}
-      <div className="relative z-10 h-full flex items-center justify-center text-center px-4">
-        <div className="max-w-3xl">
-          {banner.title && (
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
-              {banner.title}
+          {/* ── LEFT COLUMN ── */}
+          <div className="flex flex-col justify-center">
+            <p className="font-mono text-gold-2 text-[11px] uppercase tracking-[0.22em] mb-6">
+              Welcome to TGA
+            </p>
+
+            <h1 className="font-display text-navy tga-hero-h1 mb-6">
+              {titleFirst}
+              {titleSecond && (
+                <><span className="text-navy">,</span>{" "}
+                  <em className="tga-hero-em">{titleSecond}</em>
+                </>
+              )}
             </h1>
-          )}
-          {banner.subtitle && (
-            <p className="text-lg md:text-2xl text-gray-200 mb-8 drop-shadow">{banner.subtitle}</p>
-          )}
-          {banner.button_text && banner.button_link && (
-            <Link
-              href={banner.button_link}
-              className="inline-block px-8 py-3 bg-accent text-white font-semibold rounded-lg text-lg hover:bg-amber-600 transition-colors shadow-lg"
-            >
-              {banner.button_text}
-            </Link>
-          )}
+
+            {banner.subtitle && (
+              <p className="text-muted leading-[1.75] mb-8 tga-hero-lede">
+                {banner.subtitle}
+              </p>
+            )}
+
+            <div className="flex flex-wrap gap-3">
+              <Link href="/about" className="tga-btn-primary">
+                Plan a Visit
+              </Link>
+              <Link href="/sermons" className="tga-btn-ghost">
+                Watch Latest Sermon
+              </Link>
+            </div>
+          </div>
+
+          {/* ── RIGHT COLUMN ── */}
+          <div className="tga-hero-visual">
+            {/* Image card */}
+            <div className="tga-hero-img-wrap">
+              {banners.map((b, i) => (
+                <div
+                  key={b.id}
+                  className="absolute inset-0 transition-opacity duration-1000"
+                  style={{ opacity: i === current ? 1 : 0 }}
+                >
+                  <Image
+                    src={getImageUrl(b.image)}
+                    alt={b.title || "Banner"}
+                    fill
+                    className="object-cover"
+                    priority={i === 0}
+                  />
+                </div>
+              ))}
+              {/* Overlay */}
+              <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(11,30,63,0.15) 0%, rgba(11,30,63,0.5) 100%)" }} />
+
+              {/* Scripture card */}
+              <div className="tga-scripture-card">
+                <p className="font-mono text-gold-2 text-[10px] uppercase tracking-[0.22em] mb-2">
+                  Today&apos;s Word
+                </p>
+                <p className="font-display text-navy italic leading-snug mb-2" style={{ fontSize: "15px", fontWeight: 300 }}>
+                  &ldquo;{banner.button_text || "For by grace you have been saved through faith."}&rdquo;
+                </p>
+                <p className="font-mono text-muted tracking-[0.15em]" style={{ fontSize: "10px" }}>
+                  Ephesians 2 : 8
+                </p>
+              </div>
+            </div>
+
+            {/* Vertical pagination dots */}
+            {banners.length > 1 && (
+              <div className="tga-hero-dots">
+                {banners.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrent(i)}
+                    aria-label={`Slide ${i + 1}`}
+                    className="rounded-full transition-all duration-300 block"
+                    style={{
+                      width: "6px",
+                      height: i === current ? "36px" : "22px",
+                      background: i === current ? "#c9a24a" : "rgba(11,30,63,0.25)",
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-
-      {/* Dots */}
-      {banners.length > 1 && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex gap-2">
-          {banners.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrent(i)}
-              className={`w-3 h-3 rounded-full transition-all ${
-                i === current ? "bg-accent w-6" : "bg-white/60 hover:bg-white"
-              }`}
-            />
-          ))}
-        </div>
-      )}
-    </div>
+    </section>
   );
 }

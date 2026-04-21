@@ -8,6 +8,7 @@ import {
   PhotoGallery,
   Testimony,
   GivingInfo,
+  ServiceTime,
 } from "@/types";
 
 export function useChurchInfo() {
@@ -26,6 +27,16 @@ export function useHeadPastor() {
     queryFn: async () => {
       const res = await api.get<PaginatedResponse<HeadPastor>>("/api/head-pastor/");
       return res.data.results[0] ?? null;
+    },
+  });
+}
+
+export function useServiceTimes() {
+  return useQuery({
+    queryKey: ["service-times"],
+    queryFn: async () => {
+      const res = await api.get<PaginatedResponse<ServiceTime>>("/api/service-times/");
+      return res.data.results.filter((s) => s.is_active);
     },
   });
 }

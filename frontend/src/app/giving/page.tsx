@@ -13,9 +13,9 @@ export default function GivingPage() {
   if (isLoading) return <LoadingSpinner className="py-40" />;
 
   return (
-    <div className="bg-light min-h-screen">
+    <div className="bg-bg min-h-screen">
       {/* Header */}
-      <div className="bg-primary py-16 text-center">
+      <div className="bg-navy py-16 text-center">
         <SectionHeader
           title={giving?.title || "Give / Support the Ministry"}
           subtitle="Your generosity makes a difference"
@@ -72,7 +72,7 @@ export default function GivingPage() {
             href={giving.flutterwave_link}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-10 py-4 bg-accent text-white font-bold text-xl rounded-xl hover:bg-amber-600 transition shadow-lg"
+            className="inline-flex items-center gap-3 px-10 py-4 bg-navy text-white font-bold text-xl rounded-full hover:bg-gold hover:text-navy transition-all duration-200"
           >
             <Heart size={24} /> Give Now via Flutterwave <ExternalLink size={18} />
           </a>

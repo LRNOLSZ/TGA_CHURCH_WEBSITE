@@ -10,8 +10,8 @@ export default function ContactPage() {
   const { data: info } = useChurchInfo();
 
   return (
-    <div className="bg-light min-h-screen">
-      <div className="bg-primary py-16 text-center">
+    <div className="bg-bg min-h-screen">
+      <div className="bg-navy py-16 text-center">
         <SectionHeader title="Get In Touch" subtitle="We would love to hear from you" light />
       </div>
 
@@ -19,7 +19,7 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
           {/* Contact Info */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white rounded-2xl shadow-md p-8">
+            <div className="p-8">
               <h3 className="text-xl font-bold text-primary mb-6">Contact Information</h3>
               <div className="space-y-4 text-sm text-gray-600">
                 {info?.address && (
@@ -77,7 +77,7 @@ export default function ContactPage() {
           </div>
 
           {/* Contact Form */}
-          <div className="lg:col-span-3 bg-white rounded-2xl shadow-md p-8">
+          <div className="lg:col-span-3 p-8">
             <h3 className="text-xl font-bold text-primary mb-6">Send a Message</h3>
             <ContactForm />
           </div>

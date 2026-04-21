@@ -3,14 +3,262 @@
 @tailwind utilities;
 
 body {
-  color: #1E293B;
-  background: #ffffff;
-  font-family: Inter, Arial, Helvetica, sans-serif;
+  color: #3d3a32;
+  background: #f1ebde;
+  font-family: var(--font-inter), Inter, sans-serif;
+}
+
+/* ── Hero ── */
+.tga-hero {
+  padding-top: 80px;
+  padding-bottom: 100px;
+}
+.tga-hero-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 60px;
+  align-items: center;
+  min-height: 560px;
+}
+.tga-hero-h1 {
+  font-size: clamp(48px, 6.6vw, 92px);
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  font-weight: 400;
+}
+.tga-hero-em {
+  font-style: italic;
+  color: #c9a24a;
+}
+.tga-hero-lede {
+  font-size: 17px;
+  max-width: 520px;
+}
+.tga-hero-visual {
+  position: relative;
+  min-height: 480px;
+}
+.tga-hero-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  border-radius: 3px 3px 160px 3px;
+  overflow: hidden;
+  box-shadow: 0 40px 80px -30px rgba(11,30,63,.5);
+}
+.tga-scripture-card {
+  position: absolute;
+  bottom: -24px;
+  left: -24px;
+  z-index: 10;
+  width: 300px;
+  background: #f6efe0;
+  border-radius: 3px;
+  padding: 20px 24px;
+  box-shadow: 0 20px 40px -10px rgba(11,30,63,.25);
+}
+.tga-hero-dots {
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 20;
+}
+.tga-btn-primary {
+  padding: 12px 24px;
+  background: #0b1e3f;
+  color: #fff;
+  font-weight: 500;
+  border-radius: 999px;
+  font-size: 14px;
+  transition: background 200ms;
+  display: inline-block;
+}
+.tga-btn-primary:hover { background: #152a52; }
+.tga-btn-ghost {
+  padding: 11px 24px;
+  color: #0b1e3f;
+  font-weight: 500;
+  border-radius: 999px;
+  font-size: 14px;
+  border: 1.5px solid rgba(11,30,63,0.3);
+  transition: border-color 200ms, background 200ms;
+  display: inline-block;
+}
+.tga-btn-ghost:hover {
+  border-color: #0b1e3f;
+  background: rgba(11,30,63,0.05);
+}
+@media (max-width: 1100px) {
+  .tga-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+  .tga-hero-img-wrap { height: 380px; }
+  .tga-hero-dots { right: 8px; }
+  .tga-scripture-card { left: 0; bottom: -20px; }
+}
+@media (max-width: 780px) {
+  .tga-hero { padding-top: 48px; padding-bottom: 64px; }
+  .tga-scripture-card { display: none; }
+}
+
+/* ── Two-col section layout ── */
+.tga-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+@media (max-width: 1100px) {
+  .tga-two-col {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+}
+
+/* ── Carousel section ── */
+.tga-carousel-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+.tga-carousel-track {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  overflow: hidden;
+}
+.tga-card-side {
+  flex: 0 0 30%;
+  transform: scale(0.94);
+  opacity: 0.78;
+  transition: all 0.55s cubic-bezier(.22,.8,.3,1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.tga-card-center {
+  flex: 0 0 36%;
+  transform: translateY(-18px);
+  opacity: 1;
+  transition: all 0.55s cubic-bezier(.22,.8,.3,1);
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 40px 60px -30px rgba(11,30,63,.35);
+}
+@media (max-width: 780px) {
+  .tga-card-side { flex: 0 0 80%; transform: none; opacity: 1; }
+  .tga-card-center { flex: 0 0 80%; transform: none; box-shadow: none; }
+}
+
+/* ── Carousel controls ── */
+.tga-carousel-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(11,30,63,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0b1e3f;
+  transition: background 200ms, border-color 200ms, color 200ms;
+}
+.tga-carousel-btn:hover {
+  background: #0b1e3f;
+  border-color: #0b1e3f;
+  color: #c9a24a;
+}
+.tga-carousel-btn-dark {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: background 200ms, border-color 200ms, color 200ms;
+}
+.tga-carousel-btn-dark:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.5);
+}
+
+/* ── Social pills (HeadPastor) ── */
+.tga-social-pill {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(11,30,63,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-jetbrains-mono), "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: #0b1e3f;
+  transition: background 200ms, color 200ms, border-color 200ms;
+}
+.tga-social-pill:hover {
+  background: #0b1e3f;
+  color: #c9a24a;
+  border-color: #0b1e3f;
+}
+
+/* ── CTA cards ── */
+.tga-cta-card {
+  background: #f6efe0;
+  border-radius: 3px;
+  padding: 36px 32px;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  transition: background 250ms, color 250ms;
+}
+.tga-cta-card .tga-cta-num { color: #b28a30; }
+.tga-cta-card .tga-cta-title { color: #0b1e3f; }
+.tga-cta-card .tga-cta-body { color: #6b6458; }
+.tga-cta-card .tga-cta-link { color: #0b1e3f; }
+.tga-cta-card:hover {
+  background: #0b1e3f;
+}
+.tga-cta-card:hover .tga-cta-num { color: #c9a24a; }
+.tga-cta-card:hover .tga-cta-title { color: #fff; }
+.tga-cta-card:hover .tga-cta-body { color: rgba(255,255,255,0.7); }
+.tga-cta-card:hover .tga-cta-link { color: #c9a24a; }
+
+/* featured (middle) card */
+.tga-cta-card[data-featured="true"] {
+  background: #0b1e3f;
+}
+.tga-cta-card[data-featured="true"] .tga-cta-num { color: #c9a24a; }
+.tga-cta-card[data-featured="true"] .tga-cta-title { color: #fff; }
+.tga-cta-card[data-featured="true"] .tga-cta-body { color: rgba(255,255,255,0.7); }
+.tga-cta-card[data-featured="true"] .tga-cta-link { color: #c9a24a; }
+.tga-cta-card[data-featured="true"]:hover {
+  background: #c9a24a;
+}
+.tga-cta-card[data-featured="true"]:hover .tga-cta-num { color: #0b1e3f; }
+.tga-cta-card[data-featured="true"]:hover .tga-cta-title { color: #0b1e3f; }
+.tga-cta-card[data-featured="true"]:hover .tga-cta-body { color: rgba(11,30,63,0.75); }
+.tga-cta-card[data-featured="true"]:hover .tga-cta-link { color: #0b1e3f; }
+
+@media (max-width: 780px) {
+  .tga-cta-grid { grid-template-columns: 1fr !important; }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   .line-clamp-2 {
     display: -webkit-box;
