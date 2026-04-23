@@ -18,7 +18,7 @@ export default function HeadPastorSection() {
   return (
     <section className="bg-bg-2" style={{ paddingTop: "96px", paddingBottom: "96px" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="tga-two-col" style={{ alignItems: "start" }}>
+        <div className="tga-two-col" style={{ alignItems: "center" }}>
 
           {/* ── LEFT: Portrait ── */}
           <div className="relative">
@@ -33,7 +33,7 @@ export default function HeadPastorSection() {
             {/* Portrait image */}
             <div
               className="relative w-full overflow-hidden"
-              style={{ aspectRatio: "4/5", borderRadius: "3px" }}
+              style={{ aspectRatio: "4/5", borderRadius: "20px" }}
             >
               <Image
                 src={getImageUrl(pastor.image)}

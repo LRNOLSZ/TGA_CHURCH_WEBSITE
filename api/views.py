@@ -249,6 +249,8 @@ class SermonViewSet(viewsets.ModelViewSet):
     def featured(self, request):
         """Get featured sermons"""
         sermons = self.get_queryset().filter(is_featured=True)[:6]
+        if not sermons.exists():
+            sermons = self.get_queryset()[:6]
         serializer = self.get_serializer(sermons, many=True)
         return Response(serializer.data)
 
@@ -325,6 +327,8 @@ class EventViewSet(viewsets.ModelViewSet):
     def featured(self, request):
         """Get featured events"""
         events = self.get_queryset().filter(is_featured=True)[:6]
+        if not events.exists():
+            events = self.get_queryset()[:6]
         serializer = self.get_serializer(events, many=True)
         return Response(serializer.data)
 
@@ -489,6 +493,8 @@ class TestimonyViewSet(viewsets.ModelViewSet):
     def carousel(self, request):
         """Get testimonies for carousel display"""
         testimonies = self.get_queryset().filter(show_on_carousel=True)
+        if not testimonies.exists():
+            testimonies = self.get_queryset().filter(is_approved=True)[:6]
         serializer = self.get_serializer(testimonies, many=True)
         return Response(serializer.data)
 

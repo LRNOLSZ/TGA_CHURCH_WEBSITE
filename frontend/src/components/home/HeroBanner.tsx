@@ -32,7 +32,6 @@ export default function HeroBanner() {
   }
 
   const banner = banners[current];
-  // Split title at first comma for italic gold emphasis
   const commaIdx = banner.title?.indexOf(",") ?? -1;
   const titleFirst = commaIdx > -1 ? banner.title!.slice(0, commaIdx).trim() : (banner.title ?? "Welcome");
   const titleSecond = commaIdx > -1 ? banner.title!.slice(commaIdx + 1).trim() : null;
@@ -75,7 +74,6 @@ export default function HeroBanner() {
 
           {/* ── RIGHT COLUMN ── */}
           <div className="tga-hero-visual">
-            {/* Image card */}
             <div className="tga-hero-img-wrap">
               {banners.map((b, i) => (
                 <div
@@ -95,18 +93,6 @@ export default function HeroBanner() {
               {/* Overlay */}
               <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(11,30,63,0.15) 0%, rgba(11,30,63,0.5) 100%)" }} />
 
-              {/* Scripture card */}
-              <div className="tga-scripture-card">
-                <p className="font-mono text-gold-2 text-[10px] uppercase tracking-[0.22em] mb-2">
-                  Today&apos;s Word
-                </p>
-                <p className="font-display text-navy italic leading-snug mb-2" style={{ fontSize: "15px", fontWeight: 300 }}>
-                  &ldquo;{banner.button_text || "For by grace you have been saved through faith."}&rdquo;
-                </p>
-                <p className="font-mono text-muted tracking-[0.15em]" style={{ fontSize: "10px" }}>
-                  Ephesians 2 : 8
-                </p>
-              </div>
             </div>
 
             {/* Vertical pagination dots */}

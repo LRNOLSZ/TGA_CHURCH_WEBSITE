@@ -23,8 +23,8 @@ export function useFeaturedEvents() {
   return useQuery({
     queryKey: ["events", "featured"],
     queryFn: async () => {
-      const res = await api.get<PaginatedResponse<Event>>("/api/events/featured/");
-      return res.data.results;
+      const res = await api.get<Event[]>("/api/events/featured/");
+      return res.data;
     },
   });
 }

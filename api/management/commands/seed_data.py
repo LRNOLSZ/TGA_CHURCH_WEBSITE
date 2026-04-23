@@ -719,9 +719,6 @@ class Command(BaseCommand):
     # ------------------------------------------------------------------
     def seed_testimonies(self):
         from api.models import Testimony
-        if Testimony.objects.exists():
-            self.stdout.write("  – Testimonies already exist, skipping.")
-            return
 
         testimonies = [
             dict(
@@ -766,9 +763,54 @@ class Command(BaseCommand):
                 is_approved=True,
                 order=3,
             ),
+            dict(
+                name="Kofi Agyemang",
+                testimony_text=(
+                    "My marriage was on the brink of collapse. My wife and I had "
+                    "separated for eight months and divorce papers were being prepared. "
+                    "We both attended the TGA Marriage Restoration retreat and God "
+                    "turned everything around in one weekend. We are now stronger than ever!"
+                ),
+                location="Accra, Ghana",
+                category="Marriage",
+                show_on_carousel=True,
+                is_approved=True,
+                order=4,
+            ),
+            dict(
+                name="Akosua Mensah",
+                testimony_text=(
+                    "I failed my university entrance exams twice and was told I would "
+                    "never make it into a top school. The TGA youth group prayed and "
+                    "fasted with me for three days. I not only passed — I received a "
+                    "scholarship. Nothing is impossible with God!"
+                ),
+                location="Kumasi, Ghana",
+                category="Academic",
+                show_on_carousel=True,
+                is_approved=True,
+                order=5,
+            ),
+            dict(
+                name="Pastor David Kumi",
+                testimony_text=(
+                    "Our small congregation of 30 people was struggling financially "
+                    "and spiritually. After connecting with TGA and sitting under the "
+                    "teaching of Bishop Daniel, God breathed new life into our church. "
+                    "We now have over 400 members and our own building. To God be the glory!"
+                ),
+                location="Takoradi, Ghana",
+                category="Church Growth",
+                show_on_carousel=True,
+                is_approved=True,
+                order=6,
+            ),
         ]
 
+        created = 0
         for i, data in enumerate(testimonies):
+            if Testimony.objects.filter(name=data["name"]).exists():
+                continue
             t = Testimony(**data)
             t.image.save(
                 f"testimony_{i}.jpg",
@@ -776,8 +818,9 @@ class Command(BaseCommand):
                 save=False,
             )
             t.save()
+            created += 1
 
-        self.ok("Testimonies", len(testimonies))
+        self.ok("Testimonies", created)
 
     # ------------------------------------------------------------------
     # BOOKS

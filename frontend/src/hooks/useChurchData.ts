@@ -66,8 +66,8 @@ export function useTestimonies() {
   return useQuery({
     queryKey: ["testimonies", "carousel"],
     queryFn: async () => {
-      const res = await api.get<PaginatedResponse<Testimony>>("/api/testimonies/carousel/");
-      return res.data.results;
+      const res = await api.get<Testimony[]>("/api/testimonies/carousel/");
+      return res.data;
     },
   });
 }

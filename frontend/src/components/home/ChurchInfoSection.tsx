@@ -54,7 +54,7 @@ export default function ChurchInfoSection() {
             className="relative overflow-hidden"
             style={{
               background: "#0b1e3f",
-              borderRadius: "3px",
+              borderRadius: "20px",
               padding: "38px 36px",
             }}
           >

@@ -23,8 +23,8 @@ export function useFeaturedSermons() {
   return useQuery({
     queryKey: ["sermons", "featured"],
     queryFn: async () => {
-      const res = await api.get<PaginatedResponse<Sermon>>("/api/sermons/featured/");
-      return res.data.results;
+      const res = await api.get<Sermon[]>("/api/sermons/featured/");
+      return res.data;
     },
   });
 }
