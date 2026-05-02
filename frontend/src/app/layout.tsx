@@ -27,14 +27,56 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tgachurch.org";
+
 export const metadata: Metadata = {
-  title: "TGA Church",
-  description: "Building Faith, Changing Lives",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "TGA Church — Building Faith, Changing Lives",
+    template: "%s | TGA Church",
+  },
+  description:
+    "TGA Church is a Spirit-filled Christian community committed to building faith, changing lives, and serving communities across Ghana.",
+  keywords: ["TGA Church", "church Ghana", "Christian church", "church Accra", "sermons", "worship"],
+  openGraph: {
+    type: "website",
+    siteName: "TGA Church",
+    title: "TGA Church — Building Faith, Changing Lives",
+    description:
+      "TGA Church is a Spirit-filled Christian community committed to building faith, changing lives, and serving communities across Ghana.",
+    url: siteUrl,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TGA Church — Building Faith, Changing Lives",
+    description:
+      "TGA Church is a Spirit-filled Christian community committed to building faith, changing lives, and serving communities across Ghana.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+const churchSchema = {
+  "@context": "https://schema.org",
+  "@type": "Church",
+  name: "TGA Church",
+  url: siteUrl,
+  description:
+    "TGA Church is a Spirit-filled Christian community committed to building faith, changing lives, and serving communities across Ghana.",
+  sameAs: [],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(churchSchema) }}
+        />
+      </head>
       <body className="antialiased">
         <QueryProvider>
           <Navbar />

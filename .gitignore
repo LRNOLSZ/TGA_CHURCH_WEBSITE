@@ -39,3 +39,4 @@ checklist.txt
 
 #claude
 CLAUDE.md
+.claude/settings.local.json

@@ -164,15 +164,15 @@ class Command(BaseCommand):
             return
 
         ChurchInfo.objects.create(
-            church_name="The Grace Assembly (TGA)",
+            church_name="The Gospel Appraisal (TGA)",
             tagline="Building Faith, Transforming Lives",
             welcome_message=(
-                "Welcome to The Grace Assembly — a place where every soul is celebrated "
+                "Welcome to The Gospel Appraisal — a place where every soul is celebrated "
                 "and every life is transformed by the love of God. We are a Spirit-filled "
                 "community committed to worship, discipleship, and impacting our world."
             ),
             full_about=(
-                "Founded in 1998 by Bishop Daniel Owusu-Afriyie, The Grace Assembly began "
+                "Founded in 1998 by Bishop Daniel Owusu-Afriyie, The Gospel Appraisal began "
                 "as a small prayer group of twelve believers in a single room in Accra. "
                 "Over the decades God's grace has multiplied that seed into a thriving "
                 "congregation with branches across Ghana. Our story is one of faith, "
@@ -228,7 +228,7 @@ class Command(BaseCommand):
             title="Senior Pastor & Founder",
             full_bio=(
                 "Bishop Daniel Owusu-Afriyie is the founder and Senior Pastor of "
-                "The Grace Assembly. Born in Kumasi, Ghana, he encountered the Lord "
+                "The Gospel Appraisal. Born in Kumasi, Ghana, he encountered the Lord "
                 "at the age of nineteen and responded immediately to the call to ministry. "
                 "He holds a Bachelor of Theology from the University of Ghana and a "
                 "Master of Divinity from Regent University, Virginia. "
@@ -258,26 +258,20 @@ class Command(BaseCommand):
 
         banners = [
             dict(
-                title="Welcome to The Grace Assembly",
+                title="Welcome to The Gospel Appraisal",
                 subtitle="A place where faith meets destiny. Join us every Sunday.",
-                button_text="Plan Your Visit",
-                button_link="https://tgachurch.org/visit",
                 is_active=True,
                 order=1,
             ),
             dict(
                 title="Arise & Shine Conference 2025",
                 subtitle="Three days of worship, prayer and the Word. Register now!",
-                button_text="Register Free",
-                button_link="https://tgachurch.org/events/arise-shine",
                 is_active=True,
                 order=2,
             ),
             dict(
                 title="New Here? We'd Love to Meet You",
                 subtitle="Connect with our team and discover your place in the family.",
-                button_text="Connect With Us",
-                button_link="https://tgachurch.org/connect",
                 is_active=True,
                 order=3,
             ),

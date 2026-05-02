@@ -7,7 +7,7 @@ export default function ChurchInfoSection() {
   const { data: serviceTimes } = useServiceTimes();
 
   return (
-    <section className="bg-bg" style={{ paddingTop: "96px", paddingBottom: "96px" }}>
+    <section className="bg-bg" style={{ paddingTop: "clamp(48px, 8vw, 96px)", paddingBottom: "clamp(48px, 8vw, 96px)" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="tga-two-col">
 
@@ -38,24 +38,14 @@ export default function ChurchInfoSection() {
                 "We are a family of believers committed to faith, community, and the transforming power of the Gospel."}
             </p>
 
-            {/* Signature block */}
-            <div>
-              <p className="font-display italic text-navy" style={{ fontSize: "18px", fontWeight: 300 }}>
-                {info?.church_name || "TGA Church"}
-              </p>
-              <p className="font-mono text-muted text-[11px] uppercase tracking-[0.15em] mt-1">
-                Senior Leadership
-              </p>
-            </div>
           </div>
 
           {/* ── RIGHT: Navy service times card ── */}
           <div
-            className="relative overflow-hidden"
+            className="relative overflow-hidden p-6 md:p-10"
             style={{
               background: "#0b1e3f",
               borderRadius: "20px",
-              padding: "38px 36px",
             }}
           >
             {/* Decorative gold radial glow */}
@@ -73,7 +63,7 @@ export default function ChurchInfoSection() {
             </p>
             <h3
               className="font-display text-white mb-6 relative z-10"
-              style={{ fontSize: "32px", fontWeight: 400, lineHeight: 1.1 }}
+              style={{ fontSize: "clamp(22px, 3.5vw, 32px)", fontWeight: 400, lineHeight: 1.1 }}
             >
               Join us this week.
             </h3>

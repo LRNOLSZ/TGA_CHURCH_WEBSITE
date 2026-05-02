@@ -15,7 +15,7 @@ class HomeBannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = HomeBanner
         fields = [
-            'id', 'title', 'subtitle', 'image', 'button_text', 'button_link',
+            'id', 'title', 'subtitle', 'image',
             'is_active', 'order', 'created_at', 'updated_at'
         ]
         read_only_fields = ['created_at', 'updated_at']

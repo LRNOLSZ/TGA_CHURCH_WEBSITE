@@ -129,7 +129,7 @@ export default function FeaturedEvents() {
   const progress = totalPages > 1 ? (page / (totalPages - 1)) * 100 : 100;
 
   return (
-    <section className="bg-bg" style={{ paddingTop: "96px", paddingBottom: "96px" }}>
+    <section className="bg-bg" style={{ paddingTop: "clamp(48px, 8vw, 96px)", paddingBottom: "clamp(48px, 8vw, 96px)" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section header */}

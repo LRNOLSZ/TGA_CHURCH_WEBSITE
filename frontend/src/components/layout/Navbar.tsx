@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -23,7 +24,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className="sticky top-0 z-50"
+      className="sticky top-0 z-50 relative"
       style={{
         background: "rgba(241,235,222,0.78)",
         backdropFilter: "blur(10px)",
@@ -84,43 +85,54 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
-      {open && (
-        <div
-          className="lg:hidden"
-          style={{
-            background: "rgba(241,235,222,0.97)",
-            borderTop: "1px solid rgba(11,30,63,0.10)",
-          }}
-        >
-          <div className="px-4 py-3 space-y-0.5">
-            {navLinks.map(({ href, label }) => {
-              const isActive = pathname === href;
-              return (
-                <Link
-                  key={href}
-                  href={href}
-                  onClick={() => setOpen(false)}
-                  className={`block px-3 py-2.5 text-sm font-medium rounded-sm transition-colors duration-200 ${
-                    isActive
-                      ? "text-navy border-l-2 border-gold pl-4"
-                      : "text-muted hover:text-navy"
-                  }`}
-                >
-                  {label}
-                </Link>
-              );
-            })}
-            <Link
-              href="/giving"
-              onClick={() => setOpen(false)}
-              className="block mt-3 px-5 py-2.5 bg-navy text-white font-medium rounded-full text-sm text-center hover:bg-gold hover:text-navy transition-all duration-200"
-            >
-              Give Now
-            </Link>
-          </div>
-        </div>
-      )}
+      {/* Mobile menu — absolutely positioned so it overlays content */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
+            className="lg:hidden absolute left-0 right-0 top-full"
+            style={{
+              background: "rgba(241,235,222,0.92)",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
+              borderTop: "1px solid rgba(11,30,63,0.10)",
+              borderBottom: "1px solid rgba(11,30,63,0.12)",
+              boxShadow: "0 16px 40px -8px rgba(11,30,63,0.15)",
+            }}
+          >
+            <div className="px-4 py-3 space-y-0.5">
+              {navLinks.map(({ href, label }) => {
+                const isActive = pathname === href;
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={() => setOpen(false)}
+                    className={`block px-3 py-2.5 text-sm font-medium rounded-sm text-center transition-colors duration-200 ${
+                      isActive
+                        ? "text-navy border-b border-gold"
+                        : "text-muted hover:text-navy"
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                );
+              })}
+              <Link
+                href="/giving"
+                onClick={() => setOpen(false)}
+                className="block mt-3 px-5 py-2.5 bg-navy text-white font-medium rounded-full text-sm text-center hover:bg-gold hover:text-navy transition-all duration-200"
+              >
+                Give Now
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }

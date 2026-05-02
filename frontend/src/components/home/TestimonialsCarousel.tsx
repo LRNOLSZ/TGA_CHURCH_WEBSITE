@@ -17,7 +17,7 @@ export default function TestimonialsCarousel() {
   const t = testimonies[current];
 
   return (
-    <section className="bg-bg" style={{ paddingTop: "96px", paddingBottom: "96px" }}>
+    <section className="bg-bg" style={{ paddingTop: "clamp(48px, 8vw, 96px)", paddingBottom: "clamp(48px, 8vw, 96px)" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Eyebrow */}
         <div className="text-center mb-12">
@@ -38,7 +38,7 @@ export default function TestimonialsCarousel() {
           <div
             className="font-display text-gold select-none"
             style={{
-              fontSize: "120px",
+              fontSize: "clamp(60px, 15vw, 120px)",
               lineHeight: 0.6,
               marginBottom: "24px",
               fontWeight: 300,

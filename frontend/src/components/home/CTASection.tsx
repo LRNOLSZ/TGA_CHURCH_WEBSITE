@@ -6,7 +6,7 @@ const cards = [
     num: "01",
     title: "Plan a Visit",
     body: "Experience our warm, welcoming community in person. We'd love to meet you.",
-    href: "/about",
+    href: "/branches",
     cta: "Find us",
   },
   {
@@ -48,30 +48,24 @@ export default function CTASection() {
         </div>
 
         {/* 3-card grid */}
-        <div
-          className="tga-cta-grid grid"
-          style={{
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "24px",
-          }}
-        >
+        <div className="tga-cta-grid grid grid-cols-1 md:grid-cols-3 gap-6">
           {cards.map(({ num, title, body, href, cta, featured }) => (
             <Link
               key={href}
               href={href}
-              className="tga-cta-card"
+              className="tga-cta-card items-center text-center"
               data-featured={featured ? "true" : undefined}
             >
               <span className="font-mono tga-cta-num" style={{ fontSize: "11px", letterSpacing: "0.15em" }}>
                 {num}
               </span>
-              <h3 className="font-display tga-cta-title" style={{ fontSize: "36px", fontWeight: 400, lineHeight: 1.1, marginTop: "20px", marginBottom: "12px" }}>
+              <h3 className="font-display tga-cta-title" style={{ fontSize: "clamp(24px, 4vw, 36px)", fontWeight: 400, lineHeight: 1.1, marginTop: "20px", marginBottom: "12px" }}>
                 {title}
               </h3>
               <p className="tga-cta-body" style={{ fontSize: "15px", lineHeight: 1.7, flexGrow: 1 }}>
                 {body}
               </p>
-              <div className="flex items-center gap-2 mt-6 tga-cta-link" style={{ fontSize: "13px", fontWeight: 500 }}>
+              <div className="flex items-center justify-center gap-2 mt-6 tga-cta-link" style={{ fontSize: "13px", fontWeight: 500 }}>
                 {cta} <ArrowRight size={14} className="tga-cta-arrow" />
               </div>
             </Link>

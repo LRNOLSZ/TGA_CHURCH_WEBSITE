@@ -29,17 +29,6 @@ class HomeBanner(models.Model):
         upload_to='banners/%Y/%m/',  # Organized by year/month
         help_text="Banner image (recommended: 1920x600px)"
     )
-    button_text = models.CharField(
-        max_length=50, 
-        blank=True, 
-        null=True,
-        help_text="Call-to-action button text (e.g., 'Join Us')"
-    )
-    button_link = models.URLField(
-        blank=True, 
-        null=True,
-        help_text="Where the button should link to"
-    )
     is_active = models.BooleanField(
         default=True,
         db_index=True,  # PERFORMANCE: Fast filtering of active banners
