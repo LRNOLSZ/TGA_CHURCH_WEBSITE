@@ -111,7 +111,8 @@ CSRF_COOKIE_HTTPONLY = True  # Prevent JavaScript access to CSRF cookie
 CSRF_COOKIE_SAMESITE = 'Strict'  # Strict CSRF protection
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+_static_dir = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [_static_dir] if os.path.isdir(_static_dir) else []
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
