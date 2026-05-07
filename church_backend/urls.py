@@ -49,7 +49,7 @@ router.register(r'exchange-rates', ExchangeRateViewSet, basename='exchange-rate'
 router.register(r'image-logs', ImageLogViewSet, basename='image-log')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('minhalah/', admin.site.urls),
     
     # REST API endpoints
     path('api/', include(router.urls)),
