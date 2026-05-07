@@ -114,7 +114,7 @@ STATIC_URL = 'static/'
 _static_dir = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [_static_dir] if os.path.isdir(_static_dir) else []
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # Media — local in dev, Cloudflare R2 in production
 CLOUDFLARE_ACCOUNT_ID = config('CLOUDFLARE_ACCOUNT_ID', default='')
