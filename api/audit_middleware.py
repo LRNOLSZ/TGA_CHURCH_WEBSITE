@@ -156,7 +156,7 @@ from .models import (
 TRACKED_MODELS = [
     HomeBanner, ChurchInfo, HeadPastor, ServiceTime,
     Leader, PhotoGallery, Sermon, Event, Branch,
-    GivingInfo, GivingImage, ContactMessage, Testimony, Book, ExchangeRate, Merchandise
+    GivingInfo, GivingImage, ImageLog, ContactMessage, Testimony, Book, ExchangeRate, Merchandise
 ]
 
 # Register signals for all tracked models

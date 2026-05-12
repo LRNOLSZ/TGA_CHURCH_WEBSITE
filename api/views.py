@@ -2,7 +2,12 @@ from rest_framework import viewsets, filters, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser, AllowAny
+from rest_framework.throttling import AnonRateThrottle
+
+
+class ContactFormThrottle(AnonRateThrottle):
+    rate = '5/hour'
 from django.db.models import Q
 from django.shortcuts import render
 from django.contrib import admin
@@ -413,13 +418,22 @@ class ContactMessageViewSet(viewsets.ModelViewSet):
     """
     queryset = ContactMessage.objects.all()
     serializer_class = ContactMessageSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
     pagination_class = StandardResultsSetPagination
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['name', 'email', 'subject', 'message']
     ordering_fields = ['submitted_at']
     ordering = ['-submitted_at']
-    
+
+    def get_permissions(self):
+        if self.action == 'create':
+            return [AllowAny()]
+        return [IsAuthenticated(), IsAdminUser()]
+
+    def get_throttles(self):
+        if self.action == 'create':
+            return [ContactFormThrottle()]
+        return []
+
     def get_queryset(self):
         queryset = ContactMessage.objects.all()
         subject = self.request.query_params.get('subject', None)
@@ -710,7 +724,7 @@ def get_book_price(request, book_id):
     except Exception as e:
         return JsonResponse({
             'success': False,
-            'error': str(e)
+            'error': 'An unexpected error occurred.'
         }, status=500)
 
 
@@ -766,7 +780,7 @@ def get_merchandise_price(request, merchandise_id):
     except Exception as e:
         return JsonResponse({
             'success': False,
-            'error': str(e)
+            'error': 'An unexpected error occurred.'
         }, status=500)
 
 

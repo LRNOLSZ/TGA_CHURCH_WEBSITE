@@ -27,7 +27,7 @@ def validate_image_file(file: UploadedFile):
     # Check file size
     if file.size > MAX_IMAGE_SIZE:
         raise ValidationError(
-            f"Image file too large. Maximum size is 5MB, got {file.size / (1024*1024):.1f}MB"
+            f"Image file too large. Maximum size is 10MB, got {file.size / (1024*1024):.1f}MB"
         )
     
     # Get file extension
