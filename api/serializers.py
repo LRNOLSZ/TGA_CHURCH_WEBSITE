@@ -43,7 +43,7 @@ class HeadPastorSerializer(serializers.ModelSerializer):
         model = HeadPastor
         fields = [
             'id', 'name', 'title', 'full_bio', 'image',
-            'email', 'phone', 'whatsapp_url', 'instagram', 'tiktok',
+            'email', 'phone', 'whatsapp_url', 'instagram', 'tiktok', 'website',
             'updated_at'
         ]
         read_only_fields = ['updated_at']

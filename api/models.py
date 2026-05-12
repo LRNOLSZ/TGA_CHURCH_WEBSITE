@@ -153,7 +153,12 @@ class HeadPastor(models.Model):
         null=True,
         help_text="TikTok profile URL (e.g., https://tiktok.com/@username)"
     )
-    
+    website = models.URLField(
+        blank=True,
+        null=True,
+        help_text="Personal website URL (e.g., https://pastorname.com)"
+    )
+
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
