@@ -161,7 +161,7 @@ class HeadPastorAdmin(ModelAdmin, AdminImagePreviewMixin):
     fieldsets = (
         ('Personal Info', {'fields': ('name', 'title', 'image')}),
         ('Biography', {'fields': ('full_bio',)}),
-        ('Contact', {'fields': ('email', 'phone', 'whatsapp_url', 'instagram', 'tiktok')}),
+        ('Contact', {'fields': ('email', 'phone', 'whatsapp_url', 'instagram', 'tiktok', 'website')}),
     )
     def has_add_permission(self, request):
         return not HeadPastor.objects.exists()
