@@ -536,8 +536,10 @@ class Branch(models.Model):
     location = models.TextField(
         help_text="Full address for maps/GPS"
     )
-    phone = models.CharField(max_length=20)
-    email = models.EmailField()
+    phone = models.TextField(
+        help_text="Phone number(s) separated by commas (e.g., +233 20 123 4567, +233 30 987 6543)"
+    )
+    email = models.EmailField(blank=True, null=True)
     
     pastor_in_charge = models.CharField(
         max_length=200,
