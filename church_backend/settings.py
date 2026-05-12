@@ -300,27 +300,27 @@ UNFOLD = {
             {
                 "title": "Website Content",
                 "items": [
-                    {"title": "Banners", "icon": "view_carousel", "link": "/admin/api/homebanner/"},
-                    {"title": "Church Info", "icon": "info", "link": "/admin/api/churchinfo/"},
-                    {"title": "Gallery", "icon": "photo_library", "link": "/admin/api/photogallery/"},
+                    {"title": "Banners", "icon": "view_carousel", "link": "/minhalah/api/homebanner/"},
+                    {"title": "Church Info", "icon": "info", "link": "/minhalah/api/churchinfo/"},
+                    {"title": "Gallery", "icon": "photo_library", "link": "/minhalah/api/photogallery/"},
                 ],
             },
             {
                 "title": "Ministry",
                 "items": [
-                    {"title": "Head Pastor", "icon": "person_pin", "link": "/admin/api/headpastor/"},
-                    {"title": "Leadership", "icon": "groups", "link": "/admin/api/leader/"},
-                    {"title": "Sermons", "icon": "menu_book", "link": "/admin/api/sermon/"},
-                    {"title": "Events", "icon": "event", "link": "/admin/api/event/"},
+                    {"title": "Head Pastor", "icon": "person_pin", "link": "/minhalah/api/headpastor/"},
+                    {"title": "Leadership", "icon": "groups", "link": "/minhalah/api/leader/"},
+                    {"title": "Sermons", "icon": "menu_book", "link": "/minhalah/api/sermon/"},
+                    {"title": "Events", "icon": "event", "link": "/minhalah/api/event/"},
                 ],
             },
             {
                 "title": "Administration",
                 "items": [
-                    {"title": "Branches", "icon": "account_balance", "link": "/admin/api/branch/"},
-                    {"title": "Service Times", "icon": "schedule", "link": "/admin/api/servicetime/"},
-                    {"title": "Giving", "icon": "volunteer_activism", "link": "/admin/api/givinginfo/"},
-                    {"title": "Messages", "icon": "mail", "link": "/admin/api/contactmessage/"},
+                    {"title": "Branches", "icon": "account_balance", "link": "/minhalah/api/branch/"},
+                    {"title": "Service Times", "icon": "schedule", "link": "/minhalah/api/servicetime/"},
+                    {"title": "Giving", "icon": "volunteer_activism", "link": "/minhalah/api/givinginfo/"},
+                    {"title": "Messages", "icon": "mail", "link": "/minhalah/api/contactmessage/"},
                 ],
             },
         ],
