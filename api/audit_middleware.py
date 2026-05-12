@@ -5,8 +5,12 @@ from django.utils.deprecation import MiddlewareMixin
 from django.contrib.auth.signals import user_login_failed, user_logged_out, user_logged_in
 from django.db.models.signals import post_save, post_delete, pre_delete
 from django.dispatch import receiver
+from django.db import transaction
 from .models import AuditLog
 import threading
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def get_client_ip(request):
@@ -112,17 +116,18 @@ def log_model_action(sender, instance, created, action='UPDATE', **kwargs):
     action_type = 'CREATE' if created else 'UPDATE'
 
     try:
-        AuditLog.objects.create(
-            user=user,
-            action=action_type,
-            model_name=sender.__name__,
-            object_id=instance.id,
-            object_repr=str(instance),
-            ip_address=get_request_ip(),
-            user_agent=get_request_user_agent()
-        )
-    except Exception:
-        pass  # Never let audit logging break the actual save
+        with transaction.atomic():
+            AuditLog.objects.create(
+                user=user,
+                action=action_type,
+                model_name=sender.__name__,
+                object_id=instance.id,
+                object_repr=str(instance),
+                ip_address=get_request_ip(),
+                user_agent=get_request_user_agent()
+            )
+    except Exception as e:
+        logger.error("Audit log failed for %s %s: %s", action_type, sender.__name__, e)
 
 
 def log_model_delete(sender, instance, **kwargs):
@@ -134,17 +139,18 @@ def log_model_delete(sender, instance, **kwargs):
         return  # Only log if there's an authenticated user
 
     try:
-        AuditLog.objects.create(
-            user=user,
-            action='DELETE',
-            model_name=sender.__name__,
-            object_id=instance.id,
-            object_repr=str(instance),
-            ip_address=get_request_ip(),
-            user_agent=get_request_user_agent()
-        )
-    except Exception:
-        pass  # Never let audit logging break the actual delete
+        with transaction.atomic():
+            AuditLog.objects.create(
+                user=user,
+                action='DELETE',
+                model_name=sender.__name__,
+                object_id=instance.id,
+                object_repr=str(instance),
+                ip_address=get_request_ip(),
+                user_agent=get_request_user_agent()
+            )
+    except Exception as e:
+        logger.error("Audit log failed for DELETE %s: %s", sender.__name__, e)
 
 
 # ====================================================================
