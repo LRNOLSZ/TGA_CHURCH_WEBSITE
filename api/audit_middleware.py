@@ -108,18 +108,21 @@ def log_model_action(sender, instance, created, action='UPDATE', **kwargs):
     user = get_request_user()
     if not user:
         return  # Only log if there's an authenticated user
-    
+
     action_type = 'CREATE' if created else 'UPDATE'
-    
-    AuditLog.objects.create(
-        user=user,
-        action=action_type,
-        model_name=sender.__name__,
-        object_id=instance.id,
-        object_repr=str(instance),
-        ip_address=get_request_ip(),
-        user_agent=get_request_user_agent()
-    )
+
+    try:
+        AuditLog.objects.create(
+            user=user,
+            action=action_type,
+            model_name=sender.__name__,
+            object_id=instance.id,
+            object_repr=str(instance),
+            ip_address=get_request_ip(),
+            user_agent=get_request_user_agent()
+        )
+    except Exception:
+        pass  # Never let audit logging break the actual save
 
 
 def log_model_delete(sender, instance, **kwargs):
@@ -129,16 +132,19 @@ def log_model_delete(sender, instance, **kwargs):
     user = get_request_user()
     if not user:
         return  # Only log if there's an authenticated user
-    
-    AuditLog.objects.create(
-        user=user,
-        action='DELETE',
-        model_name=sender.__name__,
-        object_id=instance.id,
-        object_repr=str(instance),
-        ip_address=get_request_ip(),
-        user_agent=get_request_user_agent()
-    )
+
+    try:
+        AuditLog.objects.create(
+            user=user,
+            action='DELETE',
+            model_name=sender.__name__,
+            object_id=instance.id,
+            object_repr=str(instance),
+            ip_address=get_request_ip(),
+            user_agent=get_request_user_agent()
+        )
+    except Exception:
+        pass  # Never let audit logging break the actual delete
 
 
 # ====================================================================
