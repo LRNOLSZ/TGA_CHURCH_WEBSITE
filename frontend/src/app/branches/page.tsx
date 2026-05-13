@@ -6,6 +6,7 @@ import { useBranches } from "@/hooks/useBranches";
 import { getImageUrl } from "@/lib/utils";
 import SectionHeader from "@/components/ui/SectionHeader";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import FadeIn from "@/components/ui/FadeIn";
 
 export default function BranchesPage() {
   const { data: branches, isLoading } = useBranches();
@@ -26,21 +27,25 @@ export default function BranchesPage() {
           <>
             {/* Main Branch */}
             {main && (
-              <div className="mb-12">
-                <div className="flex items-center gap-2 mb-6">
-                  <span className="bg-accent text-white text-xs font-bold px-3 py-1 rounded-full uppercase">Main Branch</span>
+              <FadeIn>
+                <div className="mb-12">
+                  <div className="flex items-center gap-2 mb-6">
+                    <span className="bg-accent text-white text-xs font-bold px-3 py-1 rounded-full uppercase">Main Branch</span>
+                  </div>
+                  <BranchCard branch={main} featured />
                 </div>
-                <BranchCard branch={main} featured />
-              </div>
+              </FadeIn>
             )}
 
             {/* Other Branches */}
             {others.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {others.map((branch) => (
-                  <BranchCard key={branch.id} branch={branch} />
-                ))}
-              </div>
+              <FadeIn delay={0.1}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {others.map((branch) => (
+                    <BranchCard key={branch.id} branch={branch} />
+                  ))}
+                </div>
+              </FadeIn>
             )}
 
             {!branches?.length && (
@@ -57,8 +62,8 @@ function BranchCard({ branch, featured = false }: { branch: import("@/types").Br
   return (
     <div className={`overflow-hidden ${featured ? "border-2 border-accent" : ""}`}>
       {branch.image && (
-        <div className="relative h-56">
-          <Image src={getImageUrl(branch.image)} alt={branch.name} fill className="object-cover" />
+        <div className="relative h-56 rounded-xl overflow-hidden group transition-shadow duration-300 hover:shadow-[0_0_20px_4px_rgba(212,175,55,0.5)]">
+          <Image src={getImageUrl(branch.image)} alt={branch.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
           <div className="absolute inset-0 bg-gradient-to-t from-dark/60 to-transparent" />
           <div className="absolute bottom-4 left-4 text-white">
             <h3 className="text-xl font-bold">{branch.name}</h3>

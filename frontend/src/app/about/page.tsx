@@ -4,6 +4,7 @@ import { Clock, Target, Eye, Star } from "lucide-react";
 import { useChurchInfo } from "@/hooks/useChurchData";
 import SectionHeader from "@/components/ui/SectionHeader";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import FadeIn from "@/components/ui/FadeIn";
 
 export default function AboutPage() {
   const { data: info, isLoading } = useChurchInfo();
@@ -18,6 +19,7 @@ export default function AboutPage() {
       </div>
 
       {/* Church Story */}
+      <FadeIn>
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="p-10">
           <div className="w-12 h-1 bg-accent mb-4" />
@@ -27,8 +29,10 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      </FadeIn>
 
       {/* Mission, Vision, Values */}
+      <FadeIn delay={0.1}>
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-8 text-center" style={{ background: "#f6efe0", borderRadius: "3px" }}>
@@ -56,21 +60,24 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      </FadeIn>
 
       {/* Service Times */}
-      {info?.service_times_text && (
-        <section className="bg-white py-16">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeader title="Service Times" />
-            <div className="bg-primary/5 rounded-2xl p-8 flex gap-4">
-              <Clock className="text-primary shrink-0 mt-1" size={24} />
-              <div className="whitespace-pre-line text-gray-700 leading-relaxed">
-                {info.service_times_text}
+      <FadeIn delay={0.2}>
+        {info?.service_times_text && (
+          <section className="bg-white py-16">
+            <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+              <SectionHeader title="Service Times" />
+              <div className="bg-primary/5 rounded-2xl p-8 flex gap-4">
+                <Clock className="text-primary shrink-0 mt-1" size={24} />
+                <div className="whitespace-pre-line text-gray-700 leading-relaxed">
+                  {info.service_times_text}
+                </div>
               </div>
             </div>
-          </div>
-        </section>
-      )}
+          </section>
+        )}
+      </FadeIn>
     </div>
   );
 }

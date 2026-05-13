@@ -6,6 +6,7 @@ import { useGallery } from "@/hooks/useChurchData";
 import { getImageUrl } from "@/lib/utils";
 import SectionHeader from "@/components/ui/SectionHeader";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import FadeIn from "@/components/ui/FadeIn";
 
 const CATEGORIES = ["All", "Church Building", "Worship", "Events", "Outreach", "Other"];
 
@@ -19,6 +20,7 @@ export default function GalleryPage() {
         <SectionHeader title="Photo Gallery" subtitle="Moments of faith, fellowship, and community" light />
       </div>
 
+      <FadeIn>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Category Filter */}
         <div className="flex flex-wrap gap-2 justify-center mb-10">
@@ -62,6 +64,7 @@ export default function GalleryPage() {
           </div>
         )}
       </div>
+      </FadeIn>
     </div>
   );
 }

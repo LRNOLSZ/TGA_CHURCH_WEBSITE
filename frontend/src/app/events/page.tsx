@@ -6,6 +6,7 @@ import EventCard from "@/components/events/EventCard";
 import Pagination from "@/components/ui/Pagination";
 import SectionHeader from "@/components/ui/SectionHeader";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import FadeIn from "@/components/ui/FadeIn";
 import { Search } from "lucide-react";
 
 const CATEGORIES = ["All", "General", "Conference", "Outreach", "Worship Night", "Healing to the city", "Other"];
@@ -33,6 +34,7 @@ export default function EventsPage() {
         <SectionHeader title="Upcoming Events" subtitle="Join us for worship, fellowship, and community" light />
       </div>
 
+      <FadeIn>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Filters */}
         <div className="p-5 mb-8 flex flex-col md:flex-row gap-4" style={{ background: "#f6efe0", borderRadius: "3px" }}>
@@ -98,6 +100,7 @@ export default function EventsPage() {
           </>
         )}
       </div>
+      </FadeIn>
     </div>
   );
 }

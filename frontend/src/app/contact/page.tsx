@@ -5,6 +5,7 @@ import { useChurchInfo } from "@/hooks/useChurchData";
 import SectionHeader from "@/components/ui/SectionHeader";
 import SocialLinks from "@/components/ui/SocialLinks";
 import ContactForm from "@/components/forms/ContactForm";
+import FadeIn from "@/components/ui/FadeIn";
 
 export default function ContactPage() {
   const { data: info } = useChurchInfo();
@@ -15,6 +16,7 @@ export default function ContactPage() {
         <SectionHeader title="Get In Touch" subtitle="We would love to hear from you" light />
       </div>
 
+      <FadeIn>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
           {/* Contact Info */}
@@ -83,6 +85,7 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
+      </FadeIn>
     </div>
   );
 }

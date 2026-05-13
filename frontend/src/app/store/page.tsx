@@ -8,6 +8,7 @@ import { getImageUrl } from "@/lib/utils";
 import { Book, Merchandise } from "@/types";
 import SectionHeader from "@/components/ui/SectionHeader";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import FadeIn from "@/components/ui/FadeIn";
 
 type Tab = "all" | "books" | "merchandise";
 
@@ -39,78 +40,72 @@ export default function StorePage() {
         <SectionHeader title="Church Store" subtitle="Books, merchandise, and more" light />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Controls */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center mb-10">
-          {/* Tabs */}
-          <div className="flex gap-2 bg-white rounded-xl p-1 shadow-sm">
-            {(["all", "books", "merchandise"] as Tab[]).map((t) => (
-              <button
-                key={t}
-                onClick={() => setTab(t)}
-                className={`px-5 py-2 rounded-lg text-sm font-medium transition-colors capitalize ${
-                  tab === t ? "bg-navy text-white" : "text-gray-600 hover:text-primary"
-                }`}
-              >
-                {t}
-              </button>
-            ))}
-          </div>
-
-          {/* Currency */}
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600 font-medium">Currency:</span>
-            <select
-              value={currency}
-              onChange={(e) => setCurrency(e.target.value)}
-              className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white"
-            >
-              <option value="USD">USD</option>
-              {rates?.map((r) => (
-                <option key={r.currency_code} value={r.currency_code}>
-                  {r.currency_code} — {r.currency_name}
-                </option>
+      <FadeIn>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center mb-10">
+            <div className="flex gap-2 bg-white rounded-xl p-1 shadow-sm">
+              {(["all", "books", "merchandise"] as Tab[]).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => setTab(t)}
+                  className={`px-5 py-2 rounded-lg text-sm font-medium transition-colors capitalize ${
+                    tab === t ? "bg-navy text-white" : "text-gray-600 hover:text-primary"
+                  }`}
+                >
+                  {t}
+                </button>
               ))}
-            </select>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600 font-medium">Currency:</span>
+              <select
+                value={currency}
+                onChange={(e) => setCurrency(e.target.value)}
+                className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white"
+              >
+                <option value="USD">USD</option>
+                {rates?.map((r) => (
+                  <option key={r.currency_code} value={r.currency_code}>
+                    {r.currency_code} — {r.currency_name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <div className="space-y-12">
+              {showBooks && books && books.length > 0 && (
+                <div>
+                  <div className="flex items-center gap-2 mb-6">
+                    <BookOpen className="text-primary" size={20} />
+                    <h2 className="text-xl font-bold text-primary">Books</h2>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {books.filter((b) => b.is_available).map((book) => (
+                      <BookCard key={book.id} book={book} price={convertPrice(book.price)} />
+                    ))}
+                  </div>
+                </div>
+              )}
+              {showMerch && merch && merch.length > 0 && (
+                <div>
+                  <div className="flex items-center gap-2 mb-6">
+                    <ShoppingBag className="text-primary" size={20} />
+                    <h2 className="text-xl font-bold text-primary">Merchandise</h2>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {merch.filter((m) => m.is_available).map((item) => (
+                      <MerchCard key={item.id} item={item} price={convertPrice(item.price)} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
-
-        {isLoading ? (
-          <LoadingSpinner />
-        ) : (
-          <div className="space-y-12">
-            {/* Books */}
-            {showBooks && books && books.length > 0 && (
-              <div>
-                <div className="flex items-center gap-2 mb-6">
-                  <BookOpen className="text-primary" size={20} />
-                  <h2 className="text-xl font-bold text-primary">Books</h2>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {books.filter((b) => b.is_available).map((book) => (
-                    <BookCard key={book.id} book={book} price={convertPrice(book.price)} />
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Merchandise */}
-            {showMerch && merch && merch.length > 0 && (
-              <div>
-                <div className="flex items-center gap-2 mb-6">
-                  <ShoppingBag className="text-primary" size={20} />
-                  <h2 className="text-xl font-bold text-primary">Merchandise</h2>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {merch.filter((m) => m.is_available).map((item) => (
-                    <MerchCard key={item.id} item={item} price={convertPrice(item.price)} />
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+      </FadeIn>
     </div>
   );
 }
