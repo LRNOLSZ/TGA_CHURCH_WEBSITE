@@ -74,7 +74,7 @@ class ChurchInfo(models.Model):
     
     # Contact Information
     address = models.TextField()
-    phone = models.CharField(max_length=20)
+    phone = models.TextField(blank=True, null=True, help_text="Phone number(s) separated by commas or new lines")
     email = models.EmailField(blank=True, null=True)
     
     # Mission & Vision
