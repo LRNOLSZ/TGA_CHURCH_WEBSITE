@@ -188,6 +188,8 @@ class ServiceTime(models.Model):
         ('Friday', 'Friday'),
         ('Saturday', 'Saturday'),
         ('Sunday', 'Sunday'),
+        ('Monday-Friday', 'Monday - Friday'),
+        ('Wednesday-Friday', 'Wednesday - Friday'),
     ]
     
     day = models.CharField(
@@ -982,15 +984,26 @@ class Merchandise(models.Model):
         help_text="Email to contact for purchase"
     )
     
+    has_sizes = models.BooleanField(
+        default=False,
+        help_text="Check if this item comes in different sizes (e.g. shirts, hoodies)"
+    )
+    available_sizes = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        help_text="Comma-separated sizes (e.g. S, M, L, XL, XXL). Only used if Has Sizes is checked."
+    )
+
     is_available = models.BooleanField(
         default=True,
         db_index=True,
         help_text="Uncheck to hide this item"
     )
-    
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         ordering = ['-created_at']
         verbose_name = "Merchandise"

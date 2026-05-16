@@ -24,6 +24,7 @@ export default function StorePage() {
 
   function convertPrice(priceUsd: string): string {
     const num = parseFloat(priceUsd);
+    if (num === 0) return "";
     if (!selectedRate || currency === "USD") return `$${num.toFixed(2)}`;
     const converted = num * parseFloat(selectedRate.rate);
     return `${currency} ${converted.toFixed(2)}`;
@@ -74,6 +75,12 @@ export default function StorePage() {
           </div>
           {isLoading ? (
             <LoadingSpinner />
+          ) : !books?.filter((b) => b.is_available).length && !merch?.filter((m) => m.is_available).length ? (
+            <div className="text-center py-24">
+              <ShoppingBag className="mx-auto text-gray-300 mb-4" size={48} />
+              <p className="text-gray-500 font-medium text-lg">No products available yet.</p>
+              <p className="text-gray-400 text-sm mt-1">Check back soon!</p>
+            </div>
           ) : (
             <div className="space-y-12">
               {showBooks && books && books.length > 0 && (
@@ -118,7 +125,7 @@ function BookCard({ book, price }: { book: Book; price: string }) {
       </div>
       <div className="p-5">
         <h3 className="font-bold text-text-main mb-1">{book.name}</h3>
-        <p className="text-accent font-bold text-lg mb-2">{price}</p>
+        {price && <p className="text-accent font-bold text-lg mb-2">{price}</p>}
         <p className="text-gray-500 text-sm mb-4 line-clamp-2">{book.description}</p>
         <div className="flex gap-2 flex-wrap">
           {book.whatsapp_link && (
@@ -140,6 +147,10 @@ function BookCard({ book, price }: { book: Book; price: string }) {
 }
 
 function MerchCard({ item, price }: { item: Merchandise; price: string }) {
+  const sizes = item.has_sizes && item.available_sizes
+    ? item.available_sizes.split(",").map((s) => s.trim()).filter(Boolean)
+    : [];
+
   return (
     <div className="overflow-hidden group">
       <div className="relative h-52 bg-gray-100">
@@ -147,25 +158,38 @@ function MerchCard({ item, price }: { item: Merchandise; price: string }) {
       </div>
       <div className="p-5">
         <h3 className="font-bold text-text-main mb-1">{item.name}</h3>
-        <p className="text-accent font-bold text-lg mb-2">{price}</p>
-        <p className="text-gray-500 text-sm mb-4 line-clamp-2">{item.description}</p>
+        {price && <p className="text-accent font-bold text-lg mb-1">{price}</p>}
+        <p className="text-gray-500 text-sm mb-3 line-clamp-2">{item.description}</p>
+
+        {/* Sizes */}
+        {sizes.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mb-4">
+            {sizes.map((size) => (
+              <span key={size} className="px-2.5 py-0.5 text-xs font-medium border border-navy/30 text-navy rounded-full">
+                {size}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Buy buttons */}
         <div className="flex gap-2 flex-wrap">
           {item.whatsapp_link && (
             <a href={item.whatsapp_link} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-1 px-3 py-1.5 bg-green-500 text-white text-xs font-medium rounded-lg hover:bg-green-600 transition">
-              <MessageCircle size={12} /> WhatsApp
-            </a>
-          )}
-          {item.jiji_link && (
-            <a href={item.jiji_link} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-1 px-3 py-1.5 bg-blue-500 text-white text-xs font-medium rounded-lg hover:bg-blue-600 transition">
-              <ExternalLink size={12} /> Jiji
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-green-500 text-white text-xs font-medium rounded-lg hover:bg-green-600 transition">
+              <MessageCircle size={13} /> Order on WhatsApp
             </a>
           )}
           {item.amazon_link && (
             <a href={item.amazon_link} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-1 px-3 py-1.5 bg-amber-500 text-white text-xs font-medium rounded-lg hover:bg-amber-600 transition">
-              <ExternalLink size={12} /> Amazon
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500 text-white text-xs font-medium rounded-lg hover:bg-amber-600 transition">
+              <ExternalLink size={13} /> Buy on Amazon
+            </a>
+          )}
+          {item.jiji_link && (
+            <a href={item.jiji_link} target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-500 text-white text-xs font-medium rounded-lg hover:bg-blue-600 transition">
+              <ExternalLink size={13} /> Jiji
             </a>
           )}
         </div>

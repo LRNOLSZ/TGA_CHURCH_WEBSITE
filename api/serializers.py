@@ -224,6 +224,7 @@ class MerchandiseSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'name', 'price', 'image', 'description',
             'whatsapp_link', 'jiji_link', 'amazon_link', 'email',
+            'has_sizes', 'available_sizes',
             'is_available', 'created_at', 'updated_at'
         ]
         read_only_fields = ['created_at', 'updated_at']

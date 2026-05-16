@@ -81,9 +81,9 @@ export default function ChurchInfoSection() {
                     >
                       <span
                         className="font-mono text-gold shrink-0"
-                        style={{ fontSize: "12px", minWidth: "54px", textTransform: "uppercase", letterSpacing: "0.08em" }}
+                        style={{ fontSize: "12px", minWidth: "70px", textTransform: "uppercase", letterSpacing: "0.08em" }}
                       >
-                        {st.day.slice(0, 3)}
+                        {st.day.split('-').map(d => d.trim().slice(0, 3)).join('-')}
                       </span>
                       <span
                         className="font-display text-white"

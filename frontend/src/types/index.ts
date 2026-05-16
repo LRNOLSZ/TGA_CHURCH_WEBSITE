@@ -238,6 +238,8 @@ export interface Merchandise {
   jiji_link: string | null;
   amazon_link: string | null;
   email: string | null;
+  has_sizes: boolean;
+  available_sizes: string | null;
   is_available: boolean;
   created_at: string;
   updated_at: string;
