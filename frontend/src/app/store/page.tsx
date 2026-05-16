@@ -130,14 +130,14 @@ function BookCard({ book, price }: { book: Book; price: string }) {
         <div className="flex gap-2 flex-wrap">
           {book.whatsapp_link && (
             <a href={book.whatsapp_link} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-1 px-3 py-1.5 bg-green-500 text-white text-xs font-medium rounded-lg hover:bg-green-600 transition">
-              <MessageCircle size={12} /> WhatsApp
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-green-500 text-white text-xs font-medium rounded-lg hover:bg-green-600 transition">
+              <MessageCircle size={13} /> Order on WhatsApp
             </a>
           )}
           {book.amazon && (
             <a href={book.amazon} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-1 px-3 py-1.5 bg-amber-500 text-white text-xs font-medium rounded-lg hover:bg-amber-600 transition">
-              <ExternalLink size={12} /> Amazon
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500 text-white text-xs font-medium rounded-lg hover:bg-amber-600 transition">
+              <ExternalLink size={13} /> Buy on Amazon
             </a>
           )}
         </div>
