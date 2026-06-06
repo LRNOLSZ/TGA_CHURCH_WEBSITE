@@ -853,7 +853,7 @@ class Book(models.Model):
     price = models.DecimalField(
         max_digits=10,
         decimal_places=2,
-        help_text="Price in dollars (e.g., 19.99)"
+        help_text="Price in Ghana Cedis (e.g., 120.00)"
     )
     image = models.ImageField(
         upload_to='books/',
@@ -950,7 +950,7 @@ class Merchandise(models.Model):
     price = models.DecimalField(
         max_digits=10,
         decimal_places=2,
-        help_text="Price in USD"
+        help_text="Price in Ghana Cedis (e.g., 120.00)"
     )
     image = models.ImageField(
         upload_to='merchandise/',
