@@ -363,12 +363,12 @@ class Sermon(models.Model):
     )
     date = models.DateField(db_index=True)  # PERFORMANCE: Sorting and filtering
     
-    # Video embedding with automatic thumbnail generation
-    video_url = EmbedVideoField(
+    # Video URL — supports regular YouTube, YouTube Live, and Vimeo
+    video_url = models.URLField(
         blank=True,
         null=True,
         verbose_name="Video Link (YouTube, Vimeo)",
-        help_text="Paste YouTube or Vimeo URL - thumbnails are generated automatically"
+        help_text="Paste any YouTube URL including live streams (youtube.com/live/...) or Vimeo URL"
     )
     
     # Optional manual thumbnail override
