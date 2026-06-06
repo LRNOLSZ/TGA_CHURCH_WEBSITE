@@ -35,8 +35,13 @@ export default function ContactForm() {
       await api.post("/api/contact-messages/", data);
       setSubmitted(true);
       reset();
-    } catch {
-      setServerError("Something went wrong. Please try again.");
+    } catch (err: unknown) {
+      const status = (err as { response?: { status?: number } })?.response?.status;
+      if (status === 429) {
+        setServerError("Too many attempts. Please wait a while before trying again.");
+      } else {
+        setServerError("Something went wrong. Please try again.");
+      }
     }
   };
 

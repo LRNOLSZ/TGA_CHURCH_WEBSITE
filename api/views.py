@@ -7,7 +7,7 @@ from rest_framework.throttling import AnonRateThrottle
 
 
 class ContactFormThrottle(AnonRateThrottle):
-    rate = '5/hour'
+    rate = '20/hour'
 from django.db.models import Q
 from django.shortcuts import render
 from django.contrib import admin
