@@ -6,14 +6,14 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import { useFeaturedSermons } from "@/hooks/useSermons";
-import { getImageUrl } from "@/lib/utils";
+import { getImageUrl, extractYouTubeId } from "@/lib/utils";
 import { Sermon } from "@/types";
 
 const PAGE_SIZE = 3;
 
 function getYoutubeThumbnail(videoUrl: string): string | null {
-  const match = videoUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
-  return match ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : null;
+  const id = extractYouTubeId(videoUrl);
+  return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : null;
 }
 
 function SermonCard({ sermon, isCenter }: { sermon: Sermon; isCenter: boolean }) {
