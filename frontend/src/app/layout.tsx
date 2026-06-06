@@ -32,6 +32,10 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tgachurch.org";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+  icons: {
+    icon: "/favicon.png",
+    apple: "/favicon.png",
+  },
   title: {
     default: "TGA Church — Building Faith, Changing Lives",
     template: "%s | TGA Church",

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -36,11 +37,13 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-[72px]">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5">
-            <div
-              className="w-10 h-10 rounded-full bg-navy flex items-center justify-center shrink-0"
-            >
-              <span className="font-display text-gold font-semibold text-lg leading-none">T</span>
-            </div>
+            <Image
+              src="/logo.png"
+              alt="TGA Church Logo"
+              width={44}
+              height={44}
+              className="rounded-full shrink-0"
+            />
             <span className="font-display text-navy font-normal text-[21px] tracking-tight">
               TGA<span className="text-gold">·</span>Church
             </span>
