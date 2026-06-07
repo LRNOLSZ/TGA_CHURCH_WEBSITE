@@ -66,7 +66,7 @@ export default function StorePage() {
                     <BookOpen className="text-primary" size={20} />
                     <h2 className="text-xl font-bold text-primary">Books</h2>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
                     {books.filter((b) => b.is_available).map((book) => (
                       <BookCard key={book.id} book={book} price={formatPrice(book.price)} />
                     ))}
@@ -79,7 +79,7 @@ export default function StorePage() {
                     <ShoppingBag className="text-primary" size={20} />
                     <h2 className="text-xl font-bold text-primary">Merchandise</h2>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
                     {merch.filter((m) => m.is_available).map((item) => (
                       <MerchCard key={item.id} item={item} price={formatPrice(item.price)} />
                     ))}
@@ -100,7 +100,7 @@ function BookCard({ book, price }: { book: Book; price: string }) {
       <div className="relative aspect-[3/4] bg-gray-100">
         <Image src={getImageUrl(book.image)} alt={book.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
       </div>
-      <div className="p-5">
+      <div className="p-3 md:p-5">
         <h3 className="font-bold text-text-main mb-1">{book.name}</h3>
         {price && <p className="text-accent font-bold text-lg mb-2">{price}</p>}
         <p className="text-gray-500 text-sm mb-4 line-clamp-2">{book.description}</p>
@@ -133,7 +133,7 @@ function MerchCard({ item, price }: { item: Merchandise; price: string }) {
       <div className="relative aspect-[3/4] bg-gray-100">
         <Image src={getImageUrl(item.image)} alt={item.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
       </div>
-      <div className="p-5">
+      <div className="p-3 md:p-5">
         <h3 className="font-bold text-text-main mb-1">{item.name}</h3>
         {price && <p className="text-accent font-bold text-lg mb-1">{price}</p>}
         <p className="text-gray-500 text-sm mb-3 line-clamp-2">{item.description}</p>
