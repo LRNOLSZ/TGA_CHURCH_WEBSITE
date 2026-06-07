@@ -63,7 +63,7 @@ export default function HeroBanner() {
             )}
 
             <div className="flex flex-wrap gap-3">
-              <Link href="/about" className="tga-btn-primary">
+              <Link href="/branches" className="tga-btn-primary">
                 Plan a Visit
               </Link>
               <Link href="/sermons" className="tga-btn-ghost">
