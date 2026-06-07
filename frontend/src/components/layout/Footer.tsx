@@ -74,7 +74,7 @@ export default function Footer() {
                 <span className="font-display text-gold font-semibold text-base leading-none">T</span>
               </div>
               <span className="font-display text-white font-normal text-lg tracking-tight">
-                TGA<span className="text-gold">·</span>Church
+                TGA<span className="text-gold">·</span>Global
               </span>
             </div>
             <p className="text-[#a09880] text-sm leading-relaxed mb-5">
@@ -186,7 +186,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-2 pt-5">
           <p className="font-mono text-[11px] text-[#5a5244] uppercase tracking-[0.12em]">
-            © {new Date().getFullYear()} TGA Church. All rights reserved.
+            © {new Date().getFullYear()} TGA Global. All rights reserved.
           </p>
           <p className="font-mono text-[11px] text-[#5a5244] uppercase tracking-[0.12em]">
             Built by{" "}

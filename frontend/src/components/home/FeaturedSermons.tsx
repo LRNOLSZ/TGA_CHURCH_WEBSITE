@@ -9,8 +9,6 @@ import { useFeaturedSermons } from "@/hooks/useSermons";
 import { getImageUrl, extractYouTubeId } from "@/lib/utils";
 import { Sermon } from "@/types";
 
-const PAGE_SIZE = 3;
-
 function getYoutubeThumbnail(videoUrl: string): string | null {
   const id = extractYouTubeId(videoUrl);
   return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : null;
@@ -102,8 +100,6 @@ function SermonCard({ sermon, isCenter }: { sermon: Sermon; isCenter: boolean })
 
 export default function FeaturedSermons() {
   const { data: sermons, isLoading } = useFeaturedSermons();
-  const [page, setPage] = useState(0);
-  const totalPages = Math.ceil((sermons?.length ?? 0) / PAGE_SIZE);
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
@@ -111,17 +107,8 @@ export default function FeaturedSermons() {
     containScroll: false,
   });
 
-  const scrollPrev = useCallback(() => {
-    if (!emblaApi) return;
-    emblaApi.scrollPrev();
-    setPage((p) => (p === 0 ? Math.max(0, totalPages - 1) : p - 1));
-  }, [emblaApi, totalPages]);
-
-  const scrollNext = useCallback(() => {
-    if (!emblaApi) return;
-    emblaApi.scrollNext();
-    setPage((p) => (p + 1) % Math.max(1, totalPages));
-  }, [emblaApi, totalPages]);
+  const scrollPrev = useCallback(() => { emblaApi?.scrollPrev(); }, [emblaApi]);
+  const scrollNext = useCallback(() => { emblaApi?.scrollNext(); }, [emblaApi]);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const onSelect = useCallback(() => {
@@ -136,7 +123,7 @@ export default function FeaturedSermons() {
   }, [emblaApi, onSelect]);
 
   const items = sermons?.slice(0, 6) ?? [];
-  const progress = totalPages > 1 ? (page / (totalPages - 1)) * 100 : 100;
+  const progress = items.length > 1 ? (selectedIndex / (items.length - 1)) * 100 : 100;
 
   return (
     <section style={{ background: "#0b1e3f", paddingTop: "clamp(48px, 8vw, 96px)", paddingBottom: "clamp(48px, 8vw, 96px)" }}>
@@ -159,7 +146,7 @@ export default function FeaturedSermons() {
           {/* Controls */}
           <div className="flex items-center gap-4 shrink-0">
             <span className="font-mono text-[13px]" style={{ color: "#8090aa" }}>
-              {String(page + 1).padStart(2, "0")} / {String(Math.max(1, totalPages)).padStart(2, "0")}
+              {String(selectedIndex + 1).padStart(2, "0")} / {String(Math.max(1, items.length)).padStart(2, "0")}
             </span>
             <button onClick={scrollPrev} className="tga-carousel-btn-dark" aria-label="Previous sermons">
               <ChevronLeft size={18} />

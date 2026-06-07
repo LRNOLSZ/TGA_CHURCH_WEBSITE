@@ -97,7 +97,7 @@ export default function StorePage() {
 function BookCard({ book, price }: { book: Book; price: string }) {
   return (
     <div className="overflow-hidden group">
-      <div className="relative h-52 bg-gray-100">
+      <div className="relative aspect-[3/4] bg-gray-100">
         <Image src={getImageUrl(book.image)} alt={book.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
       </div>
       <div className="p-5">
@@ -130,7 +130,7 @@ function MerchCard({ item, price }: { item: Merchandise; price: string }) {
 
   return (
     <div className="overflow-hidden group">
-      <div className="relative h-52 bg-gray-100">
+      <div className="relative aspect-[3/4] bg-gray-100">
         <Image src={getImageUrl(item.image)} alt={item.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
       </div>
       <div className="p-5">

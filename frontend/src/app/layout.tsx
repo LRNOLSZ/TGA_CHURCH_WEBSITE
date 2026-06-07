@@ -37,25 +37,29 @@ export const metadata: Metadata = {
     apple: "/favicon.png",
   },
   title: {
-    default: "TGA Church — Building Faith, Changing Lives",
-    template: "%s | TGA Church",
+    default: "TGA Global — Building Faith, Changing Lives",
+    template: "%s | TGA Global",
   },
   description:
-    "TGA Church is a Spirit-filled Christian community committed to building faith, changing lives, and serving communities across Ghana.",
-  keywords: ["TGA Church", "church Ghana", "Christian church", "church Accra", "sermons", "worship"],
+    "TGA Global (The Gospel Appraisal) is a Spirit-filled Christian community led by Head Pastor Kelvin Offeh Gyimah, with branches in Ghana (Accra, Kumasi), the USA (Baton Rouge), and Tanzania. Committed to building faith, changing lives, and serving communities worldwide.",
+  keywords: [
+    "TGA Global", "TGA", "The Gospel Appraisal",
+    "church Ghana", "Christian church", "church Accra", "church Kumasi",
+    "sermons", "worship", "Pastor Kelvin Offeh Gyimah",
+  ],
   openGraph: {
     type: "website",
-    siteName: "TGA Church",
-    title: "TGA Church — Building Faith, Changing Lives",
+    siteName: "TGA Global",
+    title: "TGA Global — Building Faith, Changing Lives",
     description:
-      "TGA Church is a Spirit-filled Christian community committed to building faith, changing lives, and serving communities across Ghana.",
+      "TGA Global (The Gospel Appraisal) is a Spirit-filled Christian community led by Head Pastor Kelvin Offeh Gyimah, with branches in Ghana (Accra, Kumasi), the USA (Baton Rouge), and Tanzania. Committed to building faith, changing lives, and serving communities worldwide.",
     url: siteUrl,
   },
   twitter: {
     card: "summary_large_image",
-    title: "TGA Church — Building Faith, Changing Lives",
+    title: "TGA Global — Building Faith, Changing Lives",
     description:
-      "TGA Church is a Spirit-filled Christian community committed to building faith, changing lives, and serving communities across Ghana.",
+      "TGA Global (The Gospel Appraisal) is a Spirit-filled Christian community led by Head Pastor Kelvin Offeh Gyimah, with branches in Ghana (Accra, Kumasi), the USA (Baton Rouge), and Tanzania. Committed to building faith, changing lives, and serving communities worldwide.",
   },
   robots: {
     index: true,
@@ -66,11 +70,17 @@ export const metadata: Metadata = {
 const churchSchema = {
   "@context": "https://schema.org",
   "@type": "Church",
-  name: "TGA Church",
+  name: "TGA Global",
   url: siteUrl,
   description:
-    "TGA Church is a Spirit-filled Christian community committed to building faith, changing lives, and serving communities across Ghana.",
-  sameAs: [],
+    "TGA Global (The Gospel Appraisal) is a Spirit-filled Christian community led by Head Pastor Kelvin Offeh Gyimah, with branches in Ghana (Accra, Kumasi), the USA (Baton Rouge), and Tanzania. Committed to building faith, changing lives, and serving communities worldwide.",
+  sameAs: [
+    "https://youtube.com/@t_gbn",
+    "https://www.tiktok.com/@p_k_o_g",
+    "https://pkog.net",
+    "https://www.instagram.com/p_k_o_g_",
+    "https://www.instagram.com/tgag_lobal",
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
