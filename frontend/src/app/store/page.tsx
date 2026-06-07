@@ -50,6 +50,13 @@ export default function StorePage() {
               </button>
             ))}
           </div>
+          {/* Purchase instructions */}
+          <div className="bg-navy/5 border border-navy/15 rounded-xl p-4 md:p-5 mb-8 text-sm text-gray-700 space-y-2">
+            <p className="font-semibold text-navy text-base mb-3">How to Purchase</p>
+            <p>🇬🇭 <span className="font-medium">Ghana &amp; Africa:</span> Call or WhatsApp us on <span className="font-semibold text-navy">+233 XX XXX XXXX</span> to place your order and arrange delivery.</p>
+            <p>🌍 <span className="font-medium">Americas, Europe &amp; elsewhere:</span> Purchase directly via the Amazon link provided on each product.</p>
+          </div>
+
           {isLoading ? (
             <LoadingSpinner />
           ) : !books?.filter((b) => b.is_available).length && !merch?.filter((m) => m.is_available).length ? (
@@ -96,7 +103,7 @@ export default function StorePage() {
 
 function BookCard({ book, price }: { book: Book; price: string }) {
   return (
-    <div className="overflow-hidden group">
+    <div className="overflow-hidden group rounded-xl shadow-sm border border-gray-100">
       <div className="relative aspect-[3/4] bg-gray-100">
         <Image src={getImageUrl(book.image)} alt={book.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
       </div>
@@ -129,7 +136,7 @@ function MerchCard({ item, price }: { item: Merchandise; price: string }) {
     : [];
 
   return (
-    <div className="overflow-hidden group">
+    <div className="overflow-hidden group rounded-xl shadow-sm border border-gray-100">
       <div className="relative aspect-[3/4] bg-gray-100">
         <Image src={getImageUrl(item.image)} alt={item.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
       </div>
