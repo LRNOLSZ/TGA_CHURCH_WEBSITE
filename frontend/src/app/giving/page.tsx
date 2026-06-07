@@ -57,7 +57,7 @@ export default function GivingPage() {
           <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {giving.images.map((img) => (
-                <div key={img.id} className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-sm">
+                <div key={img.id} className="relative aspect-square rounded-xl overflow-hidden shadow-sm">
                   <Image src={getImageUrl(img.image)} alt={img.caption || "Giving"} fill className="object-cover" />
                   {img.caption && (
                     <div className="absolute bottom-0 inset-x-0 bg-dark/60 text-white text-xs p-2">{img.caption}</div>
