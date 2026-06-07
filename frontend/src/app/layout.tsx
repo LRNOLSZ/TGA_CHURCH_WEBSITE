@@ -5,6 +5,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import QueryProvider from "@/providers/QueryProvider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -99,6 +100,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
         </QueryProvider>
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
