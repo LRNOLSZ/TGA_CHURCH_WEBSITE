@@ -147,7 +147,7 @@ python manage.py migrate
 
 ## License
 
-Proprietary - TGA Church
+Proprietary - Lemuel
 
 ## Support
 
@@ -155,4 +155,4 @@ For issues or questions, refer to the documentation or contact the development t
 
 ---
 
-**Last Updated:** January 2026
+**Last Updated:** June 2026
