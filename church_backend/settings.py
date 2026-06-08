@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',  # Token authentication
     'corsheaders',
     'embed_video',
+    'axes',
     'api',
 ]
 
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'axes.middleware.AxesMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'api.audit_middleware.AuditLoggingMiddleware',  # Audit logging
@@ -179,6 +181,22 @@ CORS_ALLOWED_ORIGINS = config(
 # Additional security settings
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+
+# ====================================================================
+# AUTHENTICATION BACKENDS
+# ====================================================================
+AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesStandaloneBackend',  # Must be first
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+# ====================================================================
+# AXES — ADMIN LOGIN BRUTE-FORCE PROTECTION
+# ====================================================================
+AXES_FAILURE_LIMIT = 12         # Lock after 12 failed attempts
+AXES_COOLOFF_TIME = 1           # Auto-unlock after 1 hour
+AXES_RESET_ON_SUCCESS = True    # Reset counter after successful login
+AXES_LOCKOUT_PARAMETERS = ["ip_address"]  # Lock by IP address
 
 # ====================================================================
 # REST FRAMEWORK CONFIGURATION
