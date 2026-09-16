@@ -15,7 +15,7 @@ export default function EventCard({ event }: { event: Event }) {
       }}
     >
       {/* Image */}
-      <div className="relative overflow-hidden" style={{ height: "192px", background: "#e9e1cf" }}>
+      <div className="relative overflow-hidden" style={{ height: "269px", background: "#e9e1cf" }}>
         <Image
           src={getImageUrl(event.image)}
           alt={event.title}

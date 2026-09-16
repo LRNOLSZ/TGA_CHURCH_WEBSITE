@@ -24,8 +24,8 @@ function EventCard({ event, isCenter }: { event: Event; isCenter: boolean }) {
         overflow: "hidden",
       }}
     >
-      {/* 4:3 image */}
-      <div className="relative w-full" style={{ aspectRatio: "4/3", background: "#e9e1cf" }}>
+      {/* image — 25% taller than 4:3 */}
+      <div className="relative w-full" style={{ aspectRatio: "16/15", background: "#e9e1cf" }}>
         {event.image ? (
           <Image
             src={getImageUrl(event.image)}
