@@ -26,7 +26,7 @@ export default function LeadershipPage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {leaders.map((leader) => (
-                <div key={leader.id} className="overflow-hidden group">
+                <div key={leader.id} className="overflow-hidden group rounded-xl shadow-sm border border-gray-100">
                   <div className="relative aspect-[4/5] bg-gray-100">
                     <Image
                       src={getImageUrl(leader.profile_picture)}
