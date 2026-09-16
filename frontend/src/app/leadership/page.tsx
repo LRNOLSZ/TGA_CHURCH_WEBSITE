@@ -27,12 +27,12 @@ export default function LeadershipPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {leaders.map((leader) => (
                 <div key={leader.id} className="overflow-hidden group">
-                  <div className="relative h-64 bg-gray-100">
+                  <div className="relative aspect-[4/5] bg-gray-100">
                     <Image
                       src={getImageUrl(leader.profile_picture)}
                       alt={leader.full_name}
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-dark/70 to-transparent" />
                     <div className="absolute bottom-4 left-4 text-white">
