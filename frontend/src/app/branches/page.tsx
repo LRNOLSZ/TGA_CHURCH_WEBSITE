@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useBranches } from "@/hooks/useBranches";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -15,6 +16,14 @@ import BranchesGlobeLoader from "@/components/branches/BranchesGlobeLoader";
 import type { ContinentCode } from "@/types";
 
 export default function BranchesPage() {
+  return (
+    <Suspense fallback={<LoadingSpinner className="min-h-screen" />}>
+      <BranchesContent />
+    </Suspense>
+  );
+}
+
+function BranchesContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
