@@ -50,6 +50,7 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.MIGRATE_HEADING("Starting database seed..."))
 
+        self.seed_countries_regions()
         self.seed_branches()
         self.seed_church_info()
         self.seed_head_pastor()
@@ -102,17 +103,37 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(msg))
 
     # ------------------------------------------------------------------
+    # COUNTRIES & REGIONS  (must be before Branches — FK used by Branch)
+    # ------------------------------------------------------------------
+    def seed_countries_regions(self):
+        from api.models import Country, Region
+        ghana, created = Country.objects.get_or_create(name="Ghana", defaults={"continent": "AF"})
+        for region_name in ["Greater Accra", "Ashanti", "Western"]:
+            Region.objects.get_or_create(country=ghana, name=region_name)
+        if created:
+            self.ok("Countries & Regions")
+        else:
+            self.stdout.write("  – Countries & Regions already exist, skipping.")
+
+    # ------------------------------------------------------------------
     # BRANCHES  (must be first — FK used by Event & ServiceTime)
     # ------------------------------------------------------------------
     def seed_branches(self):
-        from api.models import Branch
+        from api.models import Branch, Country, Region
         if Branch.objects.exists():
             self.stdout.write(f"  – Branches already exist, skipping.")
             return
 
+        ghana = Country.objects.get(name="Ghana")
+        greater_accra = Region.objects.get(country=ghana, name="Greater Accra")
+        ashanti = Region.objects.get(country=ghana, name="Ashanti")
+        western = Region.objects.get(country=ghana, name="Western")
+
         branches = [
             dict(
                 name="TGA Accra Central",
+                country=ghana,
+                region=greater_accra,
                 location="14 Liberation Road, Accra, Ghana",
                 phone="+233 20 123 4567",
                 email="accra@tgachurch.org",
@@ -122,6 +143,8 @@ class Command(BaseCommand):
             ),
             dict(
                 name="TGA Kumasi Branch",
+                country=ghana,
+                region=ashanti,
                 location="25 Adum Street, Kumasi, Ghana",
                 phone="+233 24 765 4321",
                 email="kumasi@tgachurch.org",
@@ -131,6 +154,8 @@ class Command(BaseCommand):
             ),
             dict(
                 name="TGA Takoradi Branch",
+                country=ghana,
+                region=western,
                 location="3 Harbour Road, Takoradi, Ghana",
                 phone="+233 27 555 8888",
                 email="takoradi@tgachurch.org",

@@ -8,20 +8,20 @@ from rest_framework.throttling import AnonRateThrottle
 
 class ContactFormThrottle(AnonRateThrottle):
     rate = '20/hour'
-from django.db.models import Q
+from django.db.models import Q, Count, Exists, OuterRef
 from django.shortcuts import render
 from django.contrib import admin
 from django.http import JsonResponse
 
 from .models import (
     HomeBanner, ChurchInfo, HeadPastor, ServiceTime,
-    Leader, PhotoGallery, Sermon, Event, Branch,
+    Leader, PhotoGallery, Sermon, Event, Branch, Country, Region,
     GivingInfo, GivingImage, ImageLog, ContactMessage, Testimony, Book, ExchangeRate, Merchandise
 )
 from .serializers import (
     HomeBannerSerializer, ChurchInfoSerializer, HeadPastorSerializer, ServiceTimeSerializer,
     LeaderSerializer, PhotoGallerySerializer, SermonSerializer, EventSerializer,
-    BranchSerializer, GivingInfoSerializer, GivingImageSerializer,
+    BranchSerializer, CountryListSerializer, RegionListSerializer, GivingInfoSerializer, GivingImageSerializer,
     ContactMessageSerializer, TestimonySerializer, BookSerializer,
     MerchandiseSerializer, ExchangeRateSerializer, ImageLogSerializer
 )
@@ -352,6 +352,9 @@ class BranchViewSet(viewsets.ModelViewSet):
     
     Query params:
     - main: Filter main branch (true/false)
+    - continent: Filter by continent code (e.g. AF)
+    - country: Filter by country ID
+    - region: Filter by region ID
     - search: Search by name or location
     """
     queryset = Branch.objects.all()
@@ -362,15 +365,67 @@ class BranchViewSet(viewsets.ModelViewSet):
     search_fields = ['name', 'location']
     ordering_fields = ['is_main_branch', 'name']
     ordering = ['-is_main_branch', 'name']
-    
+
     def get_queryset(self):
-        queryset = Branch.objects.all()
+        queryset = Branch.objects.select_related('country', 'region').all()
         main = self.request.query_params.get('main', None)
-        
+        continent = self.request.query_params.get('continent', None)
+        country = self.request.query_params.get('country', None)
+        region = self.request.query_params.get('region', None)
+
         if main is not None:
             main = main.lower() == 'true'
             queryset = queryset.filter(is_main_branch=main)
-        
+        if continent is not None:
+            queryset = queryset.filter(country__continent=continent)
+        if country is not None:
+            queryset = queryset.filter(country_id=country)
+        if region is not None:
+            queryset = queryset.filter(region_id=region)
+
+        return queryset
+
+
+class CountryViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Read-only ViewSet exposing countries with branches, for the
+    Continent -> Country -> Region -> Branches drill-down.
+
+    Query params:
+    - continent: Filter by continent code (e.g. AF)
+    """
+    serializer_class = CountryListSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    pagination_class = None
+
+    def get_queryset(self):
+        queryset = Country.objects.annotate(
+            branch_count=Count('branches', distinct=True),
+            has_regions=Exists(Region.objects.filter(country=OuterRef('pk'))),
+        )
+        continent = self.request.query_params.get('continent', None)
+        if continent is not None:
+            queryset = queryset.filter(continent=continent)
+        return queryset
+
+
+class RegionViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Read-only ViewSet exposing regions with branches, for the
+    Continent -> Country -> Region -> Branches drill-down.
+
+    Query params:
+    - country: Filter by country ID
+    """
+    serializer_class = RegionListSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    pagination_class = None
+
+    def get_queryset(self):
+        queryset = Region.objects.annotate(branch_count=Count('branches', distinct=True))
+        country = self.request.query_params.get('country', None)
+        if country is not None:
+            queryset = queryset.filter(country_id=country)
         return queryset
 
 

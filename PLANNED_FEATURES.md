@@ -4,7 +4,7 @@ Logged 2026-09-16. Nothing here has been built yet — for terminal Claude to pl
 
 ---
 
-## 1. Intro logo animation (splash video)
+## 1. Intro logo animation (splash video) — DONE
 - 6-second logo animation plays on first visit, then transitions to the landing page
 - Assets ready: 9:16 (portrait/mobile) and 16:9 (landscape/desktop) versions
 - Requirements:
@@ -15,17 +15,31 @@ Logged 2026-09-16. Nothing here has been built yet — for terminal Claude to pl
   - Pick aspect ratio by viewport orientation, not device type
   - Keep file size small (compressed mp4/webm, target <2-3MB) — a heavy intro video will hurt LCP/Core Web Vitals and SEO if not handled carefully
 
-## 2. Leadership page — image section height
+## 2. Leadership page — image section height — DONE
 - Current image container is cutting off uploaded leadership photos
 - Increase height / fix `object-fit`/`aspect-ratio` so images aren't cropped
 
 ## 3. Branches section — drill-down hierarchy
-- Restructure from flat list to: Continent → Country → Branches
-- Within a country, split further into "places with regions" vs "places without regions" so users don't have to search blindly
-- Applies to all continents, not just Africa/Ghana
-- Note: this is the biggest item — needs a data model change (Branch needs continent/country/region structure), migration of existing branch data, admin updates, and multi-level frontend navigation (breadcrumbs). Should be scoped as its own phase with a schema plan before frontend work starts.
 
-### Phase 2 (visual upgrade, after schema/data model is done): decorative rotating globe
+### Phase 1 — DONE
+- Restructured from flat list to: Continent → Country → Region (optional) → Branches
+- Ghana seeded with 3 real regions (Greater Accra, Ashanti, Western), all editable in Django admin
+- New `Country`/`Region` models, `Branch.country`/`Branch.region` FKs (migrations 0017-0021)
+- New `CountryViewSet`/`RegionViewSet` endpoints (`/api/countries/`, `/api/regions/`) with `?continent=`/`?country=` filters and annotated `branch_count`/`has_regions`
+- `BranchViewSet` extended with `?continent=`/`?country=`/`?region=` filters
+- Frontend `/branches` rewritten as a URL-param-driven drill-down (`ContinentGrid` → `CountryList` → `RegionOrBranchList`) with breadcrumbs; Main Branch stays pinned at top always
+- All 7 continents always shown, even with zero branches
+- Backend tests added for hierarchy filtering (14 new tests, all passing in isolation)
+
+### Phase 2 — DONE: decorative rotating globe
+- Built with `cobe` v2 (canvas/WebGL, imperative `.update()` API driven by our own `requestAnimationFrame` loop)
+- `Country` model got auto-populated `latitude`/`longitude` (migrations 0022-0023) via a `pre_save` signal + a static offline reference dataset (`api/country_coordinates.py`, ~195 countries, commonly-used names incl. Taiwan/Kosovo/Western Sahara). `Country.name` is now a `choices` dropdown in admin — no manual coordinate entry, ever, and no typo risk.
+- Frontend: `BranchesGlobe.tsx` (canvas + rotation/pin animation), lazy-loaded via `next/dynamic` + a new `useInView` IntersectionObserver hook so the `cobe` chunk never loads until the globe scrolls into view
+- Idle auto-rotation → eased ~1.2s rotation to continent centroid (shortest-path, ease-in-out cubic) → pulsing gold pin + name badge on country selection (spring scale-in, no re-rotation) → crossfade on country switch → fade-then-rotate on continent switch
+- Antarctica rotates to a polar view (no pin) for consistency with the penguin easter egg
+- Placed as a full-width navy band between the hero header and the continent picker on `/branches`
+
+### Original Phase 2 planning notes (superseded by the above, kept for history):
 - Globe is purely decorative/reactive — NOT clickable itself. All selection happens via real buttons/list items (continent buttons, then a country list). This avoids raycasting/hit-testing on 3D geometry entirely.
 - Library: lightweight canvas dot-matrix globe (e.g. `cobe`, ~5KB) — NOT a full WebGL polygon-rendering globe (`react-globe.gl`/three.js, ~500KB+). No country border/outline data needed.
 - Country selection is shown via a **pin marker + pulsing glow** at the country's lat/lng, not a full country-shape highlight. Rationale (compared side by side): a pin needs only one coordinate per country (cheap, easy to maintain when new branches/countries are added), vs. full outline highlighting which needs a GeoJSON/TopoJSON boundary dataset plus fragile name-matching between the DB's country field and the dataset (e.g. "USA" vs "United States of America"). Pin gets ~80% of the visual payoff for a fraction of the cost/risk, and fits the fact that selection is already list-driven, not exploratory map-clicking.

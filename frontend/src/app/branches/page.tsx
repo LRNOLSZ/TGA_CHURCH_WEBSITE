@@ -1,18 +1,69 @@
 "use client";
 
-import Image from "next/image";
-import { MapPin, Phone, Mail, User, ExternalLink, Clock } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useBranches } from "@/hooks/useBranches";
-import { getImageUrl } from "@/lib/utils";
 import SectionHeader from "@/components/ui/SectionHeader";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import FadeIn from "@/components/ui/FadeIn";
+import Breadcrumb, { Crumb } from "@/components/ui/Breadcrumb";
+import BranchCard from "@/components/branches/BranchCard";
+import ContinentGrid, { CONTINENTS } from "@/components/branches/ContinentGrid";
+import CountryList from "@/components/branches/CountryList";
+import RegionOrBranchList from "@/components/branches/RegionOrBranchList";
+import AntarcticaEasterEgg from "@/components/branches/AntarcticaEasterEgg";
+import BranchesGlobeLoader from "@/components/branches/BranchesGlobeLoader";
+import type { ContinentCode } from "@/types";
 
 export default function BranchesPage() {
-  const { data: branches, isLoading } = useBranches();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const main = branches?.find((b) => b.is_main_branch);
-  const others = branches?.filter((b) => !b.is_main_branch) ?? [];
+  const continent = searchParams.get("continent") as ContinentCode | null;
+  const countryId = searchParams.get("country");
+  const countryName = searchParams.get("countryName");
+  const regionId = searchParams.get("region");
+  const regionName = searchParams.get("regionName");
+  const lat = searchParams.get("lat");
+  const lng = searchParams.get("lng");
+
+  const { data: mainBranchList, isLoading: mainLoading } = useBranches({ main: true });
+  const main = mainBranchList?.[0];
+
+  const globeCountry =
+    continent !== "AN" && countryId && countryName && lat && lng
+      ? { lat: Number(lat), lng: Number(lng), name: countryName }
+      : null;
+
+  const navigateTo = (params: Record<string, string | undefined>) => {
+    const next = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value) next.set(key, value);
+    });
+    router.push(`/branches?${next.toString()}`);
+  };
+
+  const continentLabel = CONTINENTS.find((c) => c.code === continent)?.label;
+
+  const crumbs: Crumb[] = [
+    { label: "All Continents", onClick: continent ? () => navigateTo({}) : undefined },
+  ];
+  if (continent) {
+    crumbs.push({
+      label: continentLabel ?? continent,
+      onClick: countryId ? () => navigateTo({ continent }) : undefined,
+    });
+  }
+  if (continent && countryId && countryName) {
+    crumbs.push({
+      label: countryName,
+      onClick: regionId
+        ? () => navigateTo({ continent, country: countryId, countryName, lat: lat ?? undefined, lng: lng ?? undefined })
+        : undefined,
+    });
+  }
+  if (regionId && regionName) {
+    crumbs.push({ label: regionName });
+  }
 
   return (
     <div className="bg-bg min-h-screen">
@@ -20,114 +71,69 @@ export default function BranchesPage() {
         <SectionHeader title="Our Branches" subtitle="Find a TGA Church near you" light />
       </div>
 
+      <div className="bg-navy-2 py-12">
+        <BranchesGlobeLoader continent={continent} country={globeCountry} />
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {isLoading ? (
+        {/* Main Branch — always pinned at the top */}
+        {mainLoading ? (
           <LoadingSpinner />
         ) : (
-          <>
-            {/* Main Branch */}
-            {main && (
-              <FadeIn>
-                <div className="mb-12">
-                  <div className="flex items-center gap-2 mb-6">
-                    <span className="bg-accent text-white text-xs font-bold px-3 py-1 rounded-full uppercase">Main Branch</span>
-                  </div>
-                  <BranchCard branch={main} featured />
+          main && (
+            <FadeIn>
+              <div className="mb-16">
+                <div className="flex items-center gap-2 mb-6">
+                  <span className="bg-accent text-white text-xs font-bold px-3 py-1 rounded-full uppercase">Main Branch</span>
                 </div>
-              </FadeIn>
-            )}
-
-            {/* Other Branches */}
-            {others.length > 0 && (
-              <FadeIn delay={0.1}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {others.map((branch) => (
-                    <BranchCard key={branch.id} branch={branch} />
-                  ))}
-                </div>
-              </FadeIn>
-            )}
-
-            {!branches?.length && (
-              <p className="text-center text-gray-500 py-20">No branches found.</p>
-            )}
-          </>
+                <BranchCard branch={main} featured />
+              </div>
+            </FadeIn>
+          )
         )}
-      </div>
-    </div>
-  );
-}
 
-function BranchCard({ branch, featured = false }: { branch: import("@/types").Branch; featured?: boolean }) {
-  return (
-    <div className={`overflow-hidden ${featured ? "border-2 border-accent" : ""}`}>
-      {branch.image && (
-        <div className="relative h-56 rounded-xl overflow-hidden group transition-shadow duration-300 hover:shadow-[0_0_20px_4px_rgba(212,175,55,0.5)]">
-          <Image src={getImageUrl(branch.image)} alt={branch.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
-          <div className="absolute inset-0 bg-gradient-to-t from-dark/60 to-transparent" />
-          <div className="absolute bottom-4 left-4 text-white">
-            <h3 className="text-xl font-bold">{branch.name}</h3>
-          </div>
-        </div>
-      )}
+        <FadeIn delay={0.1}>
+          <Breadcrumb crumbs={crumbs} />
 
-      <div className="p-6">
-        {!branch.image && <h3 className="text-xl font-bold text-primary mb-4">{branch.name}</h3>}
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div className="space-y-2 text-sm text-gray-600">
-            <div className="flex items-start gap-2">
-              <MapPin size={15} className="text-accent mt-0.5 shrink-0" />
-              <span>{branch.location}</span>
-            </div>
-            {branch.phone && (
-              <div className="flex items-center gap-2">
-                <Phone size={15} className="text-accent shrink-0" />
-                <a href={`tel:${branch.phone}`} className="hover:text-primary transition">{branch.phone}</a>
-              </div>
-            )}
-            {branch.email && (
-              <div className="flex items-center gap-2">
-                <Mail size={15} className="text-accent shrink-0" />
-                <a href={`mailto:${branch.email}`} className="hover:text-primary transition">{branch.email}</a>
-              </div>
-            )}
-            {branch.pastor_in_charge && (
-              <div className="flex items-center gap-2">
-                <User size={15} className="text-accent shrink-0" />
-                <span>{branch.pastor_in_charge}</span>
-              </div>
-            )}
-          </div>
-
-          {/* Service Times */}
-          {branch.service_times?.length > 0 && (
-            <div>
-              <h4 className="text-sm font-semibold text-primary mb-2 flex items-center gap-1">
-                <Clock size={13} /> Service Times
-              </h4>
-              <ul className="space-y-1 text-sm text-gray-600">
-                {branch.service_times.filter((st) => st.is_active).map((st) => (
-                  <li key={st.id} className="flex justify-between">
-                    <span className="font-medium">{st.day}</span>
-                    <span>{st.time} — {st.service_type}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          {!continent && (
+            <ContinentGrid onSelect={(code) => navigateTo({ continent: code })} />
           )}
-        </div>
 
-        {branch.google_maps_url && (
-          <a
-            href={branch.google_maps_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-blue-800 transition"
-          >
-            <MapPin size={14} /> View on Google Maps <ExternalLink size={13} />
-          </a>
-        )}
+          {continent === "AN" && <AntarcticaEasterEgg />}
+
+          {continent && continent !== "AN" && !countryId && (
+            <CountryList
+              continent={continent}
+              onSelect={(id, name, selectedLat, selectedLng) =>
+                navigateTo({
+                  continent,
+                  country: String(id),
+                  countryName: name,
+                  lat: selectedLat != null ? String(selectedLat) : undefined,
+                  lng: selectedLng != null ? String(selectedLng) : undefined,
+                })
+              }
+            />
+          )}
+
+          {continent && countryId && (
+            <RegionOrBranchList
+              countryId={Number(countryId)}
+              regionId={regionId ? Number(regionId) : undefined}
+              onSelectRegion={(id, name) =>
+                navigateTo({
+                  continent,
+                  country: countryId,
+                  countryName: countryName ?? undefined,
+                  lat: lat ?? undefined,
+                  lng: lng ?? undefined,
+                  region: String(id),
+                  regionName: name,
+                })
+              }
+            />
+          )}
+        </FadeIn>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import (
     HomeBanner, ChurchInfo, HeadPastor, ServiceTime,
-    Leader, PhotoGallery, Sermon, Event, Branch,
+    Leader, PhotoGallery, Sermon, Event, Branch, Country, Region,
     GivingInfo, GivingImage, ImageLog, ContactMessage, Testimony, Book, ExchangeRate, Merchandise
 )
 
@@ -126,22 +126,61 @@ class EventSerializer(serializers.ModelSerializer):
 # BRANCHES SERIALIZERS
 # ====================================================================
 
+class CountrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Country
+        fields = ['id', 'name', 'continent', 'latitude', 'longitude']
+
+
+class RegionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Region
+        fields = ['id', 'name', 'country']
+
+
+class CountryListSerializer(CountrySerializer):
+    """Adds annotated counts for the drill-down hierarchy endpoint."""
+    branch_count = serializers.IntegerField(read_only=True)
+    has_regions = serializers.BooleanField(read_only=True)
+
+    class Meta(CountrySerializer.Meta):
+        fields = CountrySerializer.Meta.fields + ['branch_count', 'has_regions']
+
+
+class RegionListSerializer(RegionSerializer):
+    """Adds annotated branch count for the drill-down hierarchy endpoint."""
+    branch_count = serializers.IntegerField(read_only=True)
+
+    class Meta(RegionSerializer.Meta):
+        fields = RegionSerializer.Meta.fields + ['branch_count']
+
+
 class BranchSerializer(serializers.ModelSerializer):
     """Serializer for church branches"""
     service_times = ServiceTimeSerializer(many=True, read_only=True)
     events_count = serializers.SerializerMethodField()
-    
+    country = CountrySerializer(read_only=True)
+    country_id = serializers.PrimaryKeyRelatedField(
+        source='country', queryset=Country.objects.all(), write_only=True
+    )
+    region = RegionSerializer(read_only=True)
+    region_id = serializers.PrimaryKeyRelatedField(
+        source='region', queryset=Region.objects.all(), write_only=True,
+        required=False, allow_null=True
+    )
+
     class Meta:
         model = Branch
         fields = [
             'id', 'name', 'location', 'phone', 'email',
             'pastor_in_charge', 'service_time', 'image',
             'google_maps_url', 'is_main_branch',
+            'country', 'country_id', 'region', 'region_id',
             'service_times', 'events_count',
             'created_at', 'updated_at'
         ]
         read_only_fields = ['created_at', 'updated_at']
-    
+
     def get_events_count(self, obj):
         return obj.events.filter(is_active=True).count()
 

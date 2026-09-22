@@ -140,6 +140,31 @@ export interface Event {
 // ============================================================
 // BRANCHES
 // ============================================================
+export type ContinentCode = "AF" | "AS" | "EU" | "NA" | "SA" | "OC" | "AN";
+
+export interface Country {
+  id: number;
+  name: string;
+  continent: ContinentCode;
+  latitude: number | null;
+  longitude: number | null;
+}
+
+export interface CountrySummary extends Country {
+  branch_count: number;
+  has_regions: boolean;
+}
+
+export interface Region {
+  id: number;
+  name: string;
+  country: number;
+}
+
+export interface RegionSummary extends Region {
+  branch_count: number;
+}
+
 export interface Branch {
   id: number;
   name: string;
@@ -151,6 +176,8 @@ export interface Branch {
   image: string | null;
   google_maps_url: string | null;
   is_main_branch: boolean;
+  country: Country;
+  region: Region | null;
   service_times: ServiceTime[];
   events_count: number;
   created_at: string;

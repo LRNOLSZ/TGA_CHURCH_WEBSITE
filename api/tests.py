@@ -9,7 +9,7 @@ import threading
 
 from .models import (
     HomeBanner, ChurchInfo, HeadPastor, ServiceTime,
-    Leader, PhotoGallery, Sermon, Event, Branch,
+    Leader, PhotoGallery, Sermon, Event, Branch, Country, Region,
     GivingInfo, GivingImage, ContactMessage, Testimony, Book, ExchangeRate, Merchandise
 )
 
@@ -155,8 +155,10 @@ class BranchModelTest(TestCase):
     """Test Branch model"""
     
     def setUp(self):
+        self.country, _ = Country.objects.get_or_create(name="Ghana", defaults={"continent": "AF"})
         self.branch = Branch.objects.create(
             name="Main Branch",
+            country=self.country,
             location="123 Main St",
             phone="555-1234",
             email="main@church.com",
@@ -292,8 +294,12 @@ class BranchAPITest(APITestCase):
     
     def setUp(self):
         self.client = APIClient()
+        self.ghana, _ = Country.objects.get_or_create(name="Ghana", defaults={"continent": "AF"})
+        self.greater_accra, _ = Region.objects.get_or_create(country=self.ghana, name="Greater Accra")
         self.branch = Branch.objects.create(
             name="Main Campus",
+            country=self.ghana,
+            region=self.greater_accra,
             location="123 Main St",
             phone="555-1234",
             email="main@church.com",
@@ -301,17 +307,17 @@ class BranchAPITest(APITestCase):
             service_time="Sundays 9am",
             is_main_branch=True
         )
-    
+
     def test_get_branches_list(self):
         """Test GET /api/branches/"""
         response = self.client.get('/api/branches/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-    
+
     def test_get_main_branch(self):
         """Test filtering for main branch"""
         response = self.client.get('/api/branches/?main=true')
         self.assertEqual(len(response.data['results']), 1)
-    
+
     def test_branch_detail_includes_service_times(self):
         """Test that branch detail includes service times"""
         ServiceTime.objects.create(
@@ -322,6 +328,76 @@ class BranchAPITest(APITestCase):
         )
         response = self.client.get(f'/api/branches/{self.branch.id}/')
         self.assertIn('service_times', response.data)
+
+    def test_filter_branches_by_continent(self):
+        """Test GET /api/branches/?continent=AF"""
+        response = self.client.get('/api/branches/?continent=AF')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data['results']), 1)
+
+    def test_filter_branches_by_country(self):
+        """Test GET /api/branches/?country=<id>"""
+        response = self.client.get(f'/api/branches/?country={self.ghana.id}')
+        self.assertEqual(len(response.data['results']), 1)
+
+    def test_filter_branches_by_region(self):
+        """Test GET /api/branches/?region=<id>"""
+        response = self.client.get(f'/api/branches/?region={self.greater_accra.id}')
+        self.assertEqual(len(response.data['results']), 1)
+
+    def test_filter_branches_by_other_region_excludes(self):
+        """Branches in a different region should not appear"""
+        other_region, _ = Region.objects.get_or_create(country=self.ghana, name="Ashanti")
+        response = self.client.get(f'/api/branches/?region={other_region.id}')
+        self.assertEqual(len(response.data['results']), 0)
+
+
+class CountryRegionAPITest(APITestCase):
+    """Test Country/Region hierarchy endpoints"""
+
+    def setUp(self):
+        self.client = APIClient()
+        self.ghana, _ = Country.objects.get_or_create(name="Ghana", defaults={"continent": "AF"})
+        self.nigeria = Country.objects.create(name="Nigeria", continent="AF")
+        self.greater_accra, _ = Region.objects.get_or_create(country=self.ghana, name="Greater Accra")
+        Branch.objects.create(
+            name="Accra Branch", country=self.ghana, region=self.greater_accra,
+            location="Accra", phone="000", pastor_in_charge="Pastor A",
+            service_time="Sundays 9am"
+        )
+        Branch.objects.create(
+            name="Lagos Branch", country=self.nigeria,
+            location="Lagos", phone="000", pastor_in_charge="Pastor B",
+            service_time="Sundays 9am"
+        )
+
+    def test_list_countries_by_continent(self):
+        response = self.client.get('/api/countries/?continent=AF')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        names = {c['name'] for c in response.data}
+        self.assertEqual(names, {"Ghana", "Nigeria"})
+
+    def test_country_has_regions_flag(self):
+        response = self.client.get('/api/countries/?continent=AF')
+        by_name = {c['name']: c for c in response.data}
+        self.assertTrue(by_name['Ghana']['has_regions'])
+        self.assertFalse(by_name['Nigeria']['has_regions'])
+
+    def test_country_branch_count(self):
+        response = self.client.get('/api/countries/?continent=AF')
+        by_name = {c['name']: c for c in response.data}
+        self.assertEqual(by_name['Ghana']['branch_count'], 1)
+
+    def test_list_regions_by_country(self):
+        response = self.client.get(f'/api/regions/?country={self.ghana.id}')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        by_name = {r['name']: r for r in response.data}
+        self.assertEqual(by_name['Greater Accra']['branch_count'], 1)
+
+    def test_regions_scoped_to_country(self):
+        """Regions for a different country should not leak in"""
+        response = self.client.get(f'/api/regions/?country={self.nigeria.id}')
+        self.assertEqual(len(response.data), 0)
 
 
 class ContactMessageAPITest(APITestCase):

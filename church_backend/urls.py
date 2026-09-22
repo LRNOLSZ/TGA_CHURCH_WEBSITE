@@ -22,7 +22,7 @@ from rest_framework.routers import DefaultRouter
 from api.views import (
     HomeBannerViewSet, ChurchInfoViewSet, HeadPastorViewSet, ServiceTimeViewSet,
     LeaderViewSet, PhotoGalleryViewSet, SermonViewSet, EventViewSet,
-    BranchViewSet, GivingImageViewSet, GivingInfoViewSet,
+    BranchViewSet, CountryViewSet, RegionViewSet, GivingImageViewSet, GivingInfoViewSet,
     ContactMessageViewSet, TestimonyViewSet, BookViewSet,
     MerchandiseViewSet, ExchangeRateViewSet, ImageLogViewSet,
     get_book_price, get_merchandise_price, get_all_currencies
@@ -39,6 +39,8 @@ router.register(r'gallery', PhotoGalleryViewSet, basename='photo')
 router.register(r'sermons', SermonViewSet, basename='sermon')
 router.register(r'events', EventViewSet, basename='event')
 router.register(r'branches', BranchViewSet, basename='branch')
+router.register(r'countries', CountryViewSet, basename='country')
+router.register(r'regions', RegionViewSet, basename='region')
 router.register(r'giving-images', GivingImageViewSet, basename='giving-image')
 router.register(r'giving-info', GivingInfoViewSet, basename='giving-info')
 router.register(r'contact-messages', ContactMessageViewSet, basename='contact-message')

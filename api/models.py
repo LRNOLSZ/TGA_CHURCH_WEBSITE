@@ -1,5 +1,7 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.urls import reverse
+from .country_coordinates import COUNTRY_NAME_CHOICES
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from embed_video.fields import EmbedVideoField
@@ -526,6 +528,42 @@ class Event(models.Model):
 # BRANCHES PAGE MODELS
 # ====================================================================
 
+class Continent(models.TextChoices):
+    AFRICA = "AF", "Africa"
+    ASIA = "AS", "Asia"
+    EUROPE = "EU", "Europe"
+    NORTH_AMERICA = "NA", "North America"
+    SOUTH_AMERICA = "SA", "South America"
+    OCEANIA = "OC", "Oceania"
+    ANTARCTICA = "AN", "Antarctica"
+
+
+class Country(models.Model):
+    name = models.CharField(max_length=100, unique=True, db_index=True, choices=COUNTRY_NAME_CHOICES)
+    continent = models.CharField(max_length=2, choices=Continent.choices, db_index=True)
+    latitude = models.FloatField(null=True, blank=True, editable=False)
+    longitude = models.FloatField(null=True, blank=True, editable=False)
+
+    class Meta:
+        ordering = ["continent", "name"]
+        verbose_name_plural = "Countries"
+
+    def __str__(self):
+        return self.name
+
+
+class Region(models.Model):
+    country = models.ForeignKey(Country, on_delete=models.PROTECT, related_name="regions")
+    name = models.CharField(max_length=100, db_index=True)
+
+    class Meta:
+        ordering = ["name"]
+        unique_together = [("country", "name")]
+
+    def __str__(self):
+        return f"{self.name}, {self.country.name}"
+
+
 class Branch(models.Model):
     """
     Church branch locations with contact and service information.
@@ -534,6 +572,19 @@ class Branch(models.Model):
     name = models.CharField(
         max_length=200,
         db_index=True  # PERFORMANCE: Search
+    )
+    country = models.ForeignKey(
+        Country,
+        on_delete=models.PROTECT,
+        related_name="branches"
+    )
+    region = models.ForeignKey(
+        Region,
+        on_delete=models.PROTECT,
+        related_name="branches",
+        null=True,
+        blank=True,
+        help_text="Optional — only for countries that are subdivided into regions"
     )
     location = models.TextField(
         help_text="Full address for maps/GPS"
@@ -586,6 +637,11 @@ class Branch(models.Model):
     def __str__(self):
         main_indicator = " (Main)" if self.is_main_branch else ""
         return f"{self.name}{main_indicator}"
+
+    def clean(self):
+        super().clean()
+        if self.region_id and self.country_id and self.region.country_id != self.country_id:
+            raise ValidationError({"region": "Selected region does not belong to the selected country."})
 
 
 # ====================================================================

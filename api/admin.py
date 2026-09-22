@@ -58,7 +58,7 @@ class EventAdminForm(forms.ModelForm):
 # Your church models
 from .models import (
     HomeBanner, ChurchInfo, HeadPastor, ServiceTime,
-    Leader, PhotoGallery, Sermon, Event, Branch,
+    Leader, PhotoGallery, Sermon, Event, Branch, Country, Region,
     GivingInfo, GivingImage, ImageLog, ContactMessage, Testimony, Book, ExchangeRate, Merchandise, AuditLog, UserProfile
 )
 
@@ -213,10 +213,32 @@ class EventAdmin(ModelAdmin, AdminImagePreviewMixin):
         DateTimeField: {'widget': forms.HiddenInput()}
     }
 
+@admin.register(Country)
+class CountryAdmin(ModelAdmin):
+    list_display = ('name', 'continent', 'latitude', 'longitude')
+    list_filter = ('continent',)
+    search_fields = ('name',)
+    readonly_fields = ('latitude', 'longitude')
+
+@admin.register(Region)
+class RegionAdmin(ModelAdmin):
+    list_display = ('name', 'country')
+    list_filter = ('country__continent', 'country')
+    search_fields = ('name', 'country__name')
+    autocomplete_fields = ('country',)
+
 @admin.register(Branch)
 class BranchAdmin(ModelAdmin, AdminImagePreviewMixin):
-    list_display = ('image_preview', 'name', 'pastor_in_charge', 'is_main_branch')
-    list_filter = ('is_main_branch',)
+    list_display = ('image_preview', 'name', 'country', 'region', 'pastor_in_charge', 'is_main_branch')
+    list_filter = ('country__continent', 'country', 'is_main_branch')
+    search_fields = ('name', 'location', 'country__name', 'region__name')
+    autocomplete_fields = ('country', 'region')
+    fieldsets = (
+        ('Location Hierarchy', {'fields': ('country', 'region')}),
+        ('Branch Details', {'fields': ('name', 'location', 'is_main_branch', 'image')}),
+        ('Contact', {'fields': ('phone', 'email', 'pastor_in_charge')}),
+        ('Service Info', {'fields': ('service_time', 'google_maps_url')}),
+    )
 
 @admin.register(GivingInfo)
 class GivingInfoAdmin(ModelAdmin):

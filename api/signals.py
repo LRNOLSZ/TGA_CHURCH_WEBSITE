@@ -1,11 +1,12 @@
-from django.db.models.signals import post_save, pre_delete
+from django.db.models.signals import post_save, pre_save, pre_delete
 from django.dispatch import receiver
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 from .models import (
-    HomeBanner, HeadPastor, Leader, PhotoGallery, 
-    Sermon, Event, GivingImage, ImageLog, Branch, Merchandise, Book, UserProfile
+    HomeBanner, HeadPastor, Leader, PhotoGallery,
+    Sermon, Event, GivingImage, ImageLog, Branch, Country, Merchandise, Book, UserProfile
 )
+from .country_coordinates import COUNTRY_COORDINATES
 
 
 def log_image_upload(sender, instance, created, **kwargs):
@@ -108,3 +109,20 @@ def create_user_profile(sender, instance, created, **kwargs):
     """Auto-create UserProfile when a new User is created"""
     if created:
         UserProfile.objects.get_or_create(user=instance)
+
+
+# ====================================================================
+# COUNTRY COORDINATE AUTO-POPULATION
+# ====================================================================
+
+def populate_country_coordinates(sender, instance, **kwargs):
+    """
+    Auto-fill Country.latitude/longitude from the static reference dataset
+    so admins never enter coordinates manually.
+    """
+    coords = COUNTRY_COORDINATES.get(instance.name)
+    if coords:
+        instance.latitude, instance.longitude = coords
+
+
+pre_save.connect(populate_country_coordinates, sender=Country)
