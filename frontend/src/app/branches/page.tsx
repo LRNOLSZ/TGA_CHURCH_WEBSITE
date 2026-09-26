@@ -100,10 +100,10 @@ function BranchesContent() {
         </div>
       )}
 
-      <div className="bg-navy-2 md:bg-[linear-gradient(to_right,#152a52_0%,#152a52_42%,#f1ebde_58%,#f1ebde_100%)]">
+      <div className="md:bg-[linear-gradient(to_right,#152a52_0%,#152a52_42%,#f1ebde_58%,#f1ebde_100%)]">
         <FadeIn>
           <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 md:gap-12 md:items-start">
-            <div className="px-4 sm:px-6 lg:px-8 md:px-0 py-12 md:py-20 flex justify-center">
+            <div className="bg-navy-2 md:bg-transparent px-4 sm:px-6 lg:px-8 md:px-0 py-12 md:py-20 flex justify-center">
               <BranchesGlobeLoader continent={continent} country={globeCountry} />
             </div>
 
