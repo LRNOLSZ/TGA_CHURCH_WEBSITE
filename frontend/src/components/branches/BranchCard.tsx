@@ -19,7 +19,7 @@ export default function BranchCard({ branch, featured = false }: { branch: Branc
       <div className="p-6 text-center">
         {!branch.image && <h3 className="text-xl font-bold text-primary mb-4">{branch.name}</h3>}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div className="flex flex-col gap-4 mb-6">
           <div className="space-y-2 text-sm text-gray-600">
             <div className="flex items-start gap-2 justify-center">
               <MapPin size={15} className="text-accent mt-0.5 shrink-0" />
