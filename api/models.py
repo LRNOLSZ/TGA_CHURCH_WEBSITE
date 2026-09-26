@@ -553,7 +553,12 @@ class Country(models.Model):
 
 
 class Region(models.Model):
-    country = models.ForeignKey(Country, on_delete=models.PROTECT, related_name="regions")
+    # CASCADE (not PROTECT): regions are auto-populated on every country, so
+    # PROTECT would block deleting even an empty, mistakenly-added country.
+    # Real data stays safe regardless — Branch.country and Branch.region are
+    # both PROTECT, so any country/region that actually has a branch still
+    # can't be deleted.
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name="regions")
     name = models.CharField(max_length=100, db_index=True)
 
     class Meta:
