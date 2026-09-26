@@ -39,6 +39,15 @@ Logged 2026-09-16. Nothing here has been built yet — for terminal Claude to pl
 - Antarctica rotates to a polar view (no pin) for consistency with the penguin easter egg
 - Placed as a full-width navy band between the hero header and the continent picker on `/branches`
 
+### Phase 3 — DONE: Region became fully auto-derived (no manual creation)
+- `Region` is no longer manually created anywhere — removed entirely from the Django admin sidebar (no standalone section, not even read-only)
+- New `api/region_data.py`: static offline dataset of every country's real first-level administrative divisions (states/provinces/etc.), mirroring the same country keys as `country_coordinates.py`. Empty list for genuine city-states/micro-nations (Monaco, Vatican City) and Western Sahara (disputed territory, no neutral list to assign)
+- New `post_save` signal on `Country` (`api/signals.py`) auto-creates all of that country's real `Region` rows the moment it's saved — runs on every save (idempotent via `get_or_create`), so expanding `region_data.py` later just needs a re-save to backfill, no migration required
+- Migration `0024` backfilled all pre-existing countries (Ghana went from 3 to its full 16 real regions, with zero disruption to the 3 existing branches' FK links — same region IDs preserved)
+- `BranchAdmin`'s Region field is now a plain dependent dropdown (no new package): picking a Country live-filters the Region options to just that country's real regions, via a small custom AJAX endpoint (`api/static/admin/js/branch_region_filter.js`) — no manual region typing anywhere, ever
+- Sensitive/disputed subdivisions (e.g. Crimea) follow the same "commonly recognized, not disputed annexations" principle already used for country naming
+- No frontend or API changes needed — the existing hierarchy endpoints/components already worked generically off real `Region` rows regardless of how they got created
+
 ### Original Phase 2 planning notes (superseded by the above, kept for history):
 - Globe is purely decorative/reactive — NOT clickable itself. All selection happens via real buttons/list items (continent buttons, then a country list). This avoids raycasting/hit-testing on 3D geometry entirely.
 - Library: lightweight canvas dot-matrix globe (e.g. `cobe`, ~5KB) — NOT a full WebGL polygon-rendering globe (`react-globe.gl`/three.js, ~500KB+). No country border/outline data needed.

@@ -359,6 +359,8 @@ class CountryRegionAPITest(APITestCase):
         self.client = APIClient()
         self.ghana, _ = Country.objects.get_or_create(name="Ghana", defaults={"continent": "AF"})
         self.nigeria = Country.objects.create(name="Nigeria", continent="AF")
+        # Western Sahara has no entry in REGION_DATA — used to test the "no regions" case
+        self.no_regions_country = Country.objects.create(name="Western Sahara", continent="AF")
         self.greater_accra, _ = Region.objects.get_or_create(country=self.ghana, name="Greater Accra")
         Branch.objects.create(
             name="Accra Branch", country=self.ghana, region=self.greater_accra,
@@ -375,13 +377,13 @@ class CountryRegionAPITest(APITestCase):
         response = self.client.get('/api/countries/?continent=AF')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         names = {c['name'] for c in response.data}
-        self.assertEqual(names, {"Ghana", "Nigeria"})
+        self.assertEqual(names, {"Ghana", "Nigeria", "Western Sahara"})
 
     def test_country_has_regions_flag(self):
         response = self.client.get('/api/countries/?continent=AF')
         by_name = {c['name']: c for c in response.data}
         self.assertTrue(by_name['Ghana']['has_regions'])
-        self.assertFalse(by_name['Nigeria']['has_regions'])
+        self.assertFalse(by_name['Western Sahara']['has_regions'])
 
     def test_country_branch_count(self):
         response = self.client.get('/api/countries/?continent=AF')
@@ -396,8 +398,21 @@ class CountryRegionAPITest(APITestCase):
 
     def test_regions_scoped_to_country(self):
         """Regions for a different country should not leak in"""
-        response = self.client.get(f'/api/regions/?country={self.nigeria.id}')
+        response = self.client.get(f'/api/regions/?country={self.no_regions_country.id}')
         self.assertEqual(len(response.data), 0)
+
+    def test_country_auto_populates_real_regions(self):
+        """Creating a Country auto-creates its real regions from REGION_DATA, no manual entry"""
+        kenya = Country.objects.create(name="Kenya", continent="AF")
+        region_names = set(kenya.regions.values_list('name', flat=True))
+        self.assertIn("Nairobi", region_names)
+        self.assertIn("Mombasa", region_names)
+        self.assertEqual(kenya.regions.count(), 47)
+
+    def test_country_with_no_subdivisions_has_no_regions(self):
+        """A country absent from REGION_DATA (or mapped to an empty list) gets no regions"""
+        monaco = Country.objects.create(name="Monaco", continent="EU")
+        self.assertEqual(monaco.regions.count(), 0)
 
 
 class ContactMessageAPITest(APITestCase):

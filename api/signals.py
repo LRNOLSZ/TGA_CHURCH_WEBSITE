@@ -4,9 +4,10 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 from .models import (
     HomeBanner, HeadPastor, Leader, PhotoGallery,
-    Sermon, Event, GivingImage, ImageLog, Branch, Country, Merchandise, Book, UserProfile
+    Sermon, Event, GivingImage, ImageLog, Branch, Country, Region, Merchandise, Book, UserProfile
 )
 from .country_coordinates import COUNTRY_COORDINATES
+from .region_data import REGION_DATA
 
 
 def log_image_upload(sender, instance, created, **kwargs):
@@ -126,3 +127,21 @@ def populate_country_coordinates(sender, instance, **kwargs):
 
 
 pre_save.connect(populate_country_coordinates, sender=Country)
+
+
+# ====================================================================
+# COUNTRY REGION AUTO-POPULATION
+# ====================================================================
+
+def populate_country_regions(sender, instance, **kwargs):
+    """
+    Auto-create Region rows from the static reference dataset the moment
+    a Country is saved, so admins never create regions manually. Runs on
+    every save (not just creation) so re-saving a Country tops up any
+    regions added to REGION_DATA later, with no migration needed.
+    """
+    for region_name in REGION_DATA.get(instance.name, []):
+        Region.objects.get_or_create(country=instance, name=region_name)
+
+
+post_save.connect(populate_country_regions, sender=Country)

@@ -7,6 +7,8 @@ from django.db.models import Count, DateTimeField
 from django.forms.widgets import DateTimeInput
 from django import forms
 from datetime import datetime
+from django.urls import path
+from django.http import JsonResponse
 
 # Unfold specific imports
 from unfold.admin import ModelAdmin, TabularInline
@@ -220,25 +222,48 @@ class CountryAdmin(ModelAdmin):
     search_fields = ('name',)
     readonly_fields = ('latitude', 'longitude')
 
-@admin.register(Region)
-class RegionAdmin(ModelAdmin):
-    list_display = ('name', 'country')
-    list_filter = ('country__continent', 'country')
-    search_fields = ('name', 'country__name')
-    autocomplete_fields = ('country',)
-
 @admin.register(Branch)
 class BranchAdmin(ModelAdmin, AdminImagePreviewMixin):
     list_display = ('image_preview', 'name', 'country', 'region', 'pastor_in_charge', 'is_main_branch')
     list_filter = ('country__continent', 'country', 'is_main_branch')
     search_fields = ('name', 'location', 'country__name', 'region__name')
-    autocomplete_fields = ('country', 'region')
+    autocomplete_fields = ('country',)
     fieldsets = (
         ('Location Hierarchy', {'fields': ('country', 'region')}),
         ('Branch Details', {'fields': ('name', 'location', 'is_main_branch', 'image')}),
         ('Contact', {'fields': ('phone', 'email', 'pastor_in_charge')}),
         ('Service Info', {'fields': ('service_time', 'google_maps_url')}),
     )
+
+    class Media:
+        js = ('admin/js/branch_region_filter.js',)
+
+    def get_urls(self):
+        urls = [
+            path(
+                'regions-for-country/<int:country_id>/',
+                self.admin_site.admin_view(self.regions_for_country),
+                name='api_branch_regions_for_country',
+            ),
+        ]
+        return urls + super().get_urls()
+
+    def regions_for_country(self, request, country_id):
+        regions = Region.objects.filter(country_id=country_id).order_by('name').values('id', 'name')
+        return JsonResponse(list(regions), safe=False)
+
+    def get_form(self, request, obj=None, **kwargs):
+        self._current_obj = obj
+        return super().get_form(request, obj, **kwargs)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'region':
+            obj = getattr(self, '_current_obj', None)
+            if obj is not None and obj.country_id:
+                kwargs['queryset'] = Region.objects.filter(country_id=obj.country_id)
+            else:
+                kwargs['queryset'] = Region.objects.none()
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 @admin.register(GivingInfo)
 class GivingInfoAdmin(ModelAdmin):
