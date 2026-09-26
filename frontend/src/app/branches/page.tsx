@@ -48,7 +48,7 @@ function BranchesContent() {
     Object.entries(params).forEach(([key, value]) => {
       if (value) next.set(key, value);
     });
-    router.push(`/branches?${next.toString()}`);
+    router.push(`/branches?${next.toString()}`, { scroll: false });
   };
 
   const continentLabel = CONTINENTS.find((c) => c.code === continent)?.label;
@@ -80,68 +80,76 @@ function BranchesContent() {
         <SectionHeader title="Our Branches" subtitle="Find a TGA Church near you" light />
       </div>
 
-      <div className="bg-navy-2 py-12">
-        <BranchesGlobeLoader continent={continent} country={globeCountry} />
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* Main Branch — always pinned at the top */}
-        {mainLoading ? (
-          <LoadingSpinner />
-        ) : (
-          main && (
-            <FadeIn>
-              <div className="mb-16">
-                <div className="flex items-center gap-2 mb-6">
-                  <span className="bg-accent text-white text-xs font-bold px-3 py-1 rounded-full uppercase">Main Branch</span>
+      {(mainLoading || main) && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          {/* Main Branch — always pinned at the top */}
+          {mainLoading ? (
+            <LoadingSpinner />
+          ) : (
+            main && (
+              <FadeIn>
+                <div>
+                  <div className="flex items-center gap-2 mb-6">
+                    <span className="bg-accent text-white text-xs font-bold px-3 py-1 rounded-full uppercase">Main Branch</span>
+                  </div>
+                  <BranchCard branch={main} featured />
                 </div>
-                <BranchCard branch={main} featured />
-              </div>
-            </FadeIn>
-          )
-        )}
-
-        <FadeIn delay={0.1}>
-          <Breadcrumb crumbs={crumbs} />
-
-          {!continent && (
-            <ContinentGrid onSelect={(code) => navigateTo({ continent: code })} />
+              </FadeIn>
+            )
           )}
+        </div>
+      )}
 
-          {continent === "AN" && <AntarcticaEasterEgg />}
+      <div className="bg-navy-2 md:bg-[linear-gradient(to_right,#152a52_0%,#152a52_42%,#f1ebde_58%,#f1ebde_100%)]">
+        <FadeIn>
+          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 md:gap-12 md:items-start">
+            <div className="px-4 sm:px-6 lg:px-8 md:px-0 py-12 md:py-20 flex justify-center">
+              <BranchesGlobeLoader continent={continent} country={globeCountry} />
+            </div>
 
-          {continent && continent !== "AN" && !countryId && (
-            <CountryList
-              continent={continent}
-              onSelect={(id, name, selectedLat, selectedLng) =>
-                navigateTo({
-                  continent,
-                  country: String(id),
-                  countryName: name,
-                  lat: selectedLat != null ? String(selectedLat) : undefined,
-                  lng: selectedLng != null ? String(selectedLng) : undefined,
-                })
-              }
-            />
-          )}
+            <div className="px-4 sm:px-6 lg:px-8 md:px-0 py-8 md:py-20">
+              <Breadcrumb crumbs={crumbs} />
 
-          {continent && countryId && (
-            <RegionOrBranchList
-              countryId={Number(countryId)}
-              regionId={regionId ? Number(regionId) : undefined}
-              onSelectRegion={(id, name) =>
-                navigateTo({
-                  continent,
-                  country: countryId,
-                  countryName: countryName ?? undefined,
-                  lat: lat ?? undefined,
-                  lng: lng ?? undefined,
-                  region: String(id),
-                  regionName: name,
-                })
-              }
-            />
-          )}
+              {!continent && (
+                <ContinentGrid onSelect={(code) => navigateTo({ continent: code })} />
+              )}
+
+              {continent === "AN" && <AntarcticaEasterEgg />}
+
+              {continent && continent !== "AN" && !countryId && (
+                <CountryList
+                  continent={continent}
+                  onSelect={(id, name, selectedLat, selectedLng) =>
+                    navigateTo({
+                      continent,
+                      country: String(id),
+                      countryName: name,
+                      lat: selectedLat != null ? String(selectedLat) : undefined,
+                      lng: selectedLng != null ? String(selectedLng) : undefined,
+                    })
+                  }
+                />
+              )}
+
+              {continent && countryId && (
+                <RegionOrBranchList
+                  countryId={Number(countryId)}
+                  regionId={regionId ? Number(regionId) : undefined}
+                  onSelectRegion={(id, name) =>
+                    navigateTo({
+                      continent,
+                      country: countryId,
+                      countryName: countryName ?? undefined,
+                      lat: lat ?? undefined,
+                      lng: lng ?? undefined,
+                      region: String(id),
+                      regionName: name,
+                    })
+                  }
+                />
+              )}
+            </div>
+          </div>
         </FadeIn>
       </div>
     </div>
