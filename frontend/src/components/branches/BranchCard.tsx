@@ -7,38 +7,38 @@ export default function BranchCard({ branch, featured = false }: { branch: Branc
   return (
     <div className={`overflow-hidden ${featured ? "border-2 border-accent rounded-2xl" : ""}`}>
       {branch.image && (
-        <div className="relative h-56 rounded-xl overflow-hidden group transition-shadow duration-300 hover:shadow-[0_0_20px_4px_rgba(212,175,55,0.5)]">
+        <div className="relative aspect-[16/10] rounded-xl overflow-hidden group transition-shadow duration-300 hover:shadow-[0_0_20px_4px_rgba(212,175,55,0.5)]">
           <Image src={getImageUrl(branch.image)} alt={branch.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
           <div className="absolute inset-0 bg-gradient-to-t from-dark/60 to-transparent" />
-          <div className="absolute bottom-4 left-4 text-white">
+          <div className="absolute bottom-4 inset-x-0 text-center text-white">
             <h3 className="text-xl font-bold">{branch.name}</h3>
           </div>
         </div>
       )}
 
-      <div className="p-6">
+      <div className="p-6 text-center">
         {!branch.image && <h3 className="text-xl font-bold text-primary mb-4">{branch.name}</h3>}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div className="space-y-2 text-sm text-gray-600">
-            <div className="flex items-start gap-2">
+            <div className="flex items-start gap-2 justify-center">
               <MapPin size={15} className="text-accent mt-0.5 shrink-0" />
               <span>{branch.location}</span>
             </div>
             {branch.phone && (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 justify-center">
                 <Phone size={15} className="text-accent shrink-0" />
                 <a href={`tel:${branch.phone}`} className="hover:text-primary transition">{branch.phone}</a>
               </div>
             )}
             {branch.email && (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 justify-center">
                 <Mail size={15} className="text-accent shrink-0" />
                 <a href={`mailto:${branch.email}`} className="hover:text-primary transition">{branch.email}</a>
               </div>
             )}
             {branch.pastor_in_charge && (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 justify-center">
                 <User size={15} className="text-accent shrink-0" />
                 <span>{branch.pastor_in_charge}</span>
               </div>
@@ -48,14 +48,13 @@ export default function BranchCard({ branch, featured = false }: { branch: Branc
           {/* Service Times */}
           {branch.service_times?.length > 0 && (
             <div>
-              <h4 className="text-sm font-semibold text-primary mb-2 flex items-center gap-1">
+              <h4 className="text-sm font-semibold text-primary mb-2 flex items-center justify-center gap-1">
                 <Clock size={13} /> Service Times
               </h4>
               <ul className="space-y-1 text-sm text-gray-600">
                 {branch.service_times.filter((st) => st.is_active).map((st) => (
-                  <li key={st.id} className="flex justify-between">
-                    <span className="font-medium">{st.day}</span>
-                    <span>{st.time} — {st.service_type}</span>
+                  <li key={st.id}>
+                    <span className="font-medium">{st.day}:</span> {st.time} — {st.service_type}
                   </li>
                 ))}
               </ul>
