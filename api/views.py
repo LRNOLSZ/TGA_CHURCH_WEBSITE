@@ -411,8 +411,11 @@ class CountryViewSet(viewsets.ReadOnlyModelViewSet):
 
 class RegionViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    Read-only ViewSet exposing regions with branches, for the
-    Continent -> Country -> Region -> Branches drill-down.
+    Read-only ViewSet exposing regions that have at least one branch, for
+    the public Continent -> Country -> Region -> Branches drill-down.
+    Regions with zero branches exist in the database (auto-populated) but
+    are intentionally excluded here so visitors never land on an empty
+    region page.
 
     Query params:
     - country: Filter by country ID
@@ -422,7 +425,9 @@ class RegionViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = None
 
     def get_queryset(self):
-        queryset = Region.objects.annotate(branch_count=Count('branches', distinct=True))
+        queryset = Region.objects.annotate(
+            branch_count=Count('branches', distinct=True)
+        ).filter(branch_count__gt=0)
         country = self.request.query_params.get('country', None)
         if country is not None:
             queryset = queryset.filter(country_id=country)

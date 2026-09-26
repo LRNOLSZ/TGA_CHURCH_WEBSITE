@@ -396,6 +396,13 @@ class CountryRegionAPITest(APITestCase):
         by_name = {r['name']: r for r in response.data}
         self.assertEqual(by_name['Greater Accra']['branch_count'], 1)
 
+    def test_regions_endpoint_excludes_regions_with_no_branches(self):
+        """Ghana has 16 real regions but only 1 has a branch in this test — only that one should show"""
+        response = self.client.get(f'/api/regions/?country={self.ghana.id}')
+        names = {r['name'] for r in response.data}
+        self.assertEqual(names, {'Greater Accra'})
+        self.assertNotIn('Ashanti', names)
+
     def test_regions_scoped_to_country(self):
         """Regions for a different country should not leak in"""
         response = self.client.get(f'/api/regions/?country={self.no_regions_country.id}')
