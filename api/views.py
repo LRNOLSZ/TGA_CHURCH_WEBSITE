@@ -402,6 +402,9 @@ class CountryViewSet(viewsets.ReadOnlyModelViewSet):
         queryset = Country.objects.annotate(
             branch_count=Count('branches', distinct=True),
             has_regions=Exists(Region.objects.filter(country=OuterRef('pk'))),
+            has_physical_branch=Exists(
+                Branch.objects.filter(country=OuterRef('pk'), is_satellite=False)
+            ),
         )
         continent = self.request.query_params.get('continent', None)
         if continent is not None:

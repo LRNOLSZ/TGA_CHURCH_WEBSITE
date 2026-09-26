@@ -153,6 +153,7 @@ export interface Country {
 export interface CountrySummary extends Country {
   branch_count: number;
   has_regions: boolean;
+  has_physical_branch: boolean;
 }
 
 export interface Region {
@@ -176,6 +177,7 @@ export interface Branch {
   image: string | null;
   google_maps_url: string | null;
   is_main_branch: boolean;
+  is_satellite: boolean;
   country: Country;
   region: Region | null;
   service_times: ServiceTime[];

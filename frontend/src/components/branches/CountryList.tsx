@@ -8,7 +8,13 @@ export default function CountryList({
   onSelect,
 }: {
   continent: ContinentCode;
-  onSelect: (countryId: number, countryName: string, lat: number | null, lng: number | null) => void;
+  onSelect: (
+    countryId: number,
+    countryName: string,
+    lat: number | null,
+    lng: number | null,
+    isSatelliteOnly: boolean
+  ) => void;
 }) {
   const { data: countries, isLoading } = useCountries(continent);
 
@@ -23,7 +29,15 @@ export default function CountryList({
       {countries.map((country) => (
         <button
           key={country.id}
-          onClick={() => onSelect(country.id, country.name, country.latitude, country.longitude)}
+          onClick={() =>
+            onSelect(
+              country.id,
+              country.name,
+              country.latitude,
+              country.longitude,
+              country.branch_count > 0 && !country.has_physical_branch
+            )
+          }
           className="flex items-center justify-between gap-3 p-5 border border-navy/10 rounded-xl bg-paper hover:border-gold transition text-left"
         >
           <div className="flex items-center gap-3 min-w-0">

@@ -1,4 +1,5 @@
 from django.test import TestCase, override_settings
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
@@ -175,6 +176,36 @@ class BranchModelTest(TestCase):
     def test_branch_str(self):
         """Test branch string representation"""
         self.assertIn("(Main)", str(self.branch))
+
+    def test_satellite_branch_without_location(self):
+        """Satellite branches can be created without a physical location"""
+        branch = Branch.objects.create(
+            name="Online Branch",
+            country=self.country,
+            location="",
+            phone="555-0000",
+            pastor_in_charge="Pastor Jane",
+            service_time="Sundays 9am",
+            is_satellite=True,
+        )
+        branch.full_clean()
+        self.assertEqual(branch.location, "")
+        self.assertTrue(branch.is_satellite)
+
+    def test_main_branch_cannot_be_satellite(self):
+        """A branch cannot be both the main branch and a satellite branch"""
+        branch = Branch(
+            name="Invalid Branch",
+            country=self.country,
+            location="",
+            phone="555-0000",
+            pastor_in_charge="Pastor Jane",
+            service_time="Sundays 9am",
+            is_main_branch=True,
+            is_satellite=True,
+        )
+        with self.assertRaises(ValidationError):
+            branch.full_clean()
 
 
 # ====================================================================
@@ -420,6 +451,34 @@ class CountryRegionAPITest(APITestCase):
         """A country absent from REGION_DATA (or mapped to an empty list) gets no regions"""
         monaco = Country.objects.create(name="Monaco", continent="EU")
         self.assertEqual(monaco.regions.count(), 0)
+
+    def test_has_physical_branch_false_for_satellite_only_country(self):
+        """A country with only a satellite branch should report has_physical_branch=False"""
+        south_africa = Country.objects.create(name="South Africa", continent="AF")
+        Branch.objects.create(
+            name="South Africa Online", country=south_africa, location="",
+            phone="000", pastor_in_charge="Pastor C", service_time="Sundays 9am",
+            is_satellite=True,
+        )
+        response = self.client.get('/api/countries/?continent=AF')
+        by_name = {c['name']: c for c in response.data}
+        self.assertFalse(by_name['South Africa']['has_physical_branch'])
+
+    def test_has_physical_branch_true_once_a_physical_branch_exists(self):
+        """Adding a physical branch to a satellite-only country flips has_physical_branch to True"""
+        south_africa = Country.objects.create(name="South Africa", continent="AF")
+        Branch.objects.create(
+            name="South Africa Online", country=south_africa, location="",
+            phone="000", pastor_in_charge="Pastor C", service_time="Sundays 9am",
+            is_satellite=True,
+        )
+        Branch.objects.create(
+            name="Johannesburg Branch", country=south_africa, location="123 Main Rd",
+            phone="000", pastor_in_charge="Pastor D", service_time="Sundays 9am",
+        )
+        response = self.client.get('/api/countries/?continent=AF')
+        by_name = {c['name']: c for c in response.data}
+        self.assertTrue(by_name['South Africa']['has_physical_branch'])
 
 
 class ContactMessageAPITest(APITestCase):

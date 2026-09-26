@@ -1,11 +1,23 @@
 import Image from "next/image";
-import { MapPin, Phone, Mail, User, ExternalLink, Clock } from "lucide-react";
+import { MapPin, Phone, Mail, User, ExternalLink, Clock, Radio } from "lucide-react";
 import { getImageUrl } from "@/lib/utils";
+import { useChurchInfo } from "@/hooks/useChurchData";
+import SocialLinks from "@/components/ui/SocialLinks";
 import type { Branch } from "@/types";
 
 export default function BranchCard({ branch, featured = false }: { branch: Branch; featured?: boolean }) {
+  const { data: churchInfo } = useChurchInfo();
+
   return (
     <div className={`overflow-hidden ${featured ? "border-2 border-accent rounded-2xl" : ""}`}>
+      {branch.is_satellite && (
+        <div className="flex justify-center pt-4">
+          <span className="inline-flex items-center gap-1.5 bg-navy text-white text-xs font-bold px-3 py-1 rounded-full uppercase">
+            <Radio size={12} /> Online
+          </span>
+        </div>
+      )}
+
       {branch.image && (
         <div className="relative aspect-[16/10] rounded-xl overflow-hidden group transition-shadow duration-300 hover:shadow-[0_0_20px_4px_rgba(212,175,55,0.5)]">
           <Image src={getImageUrl(branch.image)} alt={branch.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
@@ -23,7 +35,7 @@ export default function BranchCard({ branch, featured = false }: { branch: Branc
           <div className="space-y-2 text-sm text-gray-600">
             <div className="flex items-start gap-2 justify-center">
               <MapPin size={15} className="text-accent mt-0.5 shrink-0" />
-              <span>{branch.location}</span>
+              <span>{branch.location || "Meets Online"}</span>
             </div>
             {branch.phone && (
               <div className="flex items-center gap-2 justify-center">
@@ -62,15 +74,28 @@ export default function BranchCard({ branch, featured = false }: { branch: Branc
           )}
         </div>
 
-        {branch.google_maps_url && (
-          <a
-            href={branch.google_maps_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-blue-800 transition"
-          >
-            <MapPin size={14} /> View on Google Maps <ExternalLink size={13} />
-          </a>
+        {branch.is_satellite ? (
+          (churchInfo?.youtube_channel_url || churchInfo?.tiktok_url) && (
+            <div className="flex flex-col items-center gap-2">
+              <span className="text-xs font-semibold text-muted uppercase tracking-wide">Catch us online</span>
+              <SocialLinks
+                youtube={churchInfo?.youtube_channel_url}
+                tiktok={churchInfo?.tiktok_url}
+                iconSize={22}
+              />
+            </div>
+          )
+        ) : (
+          branch.google_maps_url && (
+            <a
+              href={branch.google_maps_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-blue-800 transition"
+            >
+              <MapPin size={14} /> View on Google Maps <ExternalLink size={13} />
+            </a>
+          )
         )}
       </div>
     </div>

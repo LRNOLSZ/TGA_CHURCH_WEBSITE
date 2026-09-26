@@ -10,7 +10,11 @@ interface SelectedCountry {
   lat: number;
   lng: number;
   name: string;
+  isSatelliteOnly?: boolean;
 }
+
+const PHYSICAL_MARKER_COLOR: [number, number, number] = [0.79, 0.635, 0.29];
+const SATELLITE_MARKER_COLOR: [number, number, number] = [0.72, 0.75, 0.8];
 
 export default function BranchesGlobe({
   continent,
@@ -96,7 +100,7 @@ export default function BranchesGlobe({
         phiRef.current += 0.0025;
       }
 
-      let markers: { location: [number, number]; size: number }[] = [];
+      let markers: { location: [number, number]; size: number; color: [number, number, number] }[] = [];
       const activeCountry = countryRef.current;
       if (activeCountry) {
         const appearedAt = pinAppearedAtRef.current ?? now;
@@ -112,7 +116,11 @@ export default function BranchesGlobe({
           // gentle continuous pulse once settled
           size = baseSize + Math.sin((age - 400) / 350) * 0.012;
         }
-        markers = [{ location: [activeCountry.lat, activeCountry.lng], size }];
+        markers = [{
+          location: [activeCountry.lat, activeCountry.lng],
+          size,
+          color: activeCountry.isSatelliteOnly ? SATELLITE_MARKER_COLOR : PHYSICAL_MARKER_COLOR,
+        }];
       }
 
       globe.update({
@@ -153,8 +161,13 @@ export default function BranchesGlobe({
             transition={{ type: "spring", stiffness: 300, damping: 18 }}
             className="mt-4 flex items-center gap-2 px-4 py-1.5 rounded-full bg-navy-2 text-gold-soft text-sm font-medium"
           >
-            <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
+            <span
+              className={`w-2 h-2 rounded-full animate-pulse ${country.isSatelliteOnly ? "bg-gray-300" : "bg-gold"}`}
+            />
             {country.name}
+            {country.isSatelliteOnly && (
+              <span className="text-xs font-mono text-gray-300 uppercase tracking-wide">Online</span>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

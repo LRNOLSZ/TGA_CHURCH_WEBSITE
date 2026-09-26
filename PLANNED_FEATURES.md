@@ -48,6 +48,14 @@ Logged 2026-09-16. Nothing here has been built yet — for terminal Claude to pl
 - Sensitive/disputed subdivisions (e.g. Crimea) follow the same "commonly recognized, not disputed annexations" principle already used for country naming
 - No frontend or API changes needed — the existing hierarchy endpoints/components already worked generically off real `Region` rows regardless of how they got created
 
+### Phase 4 — DONE: satellite (online-only) branches
+- Some congregations have no physical building and meet online only (e.g. South Africa) — `Branch` gained an `is_satellite` boolean flag (migration 0025), `location` is now optional (`blank=True`, satellite branches leave it empty)
+- `clean()` rejects a branch being both `is_main_branch` and `is_satellite` at once
+- Reuses the church's existing **global** YouTube/TikTok links already on `ChurchInfo` (`youtube_channel_url`, `tiktok_url`) rather than adding new per-branch URL fields — a satellite congregation watches the same central livestream, it doesn't run its own channel
+- `BranchCard.tsx`: satellite branches show an "Online" badge, "Meets Online" in place of a blank address, and a "Catch us online" YouTube/TikTok button row (reusing the existing `SocialLinks` component + `useChurchInfo()` hook) instead of the Google Maps button
+- `CountryViewSet` gained a `has_physical_branch` annotation (does this country have at least one *non*-satellite branch); the globe (`BranchesGlobe.tsx`) uses it to render a distinct muted pin color + "Online" tag for countries that are satellite-only, vs. the normal gold pin for any country with real physical presence
+- Admin: `BranchAdmin` uses Unfold's `conditional_fields` to visually hide `location`/`google_maps_url`/`image` when the `is_satellite` checkbox is ticked
+
 ### Original Phase 2 planning notes (superseded by the above, kept for history):
 - Globe is purely decorative/reactive — NOT clickable itself. All selection happens via real buttons/list items (continent buttons, then a country list). This avoids raycasting/hit-testing on 3D geometry entirely.
 - Library: lightweight canvas dot-matrix globe (e.g. `cobe`, ~5KB) — NOT a full WebGL polygon-rendering globe (`react-globe.gl`/three.js, ~500KB+). No country border/outline data needed.

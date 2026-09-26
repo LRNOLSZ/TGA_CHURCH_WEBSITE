@@ -224,16 +224,21 @@ class CountryAdmin(ModelAdmin):
 
 @admin.register(Branch)
 class BranchAdmin(ModelAdmin, AdminImagePreviewMixin):
-    list_display = ('image_preview', 'name', 'country', 'region', 'pastor_in_charge', 'is_main_branch')
-    list_filter = ('country__continent', 'country', 'is_main_branch')
+    list_display = ('image_preview', 'name', 'country', 'region', 'pastor_in_charge', 'is_main_branch', 'is_satellite')
+    list_filter = ('country__continent', 'country', 'is_main_branch', 'is_satellite')
     search_fields = ('name', 'location', 'country__name', 'region__name')
     autocomplete_fields = ('country',)
     fieldsets = (
         ('Location Hierarchy', {'fields': ('country', 'region')}),
-        ('Branch Details', {'fields': ('name', 'location', 'is_main_branch', 'image')}),
+        ('Branch Details', {'fields': ('name', 'is_main_branch', 'is_satellite', 'location', 'image')}),
         ('Contact', {'fields': ('phone', 'email', 'pastor_in_charge')}),
         ('Service Info', {'fields': ('service_time', 'google_maps_url')}),
     )
+    conditional_fields = {
+        'location': '!is_satellite',
+        'google_maps_url': '!is_satellite',
+        'image': '!is_satellite',
+    }
 
     class Media:
         js = ('admin/js/branch_region_filter.js',)

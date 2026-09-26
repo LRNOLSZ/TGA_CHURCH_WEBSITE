@@ -14,6 +14,7 @@ interface SelectedCountry {
   lat: number;
   lng: number;
   name: string;
+  isSatelliteOnly?: boolean;
 }
 
 export default function BranchesGlobeLoader({

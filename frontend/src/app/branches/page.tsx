@@ -34,13 +34,14 @@ function BranchesContent() {
   const regionName = searchParams.get("regionName");
   const lat = searchParams.get("lat");
   const lng = searchParams.get("lng");
+  const satelliteOnly = searchParams.get("satelliteOnly") === "true";
 
   const { data: mainBranchList, isLoading: mainLoading } = useBranches({ main: true });
   const main = mainBranchList?.[0];
 
   const globeCountry =
     continent !== "AN" && countryId && countryName && lat && lng
-      ? { lat: Number(lat), lng: Number(lng), name: countryName }
+      ? { lat: Number(lat), lng: Number(lng), name: countryName, isSatelliteOnly: satelliteOnly }
       : null;
 
   const navigateTo = (params: Record<string, string | undefined>) => {
@@ -66,7 +67,15 @@ function BranchesContent() {
     crumbs.push({
       label: countryName,
       onClick: regionId
-        ? () => navigateTo({ continent, country: countryId, countryName, lat: lat ?? undefined, lng: lng ?? undefined })
+        ? () =>
+            navigateTo({
+              continent,
+              country: countryId,
+              countryName,
+              lat: lat ?? undefined,
+              lng: lng ?? undefined,
+              satelliteOnly: satelliteOnly ? "true" : undefined,
+            })
         : undefined,
     });
   }
@@ -119,13 +128,14 @@ function BranchesContent() {
               {continent && continent !== "AN" && !countryId && (
                 <CountryList
                   continent={continent}
-                  onSelect={(id, name, selectedLat, selectedLng) =>
+                  onSelect={(id, name, selectedLat, selectedLng, isSatelliteOnly) =>
                     navigateTo({
                       continent,
                       country: String(id),
                       countryName: name,
                       lat: selectedLat != null ? String(selectedLat) : undefined,
                       lng: selectedLng != null ? String(selectedLng) : undefined,
+                      satelliteOnly: isSatelliteOnly ? "true" : undefined,
                     })
                   }
                 />
@@ -142,6 +152,7 @@ function BranchesContent() {
                       countryName: countryName ?? undefined,
                       lat: lat ?? undefined,
                       lng: lng ?? undefined,
+                      satelliteOnly: satelliteOnly ? "true" : undefined,
                       region: String(id),
                       regionName: name,
                     })

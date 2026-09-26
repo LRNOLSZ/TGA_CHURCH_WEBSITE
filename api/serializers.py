@@ -142,9 +142,10 @@ class CountryListSerializer(CountrySerializer):
     """Adds annotated counts for the drill-down hierarchy endpoint."""
     branch_count = serializers.IntegerField(read_only=True)
     has_regions = serializers.BooleanField(read_only=True)
+    has_physical_branch = serializers.BooleanField(read_only=True)
 
     class Meta(CountrySerializer.Meta):
-        fields = CountrySerializer.Meta.fields + ['branch_count', 'has_regions']
+        fields = CountrySerializer.Meta.fields + ['branch_count', 'has_regions', 'has_physical_branch']
 
 
 class RegionListSerializer(RegionSerializer):
@@ -174,7 +175,7 @@ class BranchSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'name', 'location', 'phone', 'email',
             'pastor_in_charge', 'service_time', 'image',
-            'google_maps_url', 'is_main_branch',
+            'google_maps_url', 'is_main_branch', 'is_satellite',
             'country', 'country_id', 'region', 'region_id',
             'service_times', 'events_count',
             'created_at', 'updated_at'

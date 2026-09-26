@@ -587,7 +587,8 @@ class Branch(models.Model):
         help_text="Optional — only for countries that are subdivided into regions"
     )
     location = models.TextField(
-        help_text="Full address for maps/GPS"
+        blank=True,
+        help_text="Full address for maps/GPS — leave blank for a satellite (online-only) branch"
     )
     phone = models.TextField(
         help_text="Phone number(s) separated by commas (e.g., +233 20 123 4567, +233 30 987 6543)"
@@ -622,7 +623,13 @@ class Branch(models.Model):
         db_index=True,  # PERFORMANCE
         help_text="Check if this is the main/headquarters branch"
     )
-    
+
+    is_satellite = models.BooleanField(
+        default=False,
+        db_index=True,
+        help_text="No physical building — meets online only via the church's YouTube/TikTok"
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -642,6 +649,8 @@ class Branch(models.Model):
         super().clean()
         if self.region_id and self.country_id and self.region.country_id != self.country_id:
             raise ValidationError({"region": "Selected region does not belong to the selected country."})
+        if self.is_main_branch and self.is_satellite:
+            raise ValidationError({"is_satellite": "The main/headquarters branch cannot be a satellite (online-only) branch."})
 
 
 # ====================================================================
