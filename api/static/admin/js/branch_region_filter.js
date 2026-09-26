@@ -37,4 +37,4 @@
       loadRegions($(this).val(), null);
     });
   });
-})(django.jQuery);
+})(window.jQuery || (window.django && window.django.jQuery));
