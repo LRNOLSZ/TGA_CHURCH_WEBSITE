@@ -19,18 +19,18 @@ export default function CountryList({
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 gap-4">
       {countries.map((country) => (
         <button
           key={country.id}
           onClick={() => onSelect(country.id, country.name, country.latitude, country.longitude)}
           className="flex items-center justify-between gap-3 p-5 border border-navy/10 rounded-xl bg-paper hover:border-gold transition text-left"
         >
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 min-w-0">
             <MapPin size={18} className="text-gold-2 shrink-0" />
-            <span className="font-medium text-navy">{country.name}</span>
+            <span className="font-medium text-navy truncate">{country.name}</span>
           </div>
-          <span className="text-xs font-mono text-muted whitespace-nowrap">
+          <span className="text-xs font-mono text-muted whitespace-nowrap shrink-0">
             {country.branch_count} {country.branch_count === 1 ? "branch" : "branches"}
           </span>
         </button>

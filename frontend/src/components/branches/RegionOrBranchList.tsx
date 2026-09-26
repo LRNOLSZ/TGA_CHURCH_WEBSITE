@@ -31,18 +31,18 @@ export default function RegionOrBranchList({
       return <p className="text-center text-muted py-16">No branches in this country yet.</p>;
     }
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4">
         {regions.map((region) => (
           <button
             key={region.id}
             onClick={() => onSelectRegion(region.id, region.name)}
             className="flex items-center justify-between gap-3 p-5 border border-navy/10 rounded-xl bg-paper hover:border-gold transition text-left"
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 min-w-0">
               <MapPinned size={18} className="text-gold-2 shrink-0" />
-              <span className="font-medium text-navy">{region.name}</span>
+              <span className="font-medium text-navy truncate">{region.name}</span>
             </div>
-            <span className="text-xs font-mono text-muted whitespace-nowrap">
+            <span className="text-xs font-mono text-muted whitespace-nowrap shrink-0">
               {region.branch_count} {region.branch_count === 1 ? "branch" : "branches"}
             </span>
           </button>
