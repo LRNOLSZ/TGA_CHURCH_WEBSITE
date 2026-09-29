@@ -9,6 +9,7 @@ import FadeIn from "@/components/ui/FadeIn";
 import Breadcrumb, { Crumb } from "@/components/ui/Breadcrumb";
 import BranchCard from "@/components/branches/BranchCard";
 import ContinentGrid, { CONTINENTS } from "@/components/branches/ContinentGrid";
+import CountryFlagTicker from "@/components/home/CountryFlagTicker";
 import CountryList from "@/components/branches/CountryList";
 import RegionOrBranchList from "@/components/branches/RegionOrBranchList";
 import AntarcticaEasterEgg from "@/components/branches/AntarcticaEasterEgg";
@@ -88,6 +89,8 @@ function BranchesContent() {
       <div className="bg-navy py-16 text-center">
         <SectionHeader title="Our Branches" subtitle="Find a TGA Church near you" light />
       </div>
+
+      <CountryFlagTicker />
 
       {(mainLoading || main) && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
