@@ -115,7 +115,9 @@ function BranchesContent() {
       <div className="md:bg-[linear-gradient(to_right,#152a52_0%,#152a52_42%,#f1ebde_58%,#f1ebde_100%)]">
         <FadeIn>
           <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 md:gap-12 md:items-start">
-            <div className="bg-navy-2 md:bg-transparent px-4 sm:px-6 lg:px-8 md:px-0 py-12 md:py-20 flex justify-center">
+            <div className="relative overflow-hidden bg-navy-2 md:bg-transparent px-4 sm:px-6 lg:px-8 md:px-0 py-12 md:py-20 flex justify-center">
+              <div className="pointer-events-none absolute -top-10 -left-10 w-56 h-56 rounded-full bg-gold/20 blur-3xl" />
+              <div className="pointer-events-none absolute -bottom-16 -right-8 w-64 h-64 rounded-full bg-gold-soft/10 blur-3xl" />
               <BranchesGlobeLoader continent={continent} country={globeCountry} />
             </div>
 
