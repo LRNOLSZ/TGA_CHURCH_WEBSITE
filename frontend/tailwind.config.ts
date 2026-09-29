@@ -35,6 +35,15 @@ const config: Config = {
         sans: ["var(--font-inter)", "Inter", "sans-serif"],
         mono: ["var(--font-jetbrains-mono)", '"JetBrains Mono"', "monospace"],
       },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+      },
+      animation: {
+        marquee: "marquee 50s linear infinite",
+      },
     },
   },
   plugins: [],

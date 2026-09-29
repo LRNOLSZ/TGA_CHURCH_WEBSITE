@@ -1,4 +1,5 @@
 import HeroBanner from "@/components/home/HeroBanner";
+import CountryFlagTicker from "@/components/home/CountryFlagTicker";
 import ChurchInfoSection from "@/components/home/ChurchInfoSection";
 import HeadPastorSection from "@/components/home/HeadPastorSection";
 import FeaturedEvents from "@/components/home/FeaturedEvents";
@@ -13,6 +14,7 @@ export default function HomePage() {
   return (
     <>
       <HeroBanner />
+      <CountryFlagTicker />
       <FadeIn><ChurchInfoSection /></FadeIn>
       <FadeIn><HeadPastorSection /></FadeIn>
       <FadeIn><FeaturedEvents /></FadeIn>
