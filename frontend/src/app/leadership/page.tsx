@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Mail, Phone } from "lucide-react";
 import { useLeaders } from "@/hooks/useChurchData";
 import { getImageUrl } from "@/lib/utils";
-import PageBanner from "@/components/ui/PageBanner";
+import SectionHeader from "@/components/ui/SectionHeader";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import FadeIn from "@/components/ui/FadeIn";
 
@@ -13,7 +13,9 @@ export default function LeadershipPage() {
 
   return (
     <div className="bg-bg min-h-screen">
-      <PageBanner title="Our Leadership Team" subtitle="Dedicated servants leading with faith and purpose" />
+      <div className="bg-navy py-16 text-center">
+        <SectionHeader title="Our Leadership Team" subtitle="Dedicated servants leading with faith and purpose" light />
+      </div>
 
       <FadeIn>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

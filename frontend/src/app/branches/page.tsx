@@ -3,7 +3,7 @@
 import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useBranches } from "@/hooks/useBranches";
-import PageBanner from "@/components/ui/PageBanner";
+import SectionHeader from "@/components/ui/SectionHeader";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import FadeIn from "@/components/ui/FadeIn";
 import Breadcrumb, { Crumb } from "@/components/ui/Breadcrumb";
@@ -86,7 +86,9 @@ function BranchesContent() {
 
   return (
     <div className="bg-bg min-h-screen">
-      <PageBanner title="Our Branches" subtitle="Find a TGA Church near you" />
+      <div className="bg-navy py-16 text-center">
+        <SectionHeader title="Our Branches" subtitle="Find a TGA Church near you" light />
+      </div>
 
       <CountryFlagTicker />
 

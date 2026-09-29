@@ -2,7 +2,7 @@
 
 import { MapPin, Phone, Mail } from "lucide-react";
 import { useChurchInfo } from "@/hooks/useChurchData";
-import PageBanner from "@/components/ui/PageBanner";
+import SectionHeader from "@/components/ui/SectionHeader";
 import SocialLinks from "@/components/ui/SocialLinks";
 import ContactForm from "@/components/forms/ContactForm";
 import FadeIn from "@/components/ui/FadeIn";
@@ -12,7 +12,9 @@ export default function ContactPage() {
 
   return (
     <div className="bg-bg min-h-screen">
-      <PageBanner title="Get In Touch" subtitle="We would love to hear from you" />
+      <div className="bg-navy py-16 text-center">
+        <SectionHeader title="Get In Touch" subtitle="We would love to hear from you" light />
+      </div>
 
       <FadeIn>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

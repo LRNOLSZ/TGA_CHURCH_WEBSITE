@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useSermons } from "@/hooks/useSermons";
 import SermonCard from "@/components/sermons/SermonCard";
 import Pagination from "@/components/ui/Pagination";
-import PageBanner from "@/components/ui/PageBanner";
+import SectionHeader from "@/components/ui/SectionHeader";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import FadeIn from "@/components/ui/FadeIn";
 import { Search } from "lucide-react";
@@ -42,7 +42,9 @@ export default function SermonsPage() {
 
   return (
     <div className="bg-bg min-h-screen">
-      <PageBanner title="Messages & Sermons" subtitle="Be inspired and strengthened through the Word" />
+      <div className="bg-navy py-16 text-white text-center">
+        <SectionHeader title="Messages & Sermons" subtitle="Be inspired and strengthened through the Word" light />
+      </div>
 
       <FadeIn>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

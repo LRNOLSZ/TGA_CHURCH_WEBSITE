@@ -4,7 +4,6 @@ interface SectionHeaderProps {
   eyebrow?: string;
   centered?: boolean;
   light?: boolean;
-  divider?: boolean;
 }
 
 export default function SectionHeader({
@@ -13,7 +12,6 @@ export default function SectionHeader({
   eyebrow,
   centered = true,
   light = false,
-  divider = false,
 }: SectionHeaderProps) {
   return (
     <div className={`mb-12 ${centered ? "text-center" : ""}`}>
@@ -32,9 +30,6 @@ export default function SectionHeader({
       >
         {title}
       </h2>
-      {divider && (
-        <span className="mx-auto mb-4 block h-[2px] w-16 rounded-full bg-gradient-to-r from-transparent via-gold to-transparent" />
-      )}
       {subtitle && (
         <p
           className={`text-base leading-relaxed max-w-2xl ${centered ? "mx-auto" : ""} ${

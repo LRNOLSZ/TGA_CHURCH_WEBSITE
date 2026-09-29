@@ -2,7 +2,6 @@
 
 import { Clock, Target, Eye, Star } from "lucide-react";
 import { useChurchInfo } from "@/hooks/useChurchData";
-import PageBanner from "@/components/ui/PageBanner";
 import SectionHeader from "@/components/ui/SectionHeader";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import FadeIn from "@/components/ui/FadeIn";
@@ -15,7 +14,9 @@ export default function AboutPage() {
   return (
     <div className="bg-bg min-h-screen">
       {/* Header */}
-      <PageBanner title="About Us" subtitle={info?.tagline} />
+      <div className="bg-navy py-16 text-center">
+        <SectionHeader title="About Us" subtitle={info?.tagline} light />
+      </div>
 
       {/* Church Story */}
       <FadeIn>

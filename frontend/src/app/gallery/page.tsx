@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { useGallery } from "@/hooks/useChurchData";
 import { getImageUrl } from "@/lib/utils";
-import PageBanner from "@/components/ui/PageBanner";
+import SectionHeader from "@/components/ui/SectionHeader";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import FadeIn from "@/components/ui/FadeIn";
 
@@ -16,7 +16,9 @@ export default function GalleryPage() {
 
   return (
     <div className="bg-bg min-h-screen">
-      <PageBanner title="Photo Gallery" subtitle="Moments of faith, fellowship, and community" />
+      <div className="bg-navy py-16 text-center">
+        <SectionHeader title="Photo Gallery" subtitle="Moments of faith, fellowship, and community" light />
+      </div>
 
       <FadeIn>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
