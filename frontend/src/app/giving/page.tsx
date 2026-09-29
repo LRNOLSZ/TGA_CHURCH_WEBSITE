@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Heart, ExternalLink } from "lucide-react";
 import { useGivingInfo } from "@/hooks/useChurchData";
 import { getImageUrl } from "@/lib/utils";
-import SectionHeader from "@/components/ui/SectionHeader";
+import PageBanner from "@/components/ui/PageBanner";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import FadeIn from "@/components/ui/FadeIn";
 
@@ -16,13 +16,10 @@ export default function GivingPage() {
   return (
     <div className="bg-bg min-h-screen">
       {/* Header */}
-      <div className="bg-navy py-16 text-center">
-        <SectionHeader
-          title={giving?.title || "Give / Support the Ministry"}
-          subtitle="Your generosity makes a difference"
-          light
-        />
-      </div>
+      <PageBanner
+        title={giving?.title || "Give / Support the Ministry"}
+        subtitle="Your generosity makes a difference"
+      />
 
       <FadeIn>
         {giving?.why_give_message && (

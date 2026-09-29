@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useEvents } from "@/hooks/useEvents";
 import EventCard from "@/components/events/EventCard";
 import Pagination from "@/components/ui/Pagination";
-import SectionHeader from "@/components/ui/SectionHeader";
+import PageBanner from "@/components/ui/PageBanner";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import FadeIn from "@/components/ui/FadeIn";
 import { Search } from "lucide-react";
@@ -30,9 +30,7 @@ export default function EventsPage() {
   return (
     <div className="bg-bg min-h-screen">
       {/* Header */}
-      <div className="bg-navy py-16 text-white text-center">
-        <SectionHeader title="Upcoming Events" subtitle="Join us for worship, fellowship, and community" light />
-      </div>
+      <PageBanner title="Upcoming Events" subtitle="Join us for worship, fellowship, and community" />
 
       <FadeIn>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
